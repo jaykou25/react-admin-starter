@@ -8,12 +8,18 @@ dependencies:
   '@ant-design/icons':
     specifier: ^5.5.1
     version: 5.5.1(react-dom@18.3.1)(react@18.3.1)
+  '@ant-design/pro-list':
+    specifier: ^2.6.2
+    version: 2.6.2(antd@5.22.2)(rc-field-form@1.44.0)(react-dom@18.3.1)(react@18.3.1)
   antd:
     specifier: ^5.22.2
     version: 5.22.2(react-dom@18.3.1)(react@18.3.1)
   axios:
     specifier: ^1.7.8
     version: 1.7.8
+  copy-to-clipboard:
+    specifier: ^3.3.3
+    version: 3.3.3
   dayjs:
     specifier: ^1.11.13
     version: 1.11.13
@@ -43,6 +49,9 @@ devDependencies:
   '@umijs/plugins':
     specifier: ^4.3.35
     version: 4.3.35(@babel/core@7.26.0)(@types/react-dom@18.3.1)(@types/react@18.3.12)(antd@5.22.2)(dva@2.5.0-beta.2)(rc-field-form@1.44.0)(react-dom@18.3.1)(react@18.3.1)
+  cross-env:
+    specifier: ^7.0.3
+    version: 7.0.3
   prettier:
     specifier: 3.4.1
     version: 3.4.1
@@ -196,7 +205,6 @@ packages:
       react: 18.3.1
     transitivePeerDependencies:
       - react-dom
-    dev: true
 
   /@ant-design/pro-components@2.8.2(antd@5.22.2)(rc-field-form@1.44.0)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-gSzt/Pw1ayZeHhxh5yaeP7pGpk0V2ZsB4PZab0s6V88O15Ql3w5ciYTObxbxGXMPc+A72AwVThoYLv2ZIl3cMA==}
@@ -312,7 +320,6 @@ packages:
       swr: 2.2.5(react@18.3.1)
     transitivePeerDependencies:
       - react-dom
-    dev: true
 
   /@ant-design/pro-form@2.25.1(antd@5.22.2)(rc-field-form@1.44.0)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-mr8/IgLYF/gM2g2dbUUScIvN2WL/A/42iZhIdLKA2EmDWAf8o7cWgL7adM7/N7/Gf7ffRczjao8qG+eNzdtmPw==}
@@ -402,7 +409,6 @@ packages:
       rc-util: 5.43.0(react-dom@18.3.1)(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-    dev: true
 
   /@ant-design/pro-layout@7.21.2(antd@5.22.2)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-dtqap5YNDrxUWxhi43QJQSv1JLHYPCV4/h4cFM10HNiX/86Cxw37DiCOMdIM/ZwWk619BiwN7CJNgL5Q8obrAQ==}
@@ -455,7 +461,6 @@ packages:
       react-dom: 18.3.1(react@18.3.1)
     transitivePeerDependencies:
       - rc-field-form
-    dev: true
 
   /@ant-design/pro-provider@2.14.1(antd@5.22.2)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-N8hTUNJc7dtIjj79ZFviielizo15nOUyjrmz9Ll0Mn68Btne2FLpf8cKHsUMdA+yLDW9oM0ExcqIWJOKyx0nUg==}
@@ -507,7 +512,6 @@ packages:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       swr: 2.2.5(react@18.3.1)
-    dev: true
 
   /@ant-design/pro-skeleton@2.2.1(antd@5.22.2)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-3M2jNOZQZWEDR8pheY00OkHREfb0rquvFZLCa6DypGmiksiuuYuR9Y4iA82ZF+mva2FmpHekdwbje/GpbxqBeg==}
@@ -586,7 +590,6 @@ packages:
       rc-util: 5.43.0(react-dom@18.3.1)(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-    dev: true
 
   /@ant-design/pro-utils@2.15.17(antd@5.22.2)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-8uF1evCxI3YsEFugP5MY7Oy8HGIKL7tajXkpIRTOZmH9Az/yTX/7cAo1FnwJ1vliLm6aBPpfwNh5qRHjZQOj3g==}
@@ -671,7 +674,6 @@ packages:
       react-dom: 18.3.1(react@18.3.1)
       safe-stable-stringify: 2.5.0
       swr: 2.2.5(react@18.3.1)
-    dev: true
 
   /@ant-design/react-slick@1.1.2(react@18.3.1):
     resolution: {integrity: sha512-EzlvzE6xQUBrZuuhSAFTdsr4P2bBBHGZwKFemEfq8gIGyIQCxalYfZW/T2ORbtQx5rU69o+WycP3exY/7T1hGA==}
@@ -3672,7 +3674,6 @@ packages:
     resolution: {integrity: sha512-WCxx1ixHT0GQU9hb0KI/mhgRQhnU+U3GvwY6ZvVjYq8rsihIGoaIOUbY0yMPBxLH5MDtr0kz3fisWGNcbWW7Jw==}
     dependencies:
       object-assign: 4.1.1
-    dev: true
 
   /ajv-keywords@3.5.2(ajv@6.12.6):
     resolution: {integrity: sha512-5p6WTN0DdTGVQk6VjcEju19IgaHudalcfabD7yhDGeA6bcQnmL+CpveLJq/3hvfwd1aof6L386Ougkx6RfyMIQ==}
@@ -4763,6 +4764,14 @@ packages:
       sha.js: 2.4.11
     dev: false
 
+  /cross-env@7.0.3:
+    resolution: {integrity: sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==}
+    engines: {node: '>=10.14', npm: '>=6', yarn: '>=1'}
+    hasBin: true
+    dependencies:
+      cross-spawn: 7.0.6
+    dev: true
+
   /cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
     engines: {node: '>= 8'}
@@ -4770,7 +4779,6 @@ packages:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
-    dev: false
 
   /crypto-browserify@3.12.1:
     resolution: {integrity: sha512-r4ESw/IlusD17lgQi1O20Fa3qNnsckR126TdUuBgAu7GBYSIPvdNyONd3Zrxh0xCwA4+6w/TDArBPsMvhur+KQ==}
@@ -7042,7 +7050,6 @@ packages:
 
   /isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
-    dev: false
 
   /isobject@3.0.1:
     resolution: {integrity: sha512-WhB9zCku7EGTj/HQQRz5aUQEUeoQZH2bWcltRErOpymJ4boYE6wL9Tbr23krRPSZ+C5zqNSrSw+Cc7sZZ4b7vg==}
@@ -8249,7 +8256,6 @@ packages:
   /path-key@3.1.1:
     resolution: {integrity: sha512-ojmeN0qd+y0jszEtoY48r0Peq5dwMEkIlCOu6Q5f41lfkswXuKtYrhgoTpLnyIcHm24Uhqx+5Tqm2InSwLhE6Q==}
     engines: {node: '>=8'}
-    dev: false
 
   /path-key@4.0.0:
     resolution: {integrity: sha512-haREypq7xkM7ErfgIyA0z+Bj4AGKlMSdlQE2jvJo6huWD1EdkKYV+G/T4nq0YEF2vgTT8kqMFKo1uHn950r4SQ==}
@@ -9496,7 +9502,6 @@ packages:
       react-is: 16.13.1
       react-lifecycles-compat: 3.0.4
       shallowequal: 1.1.0
-    dev: true
 
   /rc-util@5.43.0(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-AzC7KKOXFqAdIBqdGWepL9Xn7cm3vnAmjlHqUnoQaTMZYhM4VlXGLkkHHxj/BZ7Td0+SOPKB4RGPboBVKT9htw==}
@@ -9618,7 +9623,6 @@ packages:
 
   /react-lifecycles-compat@3.0.4:
     resolution: {integrity: sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==}
-    dev: true
 
   /react-merge-refs@1.1.0:
     resolution: {integrity: sha512-alTKsjEL0dKH/ru1Iyn7vliS2QRcBp9zZPGoWxUOvRGWPUYgjo+V01is7p04It6KhgrzhJGnIj9GgX8W4bZoCQ==}
@@ -10193,12 +10197,10 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       shebang-regex: 3.0.0
-    dev: false
 
   /shebang-regex@3.0.0:
     resolution: {integrity: sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==}
     engines: {node: '>=8'}
-    dev: false
 
   /side-channel@1.0.6:
     resolution: {integrity: sha512-fDW/EZ6Q9RiO8eFG8Hj+7u/oW+XrPTIChwCOM2+th2A6OblDtYYIpve9m+KvI9Z4C9qSEXlaGR6bTEYHReuglA==}
@@ -11385,7 +11387,6 @@ packages:
     hasBin: true
     dependencies:
       isexe: 2.0.0
-    dev: false
 
   /word-wrap@1.2.5:
     resolution: {integrity: sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA==}

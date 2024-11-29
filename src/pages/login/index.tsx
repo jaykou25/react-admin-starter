@@ -9,8 +9,8 @@ import Logo from '@/assets/guolian-logo.png'
 import { SITE } from '@/utils'
 
 import styles from './index.less'
-import LoginMessage from './LoginMessage'
-import FormCode from './FormCode'
+import LoginMessage from './components/login-message'
+import FormCode from './components/form-code'
 import { encrypt } from '@/utils/jsencrypt'
 import { postLogin } from '@/apis'
 import { afterLogin, goto } from '@/utils/login'
@@ -47,13 +47,8 @@ const Login = () => {
             ...initValue,
           })
           message.success('登录成功！')
-          if (initValue?.currentUser?.dpwd === 1) {
-            // 配置修改密码来源
-            sessionStorage.setItem('accountPasswordSource', 'login')
-            history.push('/account/password')
-          } else {
-            goto()
-          }
+
+          goto()
         })
       })
       .catch((e) => {

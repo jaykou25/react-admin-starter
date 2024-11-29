@@ -2,7 +2,7 @@
   "private": true,
   "author": "jay.kou <jay.kou@qq.com>",
   "scripts": {
-    "dev": "umi dev",
+    "dev": "cross-env PORT=3200 umi dev",
     "build": "umi build",
     "postinstall": "umi setup",
     "setup": "umi setup",
@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.5.1",
+    "@ant-design/pro-list": "^2.6.2",
     "antd": "^5.22.2",
     "axios": "^1.7.8",
+    "copy-to-clipboard": "^3.3.3",
     "dayjs": "^1.11.13",
     "jsencrypt": "^3.3.2",
     "lodash-es": "^4.17.21",
@@ -23,6 +25,7 @@
     "@types/react": "^18.0.33",
     "@types/react-dom": "^18.0.11",
     "@umijs/plugins": "^4.3.35",
+    "cross-env": "^7.0.3",
     "prettier": "3.4.1",
     "typescript": "^5.0.3"
   }

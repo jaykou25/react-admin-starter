@@ -160,7 +160,7 @@ function findTreeItemLoop(data, key, valueKey) {
     return data
   }
   if (data.children && data.children.length) {
-    return findTreeItem(data.children, key, valueKey)
+    return findTree(data.children, key, valueKey)
   }
   return undefined
 }

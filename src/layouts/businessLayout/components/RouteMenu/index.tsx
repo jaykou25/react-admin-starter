@@ -23,12 +23,10 @@ const RouteMenu = (props) => {
   const { collapsed } = props
   const { pathname } = useLocation()
   const { initialState } = useModel('@@initialState')
-  const { menuMap, activeFirstLevelMenuKey } = initialState
-
-  const subMenus = menuMap && activeFirstLevelMenuKey ? menuMap[activeFirstLevelMenuKey] || [] : []
+  const { menus: _menus } = initialState
 
   // 左侧菜单的数据源
-  const menus: any = getMenusFromData(subMenus, {
+  const menus: any = getMenusFromData(_menus, {
     iconfontUrl: initialState.iconfontUrl,
   })
 
@@ -36,7 +34,7 @@ const RouteMenu = (props) => {
    * 用于菜单选中的数据源.
    * 它与菜单数据源的区别是它包含当前页面的路径, 而当前路径有可能是隐藏的, 所以菜单数据源里不一定包含.
    */
-  const menusForSelected: any = getMenusFromData(subMenus, {
+  const menusForSelected: any = getMenusFromData(_menus, {
     filter: (item) => {
       return item.routeUrl === pathname || item.isShow
     },
@@ -44,7 +42,7 @@ const RouteMenu = (props) => {
 
   const menuChainForSelected = useMemo(
     () => getTreeChain(menusForSelected, (node) => node.key === pathname),
-    [pathname, activeFirstLevelMenuKey]
+    [pathname]
   )
 
   const defaultOpenKeys = menuChainForSelected.map((item) => item.key)

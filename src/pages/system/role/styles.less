@@ -1,0 +1,29 @@
+// 字典列表
+.roleList {
+  :global .ant-list {
+    padding-bottom: 24px;
+  }
+
+  :global .ant-list-item.ant-pro-list-row {
+    padding-left: 10px;
+  }
+
+  :global .ant-spin-container {
+    max-height: 500px;
+    overflow: auto;
+  }
+
+  // 行被选中后的颜色, 比勾选时的选中色稍稍深一点
+  :global .ant-pro-list-row-type-selected.ant-pro-list-row {
+    position: relative;
+  }
+  :global .ant-pro-list-row-type-selected.ant-pro-list-row::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 4px;
+    background-color: #1890ff;
+    content: '';
+  }
+}

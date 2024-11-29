@@ -15,7 +15,7 @@ import { pathToKey } from '@/layouts/businessLayout/utils'
 export default function BusinessContent() {
   const { pathname } = useLocation()
 
-  const { keepElements } = useContext(KeepAliveContext)
+  const { keepElements = { current: [] } } = useContext(KeepAliveContext)
 
   const { initialState } = useModel('@@initialState')
   const { menus, routes } = initialState

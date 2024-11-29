@@ -19,7 +19,6 @@ const BusinessLayout = () => {
   const { collapsed, setCollapsed } = useModel('collapsed')
   const { loading } = useModel('loading')
   const [eventLoading, setEventLoading] = useState(false)
-  const { previewImageUrl, visible, setVisible } = useModel('previewImage')
 
   const { showSwitchTabs, compactMode } = ls.get(SETTING_KEY) || {}
 
@@ -87,18 +86,6 @@ const BusinessLayout = () => {
                 <Footer style={{ textAlign: 'center', marginBottom: '34px' }}>
                   ©2024 国联
                 </Footer>
-                <Image
-                  width={200}
-                  style={{ display: 'none' }}
-                  // rootClassName={'basicLayoutMain'}
-                  preview={{
-                    visible,
-                    src: previewImageUrl,
-                    onVisibleChange: (value) => {
-                      setVisible(value)
-                    },
-                  }}
-                />
               </Layout>
             </div>
           </Spin>
