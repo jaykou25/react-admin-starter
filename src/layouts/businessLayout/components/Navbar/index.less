@@ -1,0 +1,72 @@
+.navbar {
+  display: flex;
+  box-sizing: border-box;
+  height: 100%;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  flex: none;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  width: 220px;
+  padding-left: 20px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.logo-name {
+  color: var(--color-text-1);
+  font-weight: 500;
+  font-size: 18px;
+  margin-left: 15px;
+  font-family: 'PingFang SC';
+}
+
+.middle {
+  flex: auto;
+  padding-left: 20px;
+  overflow: hidden;
+
+  :global .ant-menu-light {
+    background-color: inherit;
+  }
+}
+
+.right {
+  display: flex;
+  flex: none;
+  list-style: none;
+  padding-right: 20px;
+
+  li {
+    padding: 0 8px;
+    display: flex;
+    align-items: center;
+  }
+
+  a {
+    text-decoration: none;
+    color: var(--color-text-1);
+  }
+
+  .news {
+    width: 30px;
+
+    :global .ant-badge-count {
+      box-shadow: none;
+    }
+  }
+
+  .guide {
+    margin-left: 8px;
+    cursor: pointer;
+    .guideText {
+      padding-left: 2px;
+    }
+  }
+}

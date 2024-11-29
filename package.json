@@ -1,0 +1,29 @@
+{
+  "private": true,
+  "author": "jay.kou <jay.kou@qq.com>",
+  "scripts": {
+    "dev": "umi dev",
+    "build": "umi build",
+    "postinstall": "umi setup",
+    "setup": "umi setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^5.5.1",
+    "antd": "^5.22.2",
+    "axios": "^1.7.8",
+    "dayjs": "^1.11.13",
+    "jsencrypt": "^3.3.2",
+    "lodash-es": "^4.17.21",
+    "qs": "^6.13.1",
+    "react-admin-kit": "^0.5.3",
+    "umi": "^4.3.35"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.33",
+    "@types/react-dom": "^18.0.11",
+    "@umijs/plugins": "^4.3.35",
+    "prettier": "3.4.1",
+    "typescript": "^5.0.3"
+  }
+}

@@ -1,0 +1,27 @@
+@pro-header-hover-bg: rgba(0, 0, 0, 0.025);
+
+.action {
+  display: flex;
+  flex: none;
+  align-items: center;
+  height: 100%;
+  padding: 0 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+  > span {
+    vertical-align: middle;
+  }
+  &:hover {
+    background: @pro-header-hover-bg;
+  }
+  &:global(.opened) {
+    background: @pro-header-hover-bg;
+  }
+}
+
+.avatar {
+  margin-right: 8px;
+  vertical-align: top;
+  background: rgba(255, 255, 255, 0.85);
+  color: rgb(24, 144, 255);
+}
