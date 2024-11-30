@@ -1,5 +1,6 @@
 import { normalizeTree, filterTree, getTreeChain, visitTree } from './treeUtil'
 import { createElement } from 'react'
+let result
 
 /**
  * 测试 normalizeTree
