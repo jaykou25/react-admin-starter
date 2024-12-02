@@ -100,7 +100,7 @@
 
 ### 如何开使
 1. `pnpm install`
-2. 复制 `config/proxy-demo.ts` 到 `config/proxy.ts`
+2. 👉 **复制 `config/proxy-demo.ts` 到 `config/proxy.ts`** 👈
 3. `pnpm dev`
 4. 开始开发
 
