@@ -82,13 +82,21 @@
 2. 已登录用户但没有该页面访问权限的放在 BusinessContent 组件中去拦截, 因为 401 页面需要用到 businessLayout 组件.
 
 ### 仓库克隆和同步
-1. 克隆本项目到本地指定目录.
-2. 更改 origin 源至自已的项目路径:
-   `git remote set-url origin http://10.10.10.10:9080/xx.git`
-3. `git push`
+1. **克隆**
 
-**同步本项目代码**
-23
+    a. 克隆本项目到本地指定目录.
+
+    b. 更改 origin 源至自已的项目路径: `git remote set-url origin http://10.10.10.10:9080/xx.git`
+
+    c. `git push`
+
+2. **同步本项目代码**
+
+    a. 设置 upstream 源: `git remote add upstream https://github.com/jaykou25/react-admin-starter.git`
+
+    b. 拉取 upstream 项目更新: `git fetch upstream`
+
+    c. 把 upstream 中的分支合并进自已分支.
 
 ### 如何开使
 1. `pnpm install`
