@@ -1,19 +1,19 @@
 import request from '@/utils/request'
 
 export async function queryMenu(): Promise<any> {
-  return request('/api/main/sysUser/getMenuTree')
+  return request('/api/sysUser/getMenuTree')
 }
 
 export async function queryCurrent(): Promise<any> {
-  return request('/api/main/sysUser/getUserInfo')
+  return request('/api/sysUser/getUserInfo')
 }
 
 export async function queryCode() {
-  return request('/api/main/verificationCode/getBase64Image')
+  return request('/api/verificationCode/getBase64Image')
 }
 
 export async function postLogin(data) {
-  return request('/api/main/easyLogin', {
+  return request('/api/easyLogin', {
     method: 'post',
     data,
     noToken: true,
@@ -21,7 +21,7 @@ export async function postLogin(data) {
 }
 // userCode（EmpId）登录
 export async function userCodeLogin(data) {
-  return request('/api/main/SSO/getTokenByEmpId', {
+  return request('/api/SSO/getTokenByEmpId', {
     method: 'post',
     data,
   })
@@ -31,7 +31,7 @@ export async function userCodeLogin(data) {
  * 人员下拉
  */
 export async function joinUserList(params): Promise<any> {
-  return request('/api/main/sysUser/selectUsers', {
+  return request('/api/sysUser/selectUsers', {
     params,
   })
 }
@@ -39,7 +39,7 @@ export async function joinUserList(params): Promise<any> {
  * 省市区数据
  */
 export async function getAreaList(params): Promise<any> {
-  return request('/api/main/sysArea/getChinaAreaTree', {
+  return request('/api/sysArea/getChinaAreaTree', {
     params,
   })
 }
@@ -48,7 +48,7 @@ export async function getAreaList(params): Promise<any> {
  * 部门树
  */
 export async function deptTree(params): Promise<any> {
-  return request('/api/main/sysOrg/getOrgTree', {
+  return request('/api/sysOrg/getOrgTree', {
     params,
   })
 }
@@ -62,14 +62,14 @@ export function queryCompanys(params) {
 
 // 附件查看
 export function getImage(accId) {
-  return request(`/api/main/accessory/getImage?accId=${accId}`, {
+  return request(`/api/accessory/getImage?accId=${accId}`, {
     responseType: 'blob',
   })
 }
 
 // 修改密码
 export function changePassword(data) {
-  return request('/api/main/sysUser/updatePassword', {
+  return request('/api/sysUser/updatePassword', {
     method: 'post',
     data,
   })
@@ -77,5 +77,5 @@ export function changePassword(data) {
 
 // 单点登录
 export function casLogin(data) {
-  return request('/api/main/SSO/getToken', { method: 'post', data })
+  return request('/api/SSO/getToken', { method: 'post', data })
 }

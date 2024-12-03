@@ -63,7 +63,7 @@ export default function Layout() {
           options: { density: false, reload: true, fullScreen: true },
         }}
         formUploadSetting={{
-          action: '/api/main/accessory/upload',
+          action: '/api/accessory/upload',
           headers: { token: getToken() || '' },
           responseToFileList: (res) => {
             console.log(res)

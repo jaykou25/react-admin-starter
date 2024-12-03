@@ -51,7 +51,7 @@ const BusinessSelect = BusinessSelectBuilder<BusinessSelectType>({
     {
       type: 'ownCompany',
       api: () =>
-        request('/api/main/sysOrg/companyOption').then((res) => {
+        request('/api/sysOrg/companyOption').then((res) => {
           return { data: res }
         }),
       defaultProps: {
@@ -62,7 +62,7 @@ const BusinessSelect = BusinessSelectBuilder<BusinessSelectType>({
     {
       type: 'childCompany',
       api: () =>
-        request('/api/main/sysOrg/getChildCompanys').then((res) => {
+        request('/api/sysOrg/getChildCompanys').then((res) => {
           return { data: res }
         }),
       defaultProps: {
@@ -73,7 +73,7 @@ const BusinessSelect = BusinessSelectBuilder<BusinessSelectType>({
     {
       type: 'ownCompanyDept',
       api: () =>
-        request('/api/main/deptTargetLiability/getDept').then((res) => {
+        request('/api/deptTargetLiability/getDept').then((res) => {
           return { data: res }
         }),
       defaultProps: {
@@ -86,7 +86,7 @@ const BusinessSelect = BusinessSelectBuilder<BusinessSelectType>({
     {
       type: 'ownCompanyChild',
       api: () =>
-        request('/api/main/deptTargetLiability/childCompany').then((res) => {
+        request('/api/deptTargetLiability/childCompany').then((res) => {
           return { data: res }
         }),
       defaultProps: {
@@ -97,7 +97,7 @@ const BusinessSelect = BusinessSelectBuilder<BusinessSelectType>({
     {
       type: 'childCompanyUser',
       api: ({ id }) =>
-        request(`/api/main/notice/getProcessUser/${id}`).then((res) => {
+        request(`/api/notice/getProcessUser/${id}`).then((res) => {
           return { data: res }
         }),
       defaultProps: {
@@ -109,7 +109,7 @@ const BusinessSelect = BusinessSelectBuilder<BusinessSelectType>({
       type: 'myCompanyUser',
       api: ({ params }) =>
         request
-          .post('/api/main/notice/getProcessUser', { ids: params })
+          .post('/api/notice/getProcessUser', { ids: params })
           .then((res) => {
             return { data: res }
           }),
@@ -127,7 +127,7 @@ const BusinessSelect = BusinessSelectBuilder<BusinessSelectType>({
       type: 'staff',
       pagination: true,
       api: ({ current, searchValue, orgId, companyId }) =>
-        request('/api/main/sysUser/selectUsers', {
+        request('/api/sysUser/selectUsers', {
           params: {
             current,
             keyword: searchValue,

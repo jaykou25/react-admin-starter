@@ -50,7 +50,7 @@ const BusinessTreeSelect = BusinessTreeSelectBuilder<TreeType>({
     },
     {
       type: 'childCompanyDept',
-      api: () => request('/api/main/glOrg/getChildCompanyDept'),
+      api: () => request('/api/glOrg/getChildCompanyDept'),
       defaultProps: {
         labelKey: 'title',
         valueKey: 'orgid',
@@ -59,7 +59,7 @@ const BusinessTreeSelect = BusinessTreeSelectBuilder<TreeType>({
     {
       type: 'deptByCompanyId',
       api: () =>
-        request(`/api/main/sysOrg/selectOrgTreeUsers`).then((res) => {
+        request(`/api/sysOrg/selectOrgTreeUsers`).then((res) => {
           return { data: res }
         }),
       defaultProps: {},
@@ -67,7 +67,7 @@ const BusinessTreeSelect = BusinessTreeSelectBuilder<TreeType>({
 
     {
       type: 'childCompany',
-      api: () => request('/api/main/sysOrg/getChildCompanys'),
+      api: () => request('/api/sysOrg/getChildCompanys'),
       defaultProps: {
         labelKey: 'name',
         valueKey: 'id',
@@ -82,7 +82,7 @@ const BusinessTreeSelect = BusinessTreeSelectBuilder<TreeType>({
       type: 'childCompanyUser',
       api: ({ params }) =>
         request
-          .post('/api/main/sysOrg/getChildCompanys', { ids: params })
+          .post('/api/sysOrg/getChildCompanys', { ids: params })
           .then((res) => {
             return { data: res }
           }),
@@ -98,7 +98,7 @@ const BusinessTreeSelect = BusinessTreeSelectBuilder<TreeType>({
     },
     {
       type: 'companyTree',
-      api: () => request('/api/main/sysOrg/companyTreeOption'),
+      api: () => request('/api/sysOrg/companyTreeOption'),
       defaultProps: {
         labelKey: 'name',
         valueKey: 'id',
@@ -111,7 +111,7 @@ const BusinessTreeSelect = BusinessTreeSelectBuilder<TreeType>({
     },
     {
       type: 'subCompanyTree',
-      api: () => request('/api/main/sysOrg/subsidiary'),
+      api: () => request('/api/sysOrg/subsidiary'),
       defaultProps: {
         labelKey: 'name',
         valueKey: 'companyId',
@@ -126,7 +126,7 @@ const BusinessTreeSelect = BusinessTreeSelectBuilder<TreeType>({
       type: 'getPageOrgTree',
       api: () => {
         return request(
-          `/api/main/sysOrg/getOrgTree?companyId=${window['_companyId']}`
+          `/api/sysOrg/getOrgTree?companyId=${window['_companyId']}`
         ).then((res) => {
           let data = filterTree(res || [], (node) => {
             return node.orgType !== '1003'
@@ -145,7 +145,7 @@ const BusinessTreeSelect = BusinessTreeSelectBuilder<TreeType>({
     },
     {
       type: 'userType',
-      api: () => request('/api/main/sysDict/other/user/info/dict'),
+      api: () => request('/api/sysDict/other/user/info/dict'),
       defaultProps: {
         labelKey: 'label',
         valueKey: 'value',
