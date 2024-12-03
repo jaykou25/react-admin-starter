@@ -2,5 +2,11 @@
   "extends": "./src/.umi/tsconfig.json",
   "compilerOptions": {
     "noImplicitAny": false
+  },
+  "ts-node": {
+    "compilerOptions": {
+      "module": "ESNext",
+      "moduleResolution": "Node"
+    }
   }
 }

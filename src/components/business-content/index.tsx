@@ -7,7 +7,6 @@ import {
   matchPath,
   useOutlet,
 } from 'umi'
-import { pathInTree } from '@/utils/auth'
 import { useContext } from 'react'
 import { KeepAliveContext } from '@/contexts/keep-alive-context'
 import { pathToKey } from '@/layouts/businessLayout/utils'
@@ -20,8 +19,8 @@ export default function BusinessContent() {
   const { initialState } = useModel('@@initialState')
   const { menus, routes } = initialState
 
-  const targetRoute = findTree(menus, pathname, 'routeUrl')
-  const isKeep = targetRoute && targetRoute.isCache
+  const targetMenu = findTree(menus, (item) => item.routeUrl === pathname)
+  const isKeep = targetMenu && targetMenu.isCache
 
   const element = useOutlet()
 
@@ -74,10 +73,10 @@ export default function BusinessContent() {
     return <Outlet />
   }
 
-  // 当路径在routes里但不在menus里 除所有都能访问的, 返回 401
+  // 对已登录但没有该页面访问权限的控制
   if (
-    pathInTree(pathname, routes) &&
-    !pathInTree(pathname, menus, 'routeUrl')
+    findTree(routes, (item) => item.path === pathname) &&
+    !findTree(menus, (item) => item.routeUrl === pathname)
   ) {
     return <Navigate to="/401" replace />
   } else {

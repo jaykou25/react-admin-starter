@@ -139,12 +139,16 @@ export function visitTree(tree, fn, options?: { childrenName?: string }) {
 /**
  * 遍历tree, 找到目标节点, 找不到返回undefined
  */
-export function findTree(data = [], key, valueKey = 'id') {
+export function findTree(
+  data = [],
+  fn: (item: any) => boolean,
+  options?: { childrenName: string }
+) {
   let result
 
   // eslint-disable-next-line no-plusplus
   for (let i = 0; i < data.length; i++) {
-    const target = findTreeItemLoop(data[i], key, valueKey)
+    const target = findTreeItemLoop(data[i], fn, options)
 
     if (target) {
       result = target
@@ -155,12 +159,13 @@ export function findTree(data = [], key, valueKey = 'id') {
   return result
 }
 
-function findTreeItemLoop(data, key, valueKey) {
-  if (data[valueKey] === key) {
+function findTreeItemLoop(data, fn, options) {
+  const { childrenName = 'children' } = options || {}
+  if (fn(data)) {
     return data
   }
-  if (data.children && data.children.length) {
-    return findTree(data.children, key, valueKey)
+  if (data[childrenName] && data[childrenName].length) {
+    return findTree(data[childrenName], fn, options)
   }
   return undefined
 }

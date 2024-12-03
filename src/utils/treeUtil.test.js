@@ -1,4 +1,10 @@
-import { normalizeTree, filterTree, getTreeChain, visitTree } from './treeUtil'
+import {
+  normalizeTree,
+  filterTree,
+  getTreeChain,
+  visitTree,
+  findTree,
+} from './treeUtil'
 import { createElement } from 'react'
 let result
 
@@ -105,25 +111,25 @@ test('filterTree 没有改变原数据 二层', () => {
 /**
  * 测试 getTreeChain 方法
  */
-test('findTree 找到第一层', () => {
+test('getTreeChain 找到第一层', () => {
   const data = [{ id: 1 }, { id: 2 }]
   result = getTreeChain(data, (node) => node.id === 1)
   expect(result).toEqual([{ id: 1 }])
 })
 
-test('findTree 找到第一层中的第二个', () => {
+test('getTreeChain 找到第一层中的第二个', () => {
   const data = [{ id: 1 }, { id: 2 }]
   result = getTreeChain(data, (node) => node.id === 2)
   expect(result).toEqual([{ id: 2 }])
 })
 
-test('findTree 找到第二层', () => {
+test('getTreeChain 找到第二层', () => {
   const data = [{ id: 1, children: [{ id: 3 }] }, { id: 2 }]
   result = getTreeChain(data, (node) => node.id === 3)
   expect(result).toEqual([{ id: 1, children: [{ id: 3 }] }, { id: 3 }])
 })
 
-test('findTree 找到第二层中的第二个', () => {
+test('getTreeChain 找到第二层中的第二个', () => {
   const data = [{ id: 1 }, { id: 2, children: [{ id: 3 }, { id: 4 }] }]
   result = getTreeChain(data, (node) => node.id === 4)
   expect(result).toEqual([
@@ -132,7 +138,7 @@ test('findTree 找到第二层中的第二个', () => {
   ])
 })
 
-test('findTree benchmark', () => {
+test('getTreeChain benchmark', () => {
   const data = [
     { id: 1, ele: window.ReportBody, jsx: createElement('div') },
     { id: 2, children: [{ id: 3 }, { id: 4 }] },
@@ -144,7 +150,7 @@ test('findTree benchmark', () => {
   expect(time).toBeLessThan(2)
 })
 
-test('findTree 找不到', () => {
+test('getTreeChain 找不到', () => {
   const data = [{ id: 1, children: [{ id: 3 }] }, { id: 2 }]
   result = getTreeChain(data, (node) => node.id === 4)
   expect(result).toEqual([])
@@ -179,4 +185,43 @@ test('visitTree 按顺序执行', () => {
   })
 
   expect(arr.join(',')).toBe('a,b,c,d')
+})
+
+describe('测试 fintTree 方法', () => {
+  const sourceTree = [
+    { id: '00' },
+    { id: '10', children: [{ id: '10-00' }] },
+    { id: '20', children: [{ id: '20-00', children: [{ id: '20-00-00' }] }] },
+  ]
+  test('第一层', () => {
+    const target = findTree(sourceTree, (item) => item.id === '00')
+    expect(target).toEqual({ id: '00' })
+
+    const target2 = findTree(sourceTree, (item) => item.id === '10')
+    expect(target2).toEqual({ id: '10', children: [{ id: '10-00' }] })
+
+    const target3 = findTree(sourceTree, (item) => item.id === '20')
+    expect(target3).toEqual({
+      id: '20',
+      children: [{ id: '20-00', children: [{ id: '20-00-00' }] }],
+    })
+  })
+
+  test('第二层', () => {
+    const target = findTree(sourceTree, (item) => item.id === '10-00')
+    expect(target).toEqual({ id: '10-00' })
+
+    const target2 = findTree(sourceTree, (item) => item.id === '20-00')
+    expect(target2).toEqual({ id: '20-00', children: [{ id: '20-00-00' }] })
+  })
+
+  test('第三层', () => {
+    const target = findTree(sourceTree, (item) => item.id === '20-00-00')
+    expect(target).toEqual({ id: '20-00-00' })
+  })
+
+  test('找不到返回 undefined', () => {
+    const target = findTree(sourceTree, (item) => item.id === 'xx')
+    expect(target).toBe(undefined)
+  })
 })
