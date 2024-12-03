@@ -104,18 +104,20 @@
 
     c. 把 upstream 中的分支合并进自已分支.
 
-### 如何开使
+## 如何开使
 
 1. `pnpm install`
 2. 👉 **复制 `config/proxy-demo.ts` 到 `config/proxy.ts`** 👈
 3. `pnpm dev`
 4. 开始开发
 
-### 开发建议
+## 开发建议
 
 1. 文件名称建议使用连字符 `-` 连接: my-component
-2. 新写的公用方法请务必写好单元测试, 这不仅对团队和对个人帮助巨大.
+2. 新写的公共方法请务必写好单元测试, 这不仅对团队也对个人帮助巨大.
 
     a. 测试文件可以写在当前目录下, 以 `.test.js` 或 `.test.ts` 结尾.
 
     b. 测试文档可以参考 [jest 文档](https://jestjs.io/zh-Hans/docs/using-matchers).
+
+    c. 运行 `pnpm test` 查看测试结果.

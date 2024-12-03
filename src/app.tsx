@@ -4,10 +4,9 @@ import {
   isLogin,
   inWhiteList,
   fullPath,
-  normalizeMenu,
   afterLogin,
+  normalizeTree,
 } from '@/utils'
-import { afterLogin } from './utils/login'
 import dayjs from 'dayjs'
 
 const advancedFormat = require('dayjs/plugin/advancedFormat')
@@ -24,7 +23,7 @@ export async function getInitialState(): Promise<any> {
 
   const initialState: any = {
     // 系统的路由数据, 用于页面权限控制
-    routes: normalizeMenu(window.routes, (item) => {
+    routes: normalizeTree(window.routes, (item) => {
       return { ...item, path: '/' + item.path }
     }),
   }
