@@ -8,3 +8,4 @@
 /dist
 .swc
 /config/proxy.ts
+pnpm-lock.yaml
