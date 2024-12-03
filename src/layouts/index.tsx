@@ -1,24 +1,23 @@
-import { useLocation, Outlet } from 'umi'
+import { useLocation } from 'umi'
 import { ConfigProvider, theme, message, Upload, Modal } from 'antd'
 import BusinessLayout from './businessLayout'
 import { SettingProvider } from 'react-admin-kit'
-import { ls, SETTING_KEY, getToken } from '@/utils'
+import {
+  ls,
+  SETTING_KEY,
+  getToken,
+  inWhiteList,
+  getWhiteListLayout,
+} from '@/utils'
 
 import zhCN from 'antd/locale/zh_CN'
-import LoginLayout from './login-layout'
 
 export default function Layout() {
   const { pathname } = useLocation()
 
   const getLayout = () => {
-    // sso
-    if (/^\/sso/.test(pathname)) {
-      return <Outlet />
-    }
-
-    // 登陆页面
-    if (/^\/login/.test(pathname)) {
-      return <LoginLayout />
+    if (inWhiteList(pathname)) {
+      return getWhiteListLayout(pathname)
     }
 
     // 正常业务页面
