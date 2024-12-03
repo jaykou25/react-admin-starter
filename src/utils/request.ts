@@ -53,9 +53,6 @@ service.interceptors.response.use(
   },
   (error: AxiosError) => {
     const status = error.response?.status
-    const message = error?.response?.data?.message
-    const headers = error.response?.headers
-    
 
     // 登录过期
     if (status === 401) {
@@ -76,17 +73,6 @@ service.interceptors.response.use(
       }, 200)
       return
     }
-
-    const { pathname } = window.location
-    if (!['/login'].includes(pathname)) {
-      if(headers?.exporterrormessage){
-        //隐患导出失败exporterrormessage
-        antdMessage.info(decodeURIComponent(headers?.exporterrormessage))
-      }else{
-        notification.error({ message: '系统错误', description: message })
-      }
-    }
-    return Promise.reject(error?.response?.data)
   }
 )
 
