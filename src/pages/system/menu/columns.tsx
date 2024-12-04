@@ -12,7 +12,7 @@ export const getColumns = ({
       title: '菜单标题',
       dataIndex: 'name',
     },
-    { title: '路由地址', dataIndex: 'routeUrl', width: 160, copyable: true },
+    { title: '路由地址', dataIndex: 'routeUrl', width: 350, copyable: true },
     {
       title: '排序',
       dataIndex: 'sort',

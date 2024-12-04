@@ -46,7 +46,7 @@ const Login = () => {
             ...initialState,
             ...initValue,
           })
-          message.success('登录成功！')
+          message.success('登录成功')
 
           goto()
         })
