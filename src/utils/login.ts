@@ -37,8 +37,8 @@ export function goto() {
 // 返回 promise
 export function afterLogin() {
   return new Promise(async (resolve, reject) => {
-    // 这个 menus 是后台返回的该用户所拥有的所有菜单数据
-    const menus = await queryMenu()
+    // 这是后台返回的该用户的所有菜单数据源
+    const menuDataSource = await queryMenu()
 
     // 当前用户信息
     const currentUser = await queryCurrent()
@@ -51,7 +51,7 @@ export function afterLogin() {
     const iconfontUrl = config?.value
 
     const initValue = {
-      menus,
+      menuDataSource,
       currentUser,
       iconfontUrl,
       dictData: dictRes.data,
@@ -70,13 +70,13 @@ export function afterLogin() {
 
     // 权限列表
     const codes: string[] = []
-    normalizeTree(menus, (item: any) => {
+    normalizeTree(menuDataSource, (item: any) => {
       codes.push(item.code)
       return undefined
     })
     window['_codes'] = codes
 
-    if (menus.length < 1) {
+    if (menuDataSource.length < 1) {
       window['_noMenu'] = true
     } else {
       window['_noMenu'] = false

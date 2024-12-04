@@ -64,7 +64,7 @@ const BusinessLayout = () => {
         <Layout id="contentLayout">
           {showSwitchTabs && (
             <div style={{ padding: '0 24px' }}>
-              {/* <SwitchTabs menus={initialState.menus} /> */}
+              {/* <SwitchTabs menus={initialState.menuDataSource} /> */}
             </div>
           )}
 

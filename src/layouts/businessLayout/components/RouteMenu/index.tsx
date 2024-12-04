@@ -1,5 +1,4 @@
 import { history, useLocation, useModel } from 'umi'
-import { getMenusFromData } from '../../utils/menu'
 import { getTreeChain } from '@/utils/treeUtil'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Input, Menu } from 'antd'
@@ -7,46 +6,27 @@ import { Input, Menu } from 'antd'
 import styles from './index.less'
 import { filterTreeData } from './filterTreeData'
 import { isUrl } from '@/utils'
-
-const getMenukeys = (menus: any = []) =>
-  menus
-    .map((menu) => {
-      if (menu.children && menu.children.length) {
-        return [menu.key, getMenukeys(menu.children)]
-      }
-
-      return undefined
-    })
-    .filter((item) => item)
+import { getMenukeys, normalizeForAntdMenu } from '@/utils/menuUtil'
 
 const RouteMenu = (props) => {
   const { collapsed } = props
   const { pathname } = useLocation()
   const { initialState } = useModel('@@initialState')
-  const { menus: _menus } = initialState
+  const { menuDataSource, iconfontUrl } = initialState
 
   // 左侧菜单的数据源
-  const menus: any = getMenusFromData(_menus, {
-    iconfontUrl: initialState.iconfontUrl,
-  })
+  const menus: any = normalizeForAntdMenu(menuDataSource, { iconfontUrl })
 
   /**
-   * 用于菜单选中的数据源.
-   * 它与菜单数据源的区别是它包含当前页面的路径, 而当前路径有可能是隐藏的, 所以菜单数据源里不一定包含.
+   * 菜单选中的数据源.
+   * 与 menus 数据不同的是它会包含 isShow 为 false 的数据.
    */
-  const menusForSelected: any = getMenusFromData(_menus, {
-    filter: (item) => {
-      return item.routeUrl === pathname || item.isShow
-    },
-  })
-
   const menuChainForSelected = useMemo(
-    () => getTreeChain(menusForSelected, (node) => node.key === pathname),
+    () => getTreeChain(menuDataSource, (node) => node.routeUrl === pathname),
     [pathname]
   )
 
-  const defaultOpenKeys = menuChainForSelected.map((item) => item.key)
-  // console.log('defaultOpenKeys', defaultOpenKeys)
+  const defaultOpenKeys = menuChainForSelected.map((item) => item.routeUrl)
 
   const [keyWord, setKeyWord] = useState('')
   const [selectedKeys, setSelectedKeys] = useState<string[]>(defaultOpenKeys)
@@ -70,7 +50,7 @@ const RouteMenu = (props) => {
         return
       }
 
-      setOpenKeys(getMenukeys(filterMenus).flat(Infinity))
+      setOpenKeys(getMenukeys(filterMenus, (item) => item.key))
     }
     mountRef.current = true
   }, [keyWord])

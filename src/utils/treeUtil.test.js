@@ -138,6 +138,23 @@ test('getTreeChain 找到第二层中的第二个', () => {
   ])
 })
 
+test('getTreeChain 找到中间层', () => {
+  const data = [
+    {
+      id: 10,
+      children: [{ id: 20, children: [{ id: 30 }] }, { id: 21 }],
+    },
+  ]
+  const result = getTreeChain(data, (node) => node.id === 20)
+  expect(result).toEqual([
+    {
+      id: 10,
+      children: [{ id: 20, children: [{ id: 30 }] }, { id: 21 }],
+    },
+    { id: 20, children: [{ id: 30 }] },
+  ])
+})
+
 test('getTreeChain benchmark', () => {
   const data = [
     { id: 1, ele: window.ReportBody, jsx: createElement('div') },

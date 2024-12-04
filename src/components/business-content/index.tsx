@@ -17,9 +17,12 @@ export default function BusinessContent() {
   const { keepElements = { current: [] } } = useContext(KeepAliveContext)
 
   const { initialState } = useModel('@@initialState')
-  const { menus, routes } = initialState
+  const { menuDataSource, routes } = initialState
 
-  const targetMenu = findTree(menus, (item) => item.routeUrl === pathname)
+  const targetMenu = findTree(
+    menuDataSource,
+    (item) => item.routeUrl === pathname
+  )
   const isKeep = targetMenu && targetMenu.isCache
 
   const element = useOutlet()
@@ -76,7 +79,7 @@ export default function BusinessContent() {
   // 对已登录但没有该页面访问权限的控制
   if (
     findTree(routes, (item) => item.path === pathname) &&
-    !findTree(menus, (item) => item.routeUrl === pathname)
+    !findTree(menuDataSource, (item) => item.routeUrl === pathname)
   ) {
     return <Navigate to="/401" replace />
   } else {
