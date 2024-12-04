@@ -12,6 +12,6 @@ export default defineConfig({
   model: {},
   initialState: {},
   conventionRoutes: {
-    exclude: [/\/components\//, /\/models\//],
+    exclude: [/\/components\//, /\/models\//, /columns/i, /\.[jt]s$/],
   },
 })

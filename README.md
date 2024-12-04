@@ -18,11 +18,13 @@
     其它不需要布局的页面, 可以直接使用 \<[Outlet](https://umijs.org/docs/guides/routes#routes) /> 组件.
    
 2. **路由**
-   本脚手架约定使用约定式路由, 即 pages 文件夹中的页面会自动形成路由. 这样做的好处是可以免去在路由配置表中一个个指定组件路径.
+   本脚手架约定使用约定式路由, 即 pages 文件夹中的页面会自动形成路由. 这样做的好处是可以免去在路由配置表中配置一个个页面.
+
+   > 👉 页面中的组件请放在 `components` 文件夹下, 以避免组件文件形成路由.
    
-   当然我们还是可以在运行时动态修改路由的. 
+   当然我们也还是可以在运行时动态修改路由的. 
    
-   比如我们要增加首页跳转和 404 页面.
+   比如我们要增加首页跳转.
    
    只需要在 `src/app.tsx` 文件中的 patchClientRoutes 函数中写入逻辑即可.
    
@@ -35,11 +37,6 @@
     routes[0].routes.unshift({
       path: '/',
       element: <Navigate to="/home" replace />,
-    })
-
-    routes[0].routes.push({
-      path: '*',
-      element: <Navigate to="/notFound" replace />,
     })
    }
    ```
