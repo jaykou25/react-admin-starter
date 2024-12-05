@@ -58,7 +58,7 @@ export function afterLogin() {
     }
 
     // 存在window上的全局数据, 有的class组件不能用useModel
-    window['_isAdmin'] = (currentUser.rolesList || []).some(
+    window['_isAdmin'] = (currentUser.roleList || []).some(
       (role) => role.tag === 'admin'
     )
 
