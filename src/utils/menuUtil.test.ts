@@ -129,8 +129,11 @@ describe('转换成面包屑数据', () => {
     expect(after[1].title).toBe('系统管理')
     expect(after[1].menu.items.length > 0).toBe(true)
 
+    // 下拉中只有设置管理, 没有人员管理, 因为人员管理在当前面包屑上的.
+    expect(after[1].menu.items.length).toBe(1)
+    expect(after[1].menu.items[0].key).toBe('setting')
     // 下拉中的设置管理是可点击的
-    expect(typeof after[1].menu.items[1].label).not.toBe('string')
+    expect(typeof after[1].menu.items[0].label).not.toBe('string')
   })
 
   test('可以控制面包屑最后一个节点的显示名字', () => {

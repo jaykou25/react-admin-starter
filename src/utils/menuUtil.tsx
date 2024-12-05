@@ -90,7 +90,13 @@ export const getBreadItems = (
       key: node.routeUrl,
     }
 
-    const nodeChildren = normalizeForAntdMenu(node.children || [])
+    // 下拉项中去除掉当前面包屑上已经存在的项
+    const currentNode = menuChain[index + 1]
+    const nodeChildrenWithoutCurrent = (node.children || []).filter(
+      (item) => item.routeUrl !== currentNode.routeUrl
+    )
+
+    const nodeChildren = normalizeForAntdMenu(nodeChildrenWithoutCurrent)
 
     // 面包屑可下拉
     if (nodeChildren.length > 0) {
