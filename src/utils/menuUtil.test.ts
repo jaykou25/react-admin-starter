@@ -114,6 +114,33 @@ describe('转换成面包屑数据', () => {
     },
   ]
 
+  const dataSingle = [
+    {
+      id: 1,
+      type: 1,
+      isShow: true,
+      name: '系统管理',
+      routeUrl: 'org',
+      children: [
+        {
+          id: 2,
+          type: 1,
+          isShow: true,
+          name: '人员管理',
+          routeUrl: 'user',
+          children: [
+            {
+              routeUrl: '/user/new',
+              name: '人员新建',
+              type: 1,
+              isShow: false,
+            },
+          ],
+        },
+      ],
+    },
+  ]
+
   test('正常转换', () => {
     const after = getBreadItems(data, '/user/new')
 
@@ -140,5 +167,18 @@ describe('转换成面包屑数据', () => {
     const after = getBreadItems(data, '/user/new', { leafBreadName: '新' })
 
     expect(after[3].title).toBe('新')
+  })
+
+  test('单行数据', () => {
+    const after = getBreadItems(dataSingle, '/user/new')
+
+    // 系统管理没下拉
+    expect(after[1].menu).toBeUndefined()
+
+    // 系统管理不可点
+    expect(typeof after[1].title).toBe('string')
+
+    // 人员管理可点
+    expect(typeof after[2].title).not.toBe('string')
   })
 })

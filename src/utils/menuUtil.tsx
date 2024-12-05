@@ -90,18 +90,18 @@ export const getBreadItems = (
       key: node.routeUrl,
     }
 
+    const allChildren = normalizeForAntdMenu(node.children || [])
+
     // 下拉项中去除掉当前面包屑上已经存在的项
-    const currentNode = menuChain[index + 1]
-    const nodeChildrenWithoutCurrent = (node.children || []).filter(
-      (item) => item.routeUrl !== currentNode.routeUrl
+    const nextNode = menuChain[index + 1] || {}
+    const availableChildren = allChildren.filter(
+      (item) => item.key !== nextNode.routeUrl
     )
 
-    const nodeChildren = normalizeForAntdMenu(nodeChildrenWithoutCurrent)
-
     // 面包屑可下拉
-    if (nodeChildren.length > 0) {
+    if (availableChildren.length > 0) {
       item.menu = {
-        items: normalizeTree(nodeChildren, (node) => {
+        items: normalizeTree(availableChildren, (node) => {
           // 下拉中是末级的节点可点击
           if (!(node.children && node.children.length)) {
             return { label: <Link to={node.key}>{node.label}</Link> }
@@ -119,7 +119,7 @@ export const getBreadItems = (
     } else {
       // 否则有子项不能点击, 无子项能点击
       item.title =
-        nodeChildren.length > 0 ? (
+        allChildren.length > 0 ? (
           node.name
         ) : (
           <Link to={node.routeUrl}>{node.name}</Link>
