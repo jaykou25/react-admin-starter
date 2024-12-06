@@ -1,3 +1,4 @@
+import BgSrc from '@/assets/home_bg.png'
 import styles from './styles.less'
 
 // loading components from code split
@@ -5,7 +6,10 @@ import styles from './styles.less'
 function PageLoading(props: { transparent?: Boolean }) {
   const { transparent } = props
   return (
-    <div className={`${styles.main} ${transparent && styles.mainTransparent}`}>
+    <div
+      className={`${styles.main} ${transparent && styles.mainTransparent}`}
+      style={{ backgroundImage: `url(${BgSrc})` }}
+    >
       <span className={styles.loadingIcon} />
     </div>
   )
