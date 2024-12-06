@@ -5,17 +5,16 @@
  *
  */
 
-import { Select, Radio } from 'antd'
+import { Select } from 'antd'
 import { useModel } from 'umi'
+import type { SelectProps } from 'antd'
 
 type IProps = {
   type: string // 字典名称
-  showType?: 'radio' | 'select' // 字典展示类型
-  disabled?: boolean
 }
 
-const DictSelect = (props: IProps) => {
-  const { type, showType } = props
+const DictSelect = (props: SelectProps & IProps) => {
+  const { type, ...rest } = props
 
   const { initialState } = useModel('@@initialState')
   const { dictData = [] } = initialState
@@ -24,19 +23,7 @@ const DictSelect = (props: IProps) => {
     dictData.find((item) => item.name === type && !item.deleted) || {}
   const options = dict.items || []
 
-  return showType === 'radio' ? (
-    <Radio.Group {...props}>
-      {options.map((item) => {
-        return (
-          <Radio value={item.value} key={item.value}>
-            {item.label}
-          </Radio>
-        )
-      })}
-    </Radio.Group>
-  ) : (
-    <Select {...props} placeholder="请选择" allowClear options={options} />
-  )
+  return <Select placeholder="请选择" allowClear options={options} {...rest} />
 }
 
 export default DictSelect
