@@ -8,7 +8,7 @@ import BusinessLayout from '@/layouts/businessLayout'
 // 同时请指定好每个页面所对应的布局.
 const WhiteListMap = new Map([
   [/^\/login/, <LoginLayout />],
-  [/^\/sso/, <Outlet />],
+  [/^\/sso/, <LoginLayout />],
   [/^\/401/, <BusinessLayout />],
   [/^\/404/, <Outlet />],
 ])
