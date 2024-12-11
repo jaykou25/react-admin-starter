@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Layout, theme, Spin, Image } from 'antd'
+import { Layout, theme, Spin } from 'antd'
 
 import Navbar from './components/Navbar'
 import RouteBread from './components/RouteBread'
@@ -40,7 +40,7 @@ const BusinessLayout = () => {
   }, [])
 
   return (
-    <Layout style={{ height: '100vh' }}>
+    <Layout style={{ height: '100vh' }} className="business-layout">
       <Header>
         <Navbar />
       </Header>
@@ -61,34 +61,31 @@ const BusinessLayout = () => {
         >
           <RouteMenu collapsed={collapsed} />
         </Sider>
-        <Layout id="contentLayout">
+        <Layout className="business-layout-right">
+          <div
+            className={`business-layout-loading ${loading || eventLoading ? 'business-layout-loading-show' : ''}`}
+          >
+            <Spin />
+          </div>
           {showSwitchTabs && (
             <div style={{ padding: '0 24px' }}>
               {/* <SwitchTabs menus={initialState.menuDataSource} /> */}
             </div>
           )}
 
-          <Spin
-            wrapperClassName="spinWrapper"
-            spinning={loading || eventLoading}
-          >
-            <div className="basicLayoutMain">
-              <Layout>
-                <RouteBread />
-                <Content
-                  style={{
-                    margin: 0,
-                    minHeight: 280,
-                  }}
-                >
-                  <BusinessContent />
-                </Content>
-                <Footer style={{ textAlign: 'center', marginBottom: '34px' }}>
-                  ©2024 国联
-                </Footer>
-              </Layout>
-            </div>
-          </Spin>
+          <RouteBread />
+          <div className="business-layout-scroll-part">
+            <Content
+              style={{
+                minHeight: 280,
+              }}
+            >
+              <BusinessContent />
+            </Content>
+            <Footer style={{ textAlign: 'center', marginBottom: '34px' }}>
+              ©2024 国联
+            </Footer>
+          </div>
         </Layout>
       </Layout>
     </Layout>

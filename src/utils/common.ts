@@ -90,6 +90,17 @@ export const submitUtil = (submitPromise, options: SubmitUtilOptions = {}) => {
     })
 }
 
+export const fetchUtil = (fetchPromise: Promise<any>) => {
+  document.dispatchEvent(new Event('loading'))
+  Promise.all([fetchPromise])
+    .then(() => {
+      document.dispatchEvent(new Event('unloading'))
+    })
+    .catch(() => {
+      document.dispatchEvent(new Event('unloading'))
+    })
+}
+
 export function padStart(num, len, flag) {
   const value = parseInt(num)
   if (value < 10) {

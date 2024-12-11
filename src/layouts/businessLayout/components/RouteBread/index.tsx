@@ -15,7 +15,7 @@ const RouteBread = () => {
 
   return (
     <Breadcrumb
-      style={{ margin: '16px 0' }}
+      style={{ margin: '16px 24px' }}
       items={getBreadItems(initialState.menuDataSource, pathname, {
         leafBreadName: breadName,
       })}
