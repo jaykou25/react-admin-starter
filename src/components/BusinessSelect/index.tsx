@@ -17,9 +17,14 @@ const BusinessSelect = BusinessSelectBuilder<BusinessSelectType>({
   apis: [
     {
       api: () =>
-        queryRoles().then((res) => ({
-          data: res,
-        })),
+        queryRoles().then((res) => {
+          const data = (res || []).map((item) => ({
+            ...item,
+            disabled: item.status === 0,
+          }))
+
+          return { data }
+        }),
       type: 'role',
       defaultProps: {
         noCache: true,
