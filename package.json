@@ -19,7 +19,7 @@
     "jsencrypt": "^3.3.2",
     "lodash-es": "^4.17.21",
     "qs": "^6.13.1",
-    "react-admin-kit": "^0.5.3",
+    "react-admin-kit": "^0.5.7",
     "umi": "^4.3.35"
   },
   "devDependencies": {
