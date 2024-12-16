@@ -15,6 +15,7 @@ dayjs.extend(advancedFormat)
 declare global {
   interface Window {
     routes: any
+    _isAdmin: boolean
   }
 }
 

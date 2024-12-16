@@ -51,19 +51,19 @@ function User() {
           //   />
           // ),
           title: [
-            <Button
-              // visible={() => hasPermission('user:add')}
-              key={1}
-              type="primary"
-              onClick={() =>
-                innerRef.current?.openModal('new', {
-                  enabled: true,
-                  dept: { id: deptId },
-                })
-              }
-            >
-              <PlusOutlined /> 新增
-            </Button>,
+            // <Button
+            //   // visible={() => hasPermission('user:add')}
+            //   key={1}
+            //   type="primary"
+            //   onClick={() =>
+            //     innerRef.current?.openModal('new', {
+            //       enabled: true,
+            //       // dept: { id: deptId },
+            //     })
+            //   }
+            // >
+            //   <PlusOutlined /> 新增
+            // </Button>,
             !1 && (
               <Button
                 key={2}

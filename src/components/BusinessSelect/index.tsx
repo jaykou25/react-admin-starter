@@ -1,6 +1,7 @@
 import { BusinessSelectBuilder } from 'react-admin-kit'
 import { queryOrgCompany, queryRoles, joinUserList } from '@/apis'
 import request from '@/utils/request'
+import { normalizeTree } from '@/utils'
 
 type BusinessSelectType =
   | 'role'
@@ -15,7 +16,10 @@ type BusinessSelectType =
 const BusinessSelect = BusinessSelectBuilder<BusinessSelectType>({
   apis: [
     {
-      api: () => queryRoles().then((res) => ({ data: res })),
+      api: () =>
+        queryRoles().then((res) => ({
+          data: res,
+        })),
       type: 'role',
       defaultProps: {
         noCache: true,

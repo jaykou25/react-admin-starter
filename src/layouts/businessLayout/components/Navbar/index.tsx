@@ -26,10 +26,12 @@ const Navbar = () => {
         <AvatarDropdown />
         {/* <BadgeDropdown /> */}
         {/* 设置 */}
-        <SettingOutlined
-          onClick={() => setOpen((val) => !val)}
-          style={{ marginLeft: '8px', cursor: 'pointer' }}
-        />
+        {window._isAdmin && (
+          <SettingOutlined
+            onClick={() => setOpen((val) => !val)}
+            style={{ marginLeft: '8px', cursor: 'pointer' }}
+          />
+        )}
       </div>
       <Drawer
         title="页面设置"

@@ -42,11 +42,11 @@ const AvatarDropdown = () => {
     <Dropdown
       menu={{
         items: [
-          {
-            key: 'password',
-            label: '修改密码',
-            icon: <SettingOutlined />,
-          },
+          // {
+          //   key: 'password',
+          //   label: '修改密码',
+          //   icon: <SettingOutlined />,
+          // },
           {
             key: 'logout',
             label: '退出登录',

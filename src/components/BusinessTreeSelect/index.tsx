@@ -60,15 +60,10 @@ const BusinessTreeSelect = BusinessTreeSelectBuilder<TreeType>({
     },
     {
       type: 'companyTree',
-      api: () => request('/api/sysOrg/companyTreeOption'),
+      api: () => request('/api/glOrg/getOrgTreeList'),
       defaultProps: {
-        labelKey: 'name',
+        labelKey: 'title',
         valueKey: 'id',
-        fieldNames: {
-          label: 'name',
-          value: 'id',
-          children: 'children',
-        },
       },
     },
   ],

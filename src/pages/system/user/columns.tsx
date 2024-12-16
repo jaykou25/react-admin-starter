@@ -92,46 +92,35 @@ export const getColumns = (): TableColumnType[] => {
       dataIndex: 'email',
       search: false,
     },
-    {
-      // 仅用于搜索
-      title: '所属公司',
-      type: 'table',
-      hideInTable: true,
-      dataIndex: ['companyId'],
-      width: 120,
-      renderFormItem: () => <BusinessTreeSelect type="companyTree" />,
-    },
+    // {
+    //   // 仅用于搜索
+    //   title: '所属公司',
+    //   type: 'table',
+    //   hideInTable: true,
+    //   dataIndex: ['orgId'],
+    //   width: 120,
+    //   renderFormItem: () => <BusinessTreeSelect type="companyTree" />,
+    // },
 
-    {
-      title: '所属公司',
-      search: false,
-      dataIndex: ['userInfo', 'companyId'],
-      width: 120,
-      renderFormItem: () => <BusinessSelect type="orgCompany" />,
-      renderText: (text, record) => {
-        return record.userInfo?.companyName
-      },
-    },
+    // {
+    //   title: '所属公司',
+    //   search: false,
+    //   dataIndex: ['userInfo', 'companyId'],
+    //   width: 120,
+    //   renderFormItem: () => <BusinessSelect type="orgCompany" />,
+    //   renderText: (text, record) => {
+    //     return record.userInfo?.companyName
+    //   },
+    // },
     {
       title: '所属部门',
       dataIndex: ['userInfo', 'orgId'],
       search: false,
-      width: 130,
+      width: 260,
       ellipsis: true,
-      renderFormItem: (a, b, form) => {
-        const companyId = form.getFieldValue(['userInfo', 'companyId'])
-
-        if (!companyId) {
-          return <Input placeholder="请先选择所属公司" disabled />
-        }
-
-        return (
-          <BusinessTreeSelect type="deptTree" queryParams={{ companyId }} />
-        )
-      },
+      hideInForm: true,
       renderText: (text, record) => record.userInfo?.orgName,
     },
-
     {
       // 仅用于搜索
       title: '角色',

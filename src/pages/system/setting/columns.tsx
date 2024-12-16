@@ -38,11 +38,12 @@ export const getColumns = (options: any = {}): TableColumnType[] => {
       ellipsis: true,
       fixed: 'right',
       width: 100,
-      enableDelete: true,
+      enableDelete: () => ({ danger: true, visible: window._isAdmin }),
       render: (text, record, index, actionRef, innerRef) => [
         <LinkButton
           key={1}
           onClick={() => innerRef.current?.openModal('edit', record)}
+          visible={window._isAdmin}
         >
           编辑
         </LinkButton>,
