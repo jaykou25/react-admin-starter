@@ -10,6 +10,7 @@ const WhiteListMap = new Map([
   [/^\/login/, <LoginLayout />],
   [/^\/sso/, <LoginLayout />],
   [/^\/401/, <BusinessLayout />],
+  [/^\/no-menu/, <BusinessLayout />],
   [/^\/404/, <Outlet />],
 ])
 

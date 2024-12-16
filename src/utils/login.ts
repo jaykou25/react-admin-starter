@@ -13,7 +13,7 @@ export function goto() {
    * 如果用户没有任何菜单权限, 转到提示页
    */
   if (window['_noMenu']) {
-    history.replace('/noMenu')
+    history.replace('/no-menu')
     return
   }
 
