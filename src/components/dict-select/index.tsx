@@ -28,10 +28,12 @@ const DictSelect = (props: SelectProps & IProps) => {
     if (props.mode === 'multiple') {
       const targets: string[] = []
 
-      props.value?.forEach((val) => {
-        const target = options.find((item) => item.value === val)
-        if (target) targets.push(target.label)
-      })
+      if (props.value) {
+        props.value.forEach((val) => {
+          const target = options.find((item) => item.value === val)
+          if (target) targets.push(target.label)
+        })
+      }
 
       return targets.join(', ')
     }
