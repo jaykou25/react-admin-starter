@@ -1,5 +1,6 @@
 import { defineConfig } from 'umi'
 const proxy = require('./proxy')
+const { SITE } = require('../src/utils/constants')
 
 export default defineConfig({
   proxy: proxy['dev'],
@@ -10,6 +11,7 @@ export default defineConfig({
     '@umijs/plugins/dist/model.js',
   ],
   model: {},
+  title: SITE.name,
   initialState: {},
   conventionRoutes: {
     exclude: [/\/components\//, /\/models\//, /columns/i, /\.[jt]s$/],

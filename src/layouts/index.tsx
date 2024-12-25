@@ -1,4 +1,4 @@
-import { useLocation } from 'umi'
+import { Helmet, useLocation, useModel } from 'umi'
 import { ConfigProvider, theme, message, Upload, Modal } from 'antd'
 import BusinessLayout from './businessLayout'
 import { SettingProvider } from 'react-admin-kit'
@@ -8,12 +8,27 @@ import {
   getToken,
   inWhiteList,
   getWhiteListLayout,
+  useQuery,
+  findTree,
+  SITE,
 } from '@/utils'
 
 import zhCN from 'antd/locale/zh_CN'
 
 export default function Layout() {
   const { pathname } = useLocation()
+  const { initialState } = useModel('@@initialState')
+  const { menuDataSource } = initialState
+  const { breadName } = useQuery()
+
+  const targetMenu = findTree(
+    menuDataSource,
+    (item) => item.routeUrl === pathname
+  )
+  const titleArr = [SITE.name]
+  if (targetMenu && pathname !== '/') {
+    titleArr.push(breadName || targetMenu.name)
+  }
 
   const getLayout = () => {
     if (inWhiteList(pathname)) {
@@ -100,6 +115,9 @@ export default function Layout() {
           },
         }}
       >
+        <Helmet>
+          <title>{titleArr.join('-')}</title>
+        </Helmet>
         {getLayout()}
       </SettingProvider>
     </ConfigProvider>
