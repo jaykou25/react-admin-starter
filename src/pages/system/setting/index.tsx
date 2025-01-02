@@ -19,9 +19,9 @@ const SystemSetting = () => {
       innerRef={innerRef}
       actionRef={actionRef}
       columns={getColumns()}
-      request={() =>
-        queryConfigs().then((res) => {
-          return { data: res }
+      request={(params) =>
+        queryConfigs(params).then((res) => {
+          return res
         })
       }
       toolbar={{

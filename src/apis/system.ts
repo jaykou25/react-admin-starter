@@ -232,7 +232,7 @@ export function queryConfig(id): Promise<any> {
 }
 
 export function queryConfigs(params?: any): Promise<any> {
-  return request('/api/config/getList', { params })
+  return request('/api/config/page', { params })
 }
 
 export function addConfigs(data) {

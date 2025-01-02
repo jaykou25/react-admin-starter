@@ -9,8 +9,8 @@ export const getDictColumns = (): TableColumnType[] => {
   return [
     // 仅用于搜索, 不展示
     {
-      title: '',
-      dataIndex: 'blurry',
+      title: '名称/描述',
+      dataIndex: 'name',
       hideInTable: true,
       hideInForm: true,
       fieldProps: {
@@ -61,13 +61,13 @@ export const getDictColumns = (): TableColumnType[] => {
           },
         ],
       },
-      initialValue: false,
+      initialValue: 0,
       renderFormItem: (_, { type }) => {
         if (type === 'form') {
           return (
             <BooleanRadioGroup
-              yesValue={false}
-              noValue={true}
+              yesValue={0}
+              noValue={1}
               yesText="开启"
               noText="关闭"
             />
@@ -76,8 +76,8 @@ export const getDictColumns = (): TableColumnType[] => {
 
         return (
           <BooleanSelect
-            yesValue={false}
-            noValue={true}
+            yesValue={0}
+            noValue={1}
             yesText="开启"
             noText="关闭"
           />
