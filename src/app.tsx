@@ -1,4 +1,4 @@
-import { Navigate, history, createSearchParams } from 'umi'
+import { history, createSearchParams } from 'umi'
 
 import {
   isLogin,
@@ -50,11 +50,6 @@ export async function getInitialState(): Promise<any> {
 
 export function patchClientRoutes({ routes }) {
   console.log('routes', routes)
-  // 增加首页跳转路由
-  routes[0].routes.unshift({
-    path: '/',
-    element: <Navigate to="/system/user" />,
-  })
 
   window.routes = routes[0].routes
 }

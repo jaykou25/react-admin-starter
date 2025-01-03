@@ -64,9 +64,9 @@ const RouteMenu = (props) => {
   }
 
   // 页面路由变化后要重新选中菜单
-  useEffect(() => {
-    setSelectedKeys(defaultOpenKeys)
-  }, [pathname])
+  // useEffect(() => {
+  //   setSelectedKeys(defaultOpenKeys)
+  // }, [pathname])
 
   return (
     <div>

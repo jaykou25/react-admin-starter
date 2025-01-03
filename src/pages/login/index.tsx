@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import { FormInstance, message, theme } from 'antd'
+import { FormInstance, theme } from 'antd'
 import { LockTwoTone, ProfileOutlined, UserOutlined } from '@ant-design/icons'
 import { history, useModel } from 'umi'
 import { Button, SchemaForm } from 'react-admin-kit'
@@ -46,7 +46,7 @@ const Login = () => {
             ...initialState,
             ...initValue,
           })
-          message.success('登录成功')
+          // message.success('登录成功')
 
           goto()
         })
@@ -71,7 +71,7 @@ const Login = () => {
             style={{ cursor: 'pointer' }}
             onClick={() => {
               if (!isLogin()) {
-                message.info('请先登录')
+                // message.info('请先登录')
                 return
               }
 
@@ -113,7 +113,7 @@ const Login = () => {
                 rules: [
                   {
                     required: true,
-                    message: '请输入用户名!',
+                    // message: '请输入用户名!',
                   },
                 ],
               },
@@ -136,7 +136,7 @@ const Login = () => {
                 rules: [
                   {
                     required: true,
-                    message: '请输入密码!',
+                    // message: '请输入密码!',
                   },
                 ],
               },
@@ -159,7 +159,7 @@ const Login = () => {
                 rules: [
                   {
                     required: true,
-                    message: '请输入验证码!',
+                    // message: '请输入验证码!',
                   },
                 ],
               },

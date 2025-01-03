@@ -1,11 +1,13 @@
-export default function HomePage() {
-  return (
-    <div>
-      <h2>Yay! Welcome to umi!</h2>
+import { useEffect } from 'react'
+import { useNavigate } from 'umi'
 
-      <p>
-        To get started, edit <code>pages/index.tsx</code> and save to reload.
-      </p>
-    </div>
-  )
+const HomePage = () => {
+  let navigate = useNavigate()
+  useEffect(() => {
+    navigate('/system/setting', { replace: true })
+  }, [])
+
+  return null
 }
+
+export default HomePage

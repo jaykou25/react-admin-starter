@@ -10,7 +10,13 @@ interface IProps extends RadioProps {
 }
 
 function BooleanRadioGroup(props: IProps) {
-  const { yesText, noText, yesValue, noValue, ...rest } = props
+  const {
+    yesText = '是',
+    noText = '否',
+    yesValue = 1,
+    noValue = 0,
+    ...rest
+  } = props
   return (
     <Radio.Group {...rest}>
       <Radio value={yesValue}>{yesText}</Radio>
@@ -20,10 +26,3 @@ function BooleanRadioGroup(props: IProps) {
 }
 
 export default BooleanRadioGroup
-
-BooleanRadioGroup.defaultProps = {
-  yesText: '是',
-  noText: '否',
-  yesValue: 1,
-  noValue: 0,
-}

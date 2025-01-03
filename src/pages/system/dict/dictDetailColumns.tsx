@@ -87,7 +87,9 @@ export const getDictDetailColumns = (): TableColumnType[] => {
       dataIndex: 'option',
       enableDelete: true,
       render: (_, record, index, actionRef, innerRef) => [
-        <a onClick={() => innerRef.current?.openModal('edit', record)}>编辑</a>,
+        <a key={1} onClick={() => innerRef.current?.openModal('edit', record)}>
+          编辑
+        </a>,
       ],
     },
   ]

@@ -1,6 +1,6 @@
 import { addConfigs, delConfig, editConfig, queryConfigs } from '@/apis/system'
 import { FORM_TYPE_MAP } from '@/utils/constants'
-import { Button, message } from 'antd'
+import { Button } from 'antd'
 import { useRef } from 'react'
 import { ProTable } from 'react-admin-kit'
 import type { InnerRefType } from 'react-admin-kit'
@@ -46,7 +46,7 @@ const SystemSetting = () => {
           await editConfig({ ...formData, ...values })
         }
 
-        message.success(`${FORM_TYPE_MAP[formType]}成功!`)
+        // message.success(`${FORM_TYPE_MAP[formType]}成功!`)
 
         if (actionRef.current) {
           actionRef.current.reload()
