@@ -20,7 +20,7 @@ export default (api: IApi) => {
 
       .initLoadingContainer {
         box-sizing: border-box;
-        padding: 30px 0;
+        padding: 50px 0;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -29,7 +29,7 @@ export default (api: IApi) => {
       }
 
       .initLoadingTitle {
-        color: #cccccc;
+        color: #ccc;
         font-weight: bold;
         font-size: 48px;
         text-align: center;
