@@ -101,12 +101,12 @@ export default (api: IApi) => {
   api.modifyHTML(($, { path }) => {
     const page = $(
       `<div class="initLoadingContainer">
-        <div class="initLoadingTitle loading-text">合规流程中心</div>
+        <div class="initLoadingTitle loading-text">REACT ADMIN STARTER</div>
         <div class="initLoading">
           <div class="initLoadingIcon"></div>
           <div class="initLoadingText loading-text">加载中</div>
         </div>
-        <div class="initLoadingFooter">©${new Date().getFullYear()} 国联</div>
+        <div class="initLoadingFooter">©${new Date().getFullYear()} </div>
       </div>`
     )
 
