@@ -68,7 +68,7 @@ export default (api: IApi) => {
         }
       }
 
-      .loadingIcon {
+      .initLoadingIcon {
         display: block;
         width: 22px;
         height: 22px;
