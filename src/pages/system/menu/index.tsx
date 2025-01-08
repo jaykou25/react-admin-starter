@@ -75,7 +75,12 @@ const SystemMenu = () => {
       await addMenus({ ...values, type: 1, code: values.routeUrl })
     }
     if (formType === 'edit') {
-      await editMenu({ ...values, id: formData.id, type: formData.type })
+      await editMenu({
+        ...values,
+        id: formData.id,
+        type: formData.type,
+        code: values.routeUrl,
+      })
     }
     message.success(`${FORM_TYPE_MAP[formType]}成功`)
 
