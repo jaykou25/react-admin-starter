@@ -83,7 +83,7 @@ const BusinessLayout = () => {
               <BusinessContent />
             </Content>
             <Footer style={{ textAlign: 'center', marginBottom: '34px' }}>
-              ©2024 国联
+              ©{new Date().getFullYear()} 国联
             </Footer>
           </div>
         </Layout>

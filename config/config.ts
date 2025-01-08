@@ -9,6 +9,7 @@ export default defineConfig({
   plugins: [
     '@umijs/plugins/dist/initial-state.js',
     '@umijs/plugins/dist/model.js',
+    './plugins/modify-html-plugin',
   ],
   model: {},
   title: SITE.name,
