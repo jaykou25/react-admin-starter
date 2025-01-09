@@ -40,6 +40,9 @@
     })
    }
    ```
+   > 👉 注意以上使使用 Navigate 的方法存在问题, 会导致死循环. 不知道是 umi 的问题还是 react-router 的问题. 2025-1-9
+
+   > 新的方法可以在首页中使用 `navigate('/system/setting', { replace: true })` 来实现跳转.
 
 3. **数据流**
    本脚手架约定使用基于 `hooks` 范式的数据流方案.
