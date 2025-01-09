@@ -38,6 +38,8 @@ export async function getInitialState(): Promise<any> {
       pathname: '/login',
       search: createSearchParams({ redirect: fullPath() }).toString(),
     })
+
+    return initialState
   } else {
     try {
       const initValue: any = await afterLogin()

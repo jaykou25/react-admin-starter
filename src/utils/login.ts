@@ -37,11 +37,17 @@ export function goto() {
 // 返回 promise
 export function afterLogin() {
   return new Promise(async (resolve, reject) => {
-    // 这是后台返回的该用户的所有菜单数据源
-    const menuDataSource = await queryMenu()
+    let menuDataSource
+    // 用try捕捉401的情况(token 过期)
+    try {
+      // 后台返回的该用户的所有菜单数据源
+      menuDataSource = await queryMenu()
+    } catch (e) {
+      return reject()
+    }
 
     // 当前用户信息
-    const currentUser = await queryCurrent()
+    const currentUser = (await queryCurrent()) || {}
 
     // 获取所有的数据字典
     const dictRes = await queryDicts({ current: 1, pageSize: 1000 })

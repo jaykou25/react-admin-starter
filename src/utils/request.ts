@@ -7,11 +7,11 @@ import { history } from 'umi'
 import { notification, message as antdMessage } from 'antd'
 import { clearToken, getToken } from '@/utils/auth'
 
-const controller = new AbortController()
+let controller
+let abortRequest = false
 
 const service = axios.create({
   baseURL: '/', // 由nginx转发
-  signal: controller.signal,
 })
 
 // 添加请求拦截器
@@ -21,6 +21,14 @@ service.interceptors.request.use(
     if (!noToken) {
       config.headers['Token'] = getToken()
     }
+
+    controller = new AbortController()
+    config.signal = controller.signal
+
+    if (abortRequest) {
+      controller.abort()
+    }
+
     return config
   },
   function (error) {
@@ -58,20 +66,16 @@ service.interceptors.response.use(
     if (status === 401) {
       notification.info({ message: '登录过期' })
 
-      /**
-       * 这里用 abort 防止后面连续的请求报 401
-       */
-      controller.abort()
+      // 防止后面连续的请求报 401
+      abortRequest = true
 
       clearToken()
       history.replace('/login')
 
-      // controller.abort() 之后需要重新刷新页面, 否则后面的请求进不来
-      // 设置延时是因为希望上面 notification.info 能显示一下, 否则页面立即刷新会将通知冲掉.
-      setTimeout(() => {
-        window.location.reload()
-      }, 200)
-      return
+      // 返回到 login 页面后恢复请求
+      abortRequest = false
+
+      return Promise.reject(error)
     }
   }
 )
