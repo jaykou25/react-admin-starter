@@ -127,8 +127,17 @@ export const toRelative = (path: string, query?: any) => {
 
   const finalPath = [_pathname, _path].join('/')
 
+  // 去掉 query 中的空值
+  const _query = query || {}
+
+  for (let key in _query) {
+    if (!_query[key]) {
+      delete _query[key]
+    }
+  }
+
   history.push({
     pathname: finalPath,
-    search: createSearchParams(query || {}).toString(),
+    search: createSearchParams(_query).toString(),
   })
 }
