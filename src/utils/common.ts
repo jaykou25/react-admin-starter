@@ -117,7 +117,7 @@ export const fullPath = () => {
 
 // 跳转到以当前页面为根路由的一个相对路径
 export const toRelative = (path: string, query?: any) => {
-  const { pathname, search, hash } = window.location
+  const { pathname } = window.location
 
   // 去掉 pathname 末尾的斜杠 /
   const _pathname = pathname.replace(/\/$/, '')
@@ -126,8 +126,6 @@ export const toRelative = (path: string, query?: any) => {
   const _path = path.replace(/^\//, '')
 
   const finalPath = [_pathname, _path].join('/')
-
-  console.log('地址', { pathname, finalPath, _pathname, _path })
 
   history.push({
     pathname: finalPath,
