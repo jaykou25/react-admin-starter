@@ -1,4 +1,4 @@
-import { useLocation, history } from 'umi'
+import { useLocation, history, createSearchParams } from 'umi'
 import qs from 'qs'
 import { message } from 'antd'
 
@@ -113,4 +113,24 @@ export function padStart(num, len, flag) {
 export const fullPath = () => {
   const { pathname, search, hash } = window.location
   return pathname + search + hash
+}
+
+// 跳转到以当前页面为根路由的一个相对路径
+export const toRelative = (path: string, query?: any) => {
+  const { pathname, search, hash } = window.location
+
+  // 去掉 pathname 末尾的斜杠 /
+  const _pathname = pathname.replace(/\/$/, '')
+
+  // 去掉 path 前面的斜杠 /
+  const _path = path.replace(/^\//, '')
+
+  const finalPath = [_pathname, _path].join('/')
+
+  console.log('地址', { pathname, finalPath, _pathname, _path })
+
+  history.push({
+    pathname: finalPath,
+    search: createSearchParams(query || {}).toString(),
+  })
 }
