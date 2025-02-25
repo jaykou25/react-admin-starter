@@ -3,9 +3,10 @@
  */
 
 import axios, { AxiosError } from 'axios'
-import { history } from 'umi'
+import { createSearchParams, history } from 'umi'
 import { notification, message as antdMessage } from 'antd'
 import { clearToken, getToken } from '@/utils/auth'
+import { fullPath } from './common'
 
 let controller
 let abortRequest = false
@@ -70,7 +71,10 @@ service.interceptors.response.use(
       abortRequest = true
 
       clearToken()
-      history.replace('/login')
+      history.replace({
+        pathname: '/login',
+        search: createSearchParams({ redirect: fullPath() }).toString(),
+      })
 
       // 返回到 login 页面后恢复请求
       abortRequest = false
