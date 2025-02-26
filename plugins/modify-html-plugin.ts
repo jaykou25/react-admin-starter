@@ -111,6 +111,8 @@ export default (api: IApi) => {
     )
 
     $('#root').append(page)
+
+    $('html').attr('lang', 'zh-CN')
     return $
   })
 }
