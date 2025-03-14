@@ -16,6 +16,7 @@ import { getButtonColumns } from './buttonColumns'
 import useFilterTreeData from './useFilterTreeData'
 import { normalizeTree } from '@/utils/treeUtil'
 import { PlusOutlined } from '@ant-design/icons'
+import DropdownMenu from './components/dropdown'
 
 const SystemMenu = () => {
   const [loading, setLoading] = useState(false)
@@ -25,6 +26,12 @@ const SystemMenu = () => {
   const [selectedMenu, setSelectedMenu] = useState<any>({})
 
   const [rowKeys, setRowKeys] = useState<string[]>([])
+
+  const [menuVisible, setMenuVisible] = useState(false)
+  const [position, setPosition] = useState({
+    x: 0,
+    y: 0,
+  })
 
   const [keyword, setKeyword] = useState<string>('')
   const filteredTreeData = useFilterTreeData(dataSource, keyword, {
@@ -43,6 +50,7 @@ const SystemMenu = () => {
   const buttonActionRef = useRef<any>()
 
   const innerRef = useRef<any>()
+  const recordRef = useRef<any>()
 
   const handleQueryMenus = () => {
     // 请求菜单列表
@@ -111,6 +119,58 @@ const SystemMenu = () => {
     return true
   }
 
+  const handleNew = (record) => {
+    innerRef.current?.openModal('new', {
+      parentId: record.id,
+      name: record.name,
+      routeUrl: record.routeUrl,
+      sort: record.children ? (record.children.length + 1) * 10 : 1,
+    })
+  }
+
+  const handleEdit = (record) => {
+    innerRef.current?.openModal('edit', record)
+  }
+
+  const handleBtnAssetsClick = (record) => {
+    setSelectedMenu(record)
+    setOpen(true)
+  }
+
+  const handleShowToggle = (record) => {
+    const { parentId, icon, name, routeUrl, sort, isShow, isCache } = record
+    handleFinish(
+      {
+        parentId,
+        icon,
+        name,
+        routeUrl,
+        sort,
+        isShow: isShow ? 0 : 1,
+        isCache,
+      },
+      'edit',
+      record
+    )
+  }
+
+  const handleCacheToggle = (record) => {
+    const { parentId, icon, name, routeUrl, sort, isShow, isCache } = record
+    handleFinish(
+      {
+        parentId,
+        icon,
+        name,
+        routeUrl,
+        sort,
+        isShow,
+        isCache: isCache ? 0 : 1,
+      },
+      'edit',
+      record
+    )
+  }
+
   /**
    * 这是一个临时方法, 用于修复后端的问题.
    * 当菜单移动后, 被移动的菜单上维护的父菜单信息会有问题.
@@ -128,6 +188,16 @@ const SystemMenu = () => {
 
   return (
     <div>
+      <DropdownMenu
+        open={menuVisible}
+        pos={position}
+        handleNew={handleNew}
+        handleEdit={handleEdit}
+        recordRef={recordRef}
+        handleBtnAssetsClick={handleBtnAssetsClick}
+        handleCacheToggle={handleCacheToggle}
+        handleShowToggle={handleShowToggle}
+      />
       <ProTable
         size="small"
         bordered
@@ -136,8 +206,31 @@ const SystemMenu = () => {
         loading={loading}
         name="菜单"
         headerTitle={false}
-        columns={getColumns({ setOpen, setSelectedMenu })}
+        columns={getColumns({
+          handleNew,
+          handleBtnAssetsClick,
+        })}
         dataSource={filteredTreeData}
+        onRow={(record) => {
+          return {
+            onContextMenu: (event) => {
+              event.preventDefault()
+              // @ts-ignore
+              const isTarget = event.target.closest('.table-cell-context-menu')
+              if (!isTarget) return
+
+              if (!menuVisible) {
+                document.addEventListener(`click`, function onClickOutside() {
+                  setMenuVisible(false)
+                  document.removeEventListener(`click`, onClickOutside)
+                })
+              }
+              recordRef.current = record
+              setMenuVisible(true)
+              setPosition({ x: event.clientX, y: event.clientY })
+            },
+          }
+        }}
         expandable={{
           expandRowByClick: true,
           expandedRowKeys: rowKeys,
@@ -209,8 +302,11 @@ const SystemMenu = () => {
               <Button
                 key={1}
                 onClick={() => {
+                  const pathArr = selectedMenu.routeUrl.split('/')
                   buttonInnerRef.current?.openModal('new', {
                     fatherMenuName: selectedMenu.name,
+                    name: selectedMenu.name,
+                    code: pathArr[pathArr.length - 1],
                     sort: (buttonInnerRef.current?.dataSource.length + 1) * 10,
                   })
                 }}

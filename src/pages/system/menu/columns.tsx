@@ -4,13 +4,14 @@ import { Space, Tooltip } from 'antd'
 import IconFont from '@/components/icon-font'
 
 export const getColumns = ({
-  setOpen,
-  setSelectedMenu,
+  handleNew,
+  handleBtnAssetsClick,
 }: any = {}): TableColumnType[] => {
   return [
     {
       title: '菜单标题',
       dataIndex: 'name',
+      className: 'table-cell-context-menu',
       width: 300,
       renderText: (text, record) => (
         <Space
@@ -50,11 +51,7 @@ export const getColumns = ({
           key={1}
           onClick={(e) => {
             e.stopPropagation()
-            innerRef.current?.openModal('new', {
-              parentId: record.id,
-              routeUrl: record.routeUrl,
-              sort: record.children ? (record.children.length + 1) * 10 : 1,
-            })
+            handleNew(record)
           }}
         >
           新增
@@ -72,8 +69,7 @@ export const getColumns = ({
           key={3}
           onClick={(e) => {
             e.stopPropagation()
-            setSelectedMenu(record)
-            setOpen(true)
+            handleBtnAssetsClick(record)
           }}
         >
           按钮资源
