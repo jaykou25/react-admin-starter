@@ -1,16 +1,35 @@
 import type { TableColumnType } from 'react-admin-kit'
 import { LinkButton } from 'react-admin-kit'
-import { Tag } from 'antd'
+import { Space, Tooltip } from 'antd'
+import IconFont from '@/components/icon-font'
 
 export const getColumns = ({
   setOpen,
   setSelectedMenu,
-} = {}): TableColumnType[] => {
+}: any = {}): TableColumnType[] => {
   return [
-    { title: '序号', valueType: 'index', width: 110 },
     {
       title: '菜单标题',
       dataIndex: 'name',
+      width: 300,
+      renderText: (text, record) => (
+        <Space
+          style={{
+            marginLeft: '3px',
+            color: record.isShow ? 'inherit' : '#888',
+          }}
+        >
+          {!!record.icon && <IconFont type={record.icon} />}
+          {text}
+          {!!record.isCache && (
+            <Tooltip title="页面已缓存">
+              <span>
+                <IconFont type="icon-huancunbold" />
+              </span>
+            </Tooltip>
+          )}
+        </Space>
+      ),
     },
     { title: '路由地址', dataIndex: 'routeUrl', width: 350, copyable: true },
     {
@@ -19,40 +38,6 @@ export const getColumns = ({
       width: 60,
       align: 'center',
       initialValue: 10,
-    },
-    {
-      title: '显示状态',
-      dataIndex: 'isShow',
-      align: 'center',
-      width: 100,
-      render: (text) => {
-        if (!text) {
-          return (
-            <Tag style={{ marginRight: '0' }} color="#108ee9">
-              已隐藏
-            </Tag>
-          )
-        }
-
-        return <span style={{ fontSize: '12px' }}>正常</span>
-      },
-    },
-    {
-      title: '缓存状态',
-      dataIndex: 'isCache',
-      align: 'center',
-      width: 100,
-      render: (text) => {
-        if (text) {
-          return (
-            <Tag style={{ marginRight: '0' }} color="#108ee9">
-              已缓存
-            </Tag>
-          )
-        }
-
-        return <span style={{ fontSize: '12px' }}>否</span>
-      },
     },
     {
       title: '操作',
