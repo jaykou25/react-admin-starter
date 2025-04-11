@@ -57,7 +57,6 @@ const CacheElements = () => {
             height: '100%',
             width: '100%',
             position: 'relative',
-            overflow: 'hidden auto',
           }}
           className="rumtime-keep-alive-layout"
           // 不匹配就隐藏, 匹配能显示
