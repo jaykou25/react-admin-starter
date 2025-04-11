@@ -9,7 +9,7 @@ export default (
     fieldNames,
   }: {
     fieldNames: any
-    treeNodeFilterProp: string
+    treeNodeFilterProp: string[] // 修改为字符串数组
     filterTreeNode?: any
   }
 ) => {
@@ -26,9 +26,11 @@ export default (
     } else {
       const upperStr = searchValue.toUpperCase()
       filterOptionFunc = (_, dataNode) => {
-        const value = dataNode[treeNodeFilterProp]
-
-        return String(value).toUpperCase().includes(upperStr)
+        // 遍历 treeNodeFilterProp 数组，检查任意字段是否匹配
+        return treeNodeFilterProp.some((prop) => {
+          const value = dataNode[prop]
+          return String(value).toUpperCase().includes(upperStr)
+        })
       }
     }
 

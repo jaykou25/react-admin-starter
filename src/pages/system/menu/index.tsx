@@ -36,7 +36,7 @@ const SystemMenu = () => {
   const [keyword, setKeyword] = useState<string>('')
   const filteredTreeData = useFilterTreeData(dataSource, keyword, {
     fieldNames: { children: 'children' },
-    treeNodeFilterProp: 'name',
+    treeNodeFilterProp: ['name', 'routeUrl'],
   })
   useEffect(() => {
     if (keyword) {
