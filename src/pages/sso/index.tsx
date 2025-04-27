@@ -2,7 +2,7 @@ import PageLoading from '@/components/page-loading'
 import { setToken } from '@/utils/auth'
 import { useQuery } from '@/utils'
 import { casLogin, userCodeLogin } from '@/apis'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { goto, afterLogin } from '@/utils/login'
 import { useModel } from 'umi'
 import { ss } from '@/utils'
@@ -10,6 +10,7 @@ import { ss } from '@/utils'
 const Sso = () => {
   const { ticket, redirect, userCode } = useQuery()
   const { initialState, setInitialState } = useModel('@@initialState')
+  const [loading, setLoading] = useState(true)
 
   const ssoLogin = async () => {
     // 每次都走sso登录
@@ -19,6 +20,7 @@ const Sso = () => {
 
     if (!ticket && !userCode) {
       // window.location.href = ssoSite()
+      setLoading(false)
       return
     }
 
@@ -43,7 +45,13 @@ const Sso = () => {
     ssoLogin()
   }, [ticket, redirect])
 
-  return <PageLoading />
+  return loading ? (
+    <PageLoading />
+  ) : (
+    <div style={{ textAlign: 'center', color: '#777', lineHeight: '70vh' }}>
+      授权失败，请您联系管理员。
+    </div>
+  )
 }
 
 export default Sso

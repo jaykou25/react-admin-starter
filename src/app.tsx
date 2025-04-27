@@ -40,6 +40,7 @@ export async function getInitialState(): Promise<any> {
       setToken(token)
     } catch (e) {
       console.error('单点登录失败', e)
+      history.replace('/sso')
       return initialState
     }
   }
