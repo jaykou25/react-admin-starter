@@ -2,6 +2,14 @@ import { useLocation, history, createSearchParams } from 'umi'
 import qs from 'qs'
 import { message } from 'antd'
 
+export const getQuery = () => {
+  const { search } = window.location
+
+  const query = qs.parse(search.split('?')[1] || '')
+
+  return query
+}
+
 export const useQuery = () => {
   const { search } = useLocation()
 
