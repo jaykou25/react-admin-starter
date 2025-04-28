@@ -33,8 +33,8 @@ export async function getInitialState(): Promise<any> {
     }),
   }
 
-  // 如果 url 上带有 ticket 则实行单点登录
-  if (ticket) {
+  // 如果 url 上带有 ticket 则实行单点登录. 免去了做单点时要在 /sso 页面带上 redirect
+  if (ticket && pathname !== '/sso') {
     try {
       const token: any = await casLogin({ ticket: encodeURIComponent(ticket) })
       setToken(token)
