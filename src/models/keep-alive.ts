@@ -2,11 +2,13 @@ import { useRef, useState } from 'react'
 
 export default () => {
   const [keepAliveKey, setKey] = useState(1)
-  const keepElements = useRef<Map<string, any>>(new Map())
+  const keepElements = useRef<Map<string, { key: number; element: any }>>(
+    new Map()
+  )
 
   function dropByCacheKey(pathname: string) {
     if (keepElements.current.has(pathname)) {
-      keepElements.current.delete(pathname)
+      keepElements.current.get(pathname)!.key += 1
       setKey((val) => val + 1)
     }
   }

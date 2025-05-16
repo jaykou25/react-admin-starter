@@ -8,7 +8,7 @@ const CacheElements = () => {
   const { pathname } = useLocation()
   const { initialState } = useModel('@@initialState')
   const { menuDataSource } = initialState
-  const { keepAliveKey, isInKeepElements, keepElements, dropByCacheKey } =
+  const { isInKeepElements, keepElements, dropByCacheKey } =
     useModel('keep-alive')
 
   const targetMenu = findTree(
@@ -20,7 +20,7 @@ const CacheElements = () => {
   const element = useOutlet()
 
   if (isCache && !isInKeepElements(pathname)) {
-    keepElements?.current.set(pathname, element)
+    keepElements?.current.set(pathname, { key: 1, element })
   }
 
   useEffect(() => {
@@ -45,8 +45,8 @@ const CacheElements = () => {
   const renderCachedElements = () => {
     const result: any = []
 
-    keepElements.current.forEach((ele, cachePathname) => {
-      const cacheKey = pathToKey(cachePathname) + '-' + keepAliveKey
+    keepElements.current.forEach((eleObj, cachePathname) => {
+      const cacheKey = pathToKey(cachePathname) + '-' + eleObj.key
       result.push(
         <div
           id={cacheKey}
@@ -62,7 +62,7 @@ const CacheElements = () => {
           // 不匹配就隐藏, 匹配能显示
           hidden={!matchPath(pathname, cachePathname)}
         >
-          {ele}
+          {eleObj.element}
         </div>
       )
     })
