@@ -140,7 +140,7 @@ export function visitTree(tree, fn, options?: { childrenName?: string }) {
  * 遍历tree, 找到目标节点, 找不到返回undefined
  */
 export function findTree(
-  data: any[],
+  data: any[] = [],
   fn: (item: any) => boolean,
   options?: { childrenName: string }
 ) {

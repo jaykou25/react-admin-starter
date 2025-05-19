@@ -96,7 +96,11 @@ const BusinessLayout = () => {
           </div>
           {showSwitchTabs && (
             <div style={{ padding: '0 24px' }}>
-              <SwitchTabs menus={initialState.menuDataSource} />
+              <SwitchTabs
+                menus={initialState.menuDataSource}
+                iconfontUrl={initialState.iconfontUrl}
+                dropByCacheKey={dropByCacheKey}
+              />
             </div>
           )}
 

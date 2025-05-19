@@ -5,7 +5,7 @@ import Icon, { createFromIconfontCN, HomeOutlined } from '@ant-design/icons'
 import { isImg, isUrl } from '@/utils'
 import { Link } from 'umi'
 
-const getIcon = (
+export const getIcon = (
   icon: string | React.ReactNode,
   iconfontUrl: string,
   iconPrefixes: string = 'icon-'

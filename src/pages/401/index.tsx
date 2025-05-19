@@ -7,8 +7,8 @@ const NoAuthPage: React.FC = () => (
     title="401"
     subTitle="您没有权限访问该页面."
     extra={
-      <Button type="primary" onClick={() => (window.location.href = '/')}>
-        返回首页
+      <Button type="primary" onClick={() => history.back()}>
+        返回
       </Button>
     }
   />

@@ -21,6 +21,8 @@ export default function Layout() {
   const { menuDataSource } = initialState
   const { breadName } = useQuery()
 
+  console.log('Layout组件日志')
+
   const targetMenu = findTree(
     menuDataSource,
     (item) => item.routeUrl === pathname

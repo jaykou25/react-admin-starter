@@ -1,12 +1,13 @@
 import { Component } from 'react'
 import { ConfigProvider, Tabs } from 'antd'
-import { history, useModel } from 'umi'
+import { history } from 'umi'
 import { produce } from 'immer'
 
 import type { HistoryTabType, SwitchTabsPropsType } from './type'
 import { findTree } from '@/utils'
 
 import styles from './styles.less'
+import { getIcon } from '@/utils/menuUtil'
 
 const redirectPaths = { '/welcome': '/' }
 
@@ -28,7 +29,7 @@ const redirectPaths = { '/welcome': '/' }
  * 那么这个场景就可以用history.replace('/list')来实现. 无需手动清缓存, 也无需手动关掉详情页的tab
  **/
 
-class SwitchTabsInner extends Component<
+class SwitchTabs extends Component<
   SwitchTabsPropsType,
   { activeKey: string; panes: HistoryTabType[] }
 > {
@@ -52,29 +53,26 @@ class SwitchTabsInner extends Component<
     /**
      * 初始数据; 页面刚进来时不会进listen
      */
-    const { pathname, search } = window.location
-    const menu = findTree(menus, (item) => item.routeUrl === pathname)
-    if (menu) {
-      this.setState({
-        panes: [{ pathname, name: menu.name, search }],
-        activeKey: pathname,
-      })
-    }
+    const { search } = window.location
+
+    const pathname = this.getPathname()
+    const menu = findTree(menus, (item) => item.routeUrl === pathname) || {}
+
+    this.setState({
+      panes: [{ pathname: pathname, name: menu.name, search, icon: menu.icon }],
+      activeKey: pathname,
+    })
 
     this.unListen = history.listen(({ location, action, ...rest }) => {
-      // context
       const { dropByCacheKey: refresh } = this.props
 
       // state
       const { panes, activeKey } = this.state
-      const { pathname: _pathname, search } = location
-      const pathname = redirectPaths[_pathname] || _pathname
-      const menu = findTree(menus, (item) => item.routeUrl === pathname)
-      if (!menu) {
-        return
-      }
+      const { search } = location
+      const pathname = this.getPathname(location.pathname)
+      const menu = findTree(menus, (item) => item.routeUrl === pathname) || {}
 
-      const newPane = { name: menu.name, pathname, search }
+      const newPane = { name: menu.name, pathname, search, icon: menu.icon }
       console.log('在 switch tabs 中监听 history', { action, pathname, rest })
 
       /**
@@ -163,7 +161,16 @@ class SwitchTabsInner extends Component<
   componentWillUnmount() {
     this.unListen()
 
+    console.log('--------- switch tabs 解除建立监听')
+
     document.removeEventListener('closeTab', this.handleCloseTab)
+  }
+
+  getPathname = (paramPathname?: string) => {
+    const _pathname = paramPathname || window.location.pathname
+    const pathname =
+      _pathname.length > 1 ? _pathname.replace(/\/+$/, '') : _pathname
+    return redirectPaths[pathname] || pathname
   }
 
   handleCloseTab = (e) => {
@@ -175,7 +182,7 @@ class SwitchTabsInner extends Component<
     const { panes } = this.state
     const target = panes.find((pane) => pane.pathname === key)
     this.isSwitch = true
-    history.push({ pathname: target?.pathname, search: target?.search })
+    history.push({ pathname: target!.pathname, search: target?.search })
   }
 
   // tabs删除功能
@@ -236,20 +243,15 @@ class SwitchTabsInner extends Component<
           onTabClick={this.handleTabClick}
           items={panes.map((pane) => ({
             ...pane,
-            label: pane.name,
+            label: pane.name || pane.pathname,
             key: pane.pathname,
+            icon: getIcon(pane.icon, this.props.iconfontUrl!),
             closable: panes.length > 1,
           }))}
         />
       </ConfigProvider>
     )
   }
-}
-
-const SwitchTabs = (props: SwitchTabsPropsType) => {
-  const { dropByCacheKey } = useModel('keep-alive')
-
-  return <SwitchTabsInner {...props} dropByCacheKey={dropByCacheKey} />
 }
 
 export default SwitchTabs

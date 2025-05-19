@@ -4,6 +4,7 @@ export type SwitchTabsPropsType = {
   style?: CSS.Properties
   menus: any[]
   dropByCacheKey?: any
+  iconfontUrl?: string
 }
 
 export type HistoryTabType = {
@@ -11,4 +12,5 @@ export type HistoryTabType = {
   pathname: string
   query?: any
   search?: string
+  icon?: string
 }
