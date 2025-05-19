@@ -1,15 +1,13 @@
 import { pathToKey } from '@/layouts/businessLayout/utils'
 import { findTree } from '@/utils'
-import { useEffect } from 'react'
-import { matchPath, useLocation, useModel, useOutlet, history } from 'umi'
+import { matchPath, useLocation, useModel, useOutlet } from 'umi'
 
 // 页面缓存组件
 const CacheElements = () => {
   const { pathname } = useLocation()
   const { initialState } = useModel('@@initialState')
   const { menuDataSource } = initialState
-  const { isInKeepElements, keepElements, dropByCacheKey } =
-    useModel('keep-alive')
+  const { isInKeepElements, keepElements } = useModel('keep-alive')
 
   const targetMenu = findTree(
     menuDataSource,
@@ -19,28 +17,12 @@ const CacheElements = () => {
   const isCache = targetMenu && targetMenu.isCache
   const element = useOutlet()
 
+  console.log('缓存日志', { keepElements: keepElements.current })
+
   if (isCache && !isInKeepElements(pathname)) {
+    console.log('缓存日志:', '加入缓存列表')
     keepElements?.current.set(pathname, { key: 1, element })
   }
-
-  useEffect(() => {
-    const unlisten = history.listen((update: any) => {
-      const { action, location } = update
-      const { pathname: currentPathname } = location
-
-      if (action === 'PUSH') {
-        dropByCacheKey(currentPathname)
-      }
-
-      if (action === 'REPLACE') {
-        dropByCacheKey(currentPathname)
-      }
-    })
-
-    return () => {
-      unlisten()
-    }
-  }, [])
 
   const renderCachedElements = () => {
     const result: any = []

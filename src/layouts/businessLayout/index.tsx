@@ -5,22 +5,49 @@ import Navbar from './components/Navbar'
 import RouteBread from './components/RouteBread'
 import RouteMenu from './components/RouteMenu'
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
-import { useModel } from 'umi'
+import { useModel, history } from 'umi'
 import { SETTING_KEY, ls } from '@/utils'
 
 import './styles.less'
 import BusinessContent from '@/components/business-content'
+import SwitchTabs from '@/components/SwitchTabs'
 
 const { Header, Content, Sider, Footer } = Layout
 
 const BusinessLayout = () => {
   const { initialState } = useModel('@@initialState')
-  const { renderKey } = useModel('render')
   const { collapsed, setCollapsed } = useModel('collapsed')
   const { loading } = useModel('loading')
   const [eventLoading, setEventLoading] = useState(false)
+  const { dropByCacheKey } = useModel('keep-alive')
+
+  useModel('render')
 
   const { showSwitchTabs, compactMode } = ls.get(SETTING_KEY) || {}
+
+  useEffect(() => {
+    let unlisten
+
+    if (!showSwitchTabs) {
+      unlisten = history.listen((update: any) => {
+        console.log('全局 keepalive listen')
+        const { action, location } = update
+        const { pathname: currentPathname } = location
+        if (action === 'PUSH') {
+          dropByCacheKey(currentPathname)
+        }
+        if (action === 'REPLACE') {
+          dropByCacheKey(currentPathname)
+        }
+      })
+    }
+
+    return () => {
+      if (unlisten) {
+        unlisten()
+      }
+    }
+  }, [showSwitchTabs])
 
   /** 注册一个全局事件来触发 loading, 因为有些场景不能用 hook */
   useEffect(() => {
@@ -69,7 +96,7 @@ const BusinessLayout = () => {
           </div>
           {showSwitchTabs && (
             <div style={{ padding: '0 24px' }}>
-              {/* <SwitchTabs menus={initialState.menuDataSource} /> */}
+              <SwitchTabs menus={initialState.menuDataSource} />
             </div>
           )}
 
