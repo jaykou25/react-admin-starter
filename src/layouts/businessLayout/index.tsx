@@ -109,6 +109,7 @@ const BusinessLayout = () => {
             <Content
               style={{
                 minHeight: 280,
+                position: 'relative',
               }}
             >
               <BusinessContent />

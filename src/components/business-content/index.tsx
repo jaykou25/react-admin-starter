@@ -56,11 +56,11 @@ export default function BusinessContent() {
             minHeight: 'inherit',
             height: '100%',
             width: '100%',
-            position: 'relative',
+            position: 'absolute',
+            left: matchPath(pathname, cachePathname) ? 0 : '-200%',
           }}
           className="rumtime-keep-alive-layout"
           // 不匹配就隐藏, 匹配能显示
-          hidden={!matchPath(pathname, cachePathname)}
         >
           {eleObj.element}
         </div>
