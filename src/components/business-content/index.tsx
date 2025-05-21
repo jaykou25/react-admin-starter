@@ -1,6 +1,9 @@
-import { inWhiteList, findTree } from '@/utils'
+import { Layout } from 'antd'
 import { Navigate, useModel, useLocation, matchPath, useOutlet } from 'umi'
+import { inWhiteList, findTree } from '@/utils'
 import { pathToKey } from '@/layouts/businessLayout/utils'
+
+const { Content } = Layout
 
 export default function BusinessContent() {
   const { pathname } = useLocation()
@@ -56,11 +59,13 @@ export default function BusinessContent() {
             minHeight: 'inherit',
             height: '100%',
             width: '100%',
-            position: 'absolute',
+            // 显示的元素用 relative 让父元素能感知到高度.
+            position: matchPath(pathname, cachePathname)
+              ? 'relative'
+              : 'absolute',
             left: matchPath(pathname, cachePathname) ? 0 : '-200%',
           }}
           className="rumtime-keep-alive-layout"
-          // 不匹配就隐藏, 匹配能显示
         >
           {eleObj.element}
         </div>
@@ -71,11 +76,17 @@ export default function BusinessContent() {
   }
 
   return (
-    <>
+    <Content
+      style={{
+        minHeight: 280,
+        position: 'relative',
+        overflow: 'hidden', //  这里要用 hidden, 否则内部缓存的绝对定位元素的高度会继承给它
+      }}
+    >
       {/* 缓存的页面通过 css 控制显示和隐藏 */}
       {renderCachedElements()}
 
       {getElement()}
-    </>
+    </Content>
   )
 }

@@ -106,14 +106,7 @@ const BusinessLayout = () => {
 
           <RouteBread />
           <div className="business-layout-scroll-part">
-            <Content
-              style={{
-                minHeight: 280,
-                position: 'relative',
-              }}
-            >
-              <BusinessContent />
-            </Content>
+            <BusinessContent />
             <Footer style={{ textAlign: 'center', marginBottom: '34px' }}>
               ©{new Date().getFullYear()} 国联
             </Footer>
