@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Layout, theme, Spin } from 'antd'
+import { Layout, Spin } from 'antd'
 
 import Navbar from './components/Navbar'
 import RouteBread from './components/RouteBread'
@@ -9,10 +9,10 @@ import { useModel, history } from 'umi'
 import { SETTING_KEY, ls } from '@/utils'
 
 import './styles.less'
-import BusinessContent from '@/components/business-content'
 import SwitchTabs from '@/components/SwitchTabs'
+import KeepAliveOutlet from '@/components/KeepAliveOutlet'
 
-const { Header, Content, Sider, Footer } = Layout
+const { Header, Sider, Footer } = Layout
 
 const BusinessLayout = () => {
   const { initialState } = useModel('@@initialState')
@@ -88,7 +88,7 @@ const BusinessLayout = () => {
         >
           <RouteMenu collapsed={collapsed} />
         </Sider>
-        <Layout className="business-layout-right">
+        <div className="business-layout-right">
           <div
             className={`business-layout-loading ${loading || eventLoading ? 'business-layout-loading-show' : ''}`}
           >
@@ -104,14 +104,16 @@ const BusinessLayout = () => {
             </div>
           )}
 
-          <RouteBread />
-          <div className="business-layout-scroll-part">
-            <BusinessContent />
-            <Footer style={{ textAlign: 'center', marginBottom: '34px' }}>
-              ©{new Date().getFullYear()} 国联
-            </Footer>
-          </div>
-        </Layout>
+          <KeepAliveOutlet
+            style={{ top: '31px', padding: '0 24px' }}
+            before={<RouteBread />}
+            after={
+              <Footer style={{ textAlign: 'center', marginBottom: '34px' }}>
+                ©{new Date().getFullYear()} 国联
+              </Footer>
+            }
+          />
+        </div>
       </Layout>
     </Layout>
   )
