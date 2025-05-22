@@ -82,7 +82,8 @@ const ToggleBox = (props: any) => {
         top: 0,
         bottom: 0,
         overflow: 'auto',
-        transform: show ? 'unset' : 'translate(-200%, 0)',
+        transform: show ? 'translateX(0)' : 'translate(-200%)',
+        willChange: 'transform, translateX',
         ...style,
       }}
     >
