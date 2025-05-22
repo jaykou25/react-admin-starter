@@ -8,7 +8,7 @@ const KeepAliveOutlet = (props: any) => {
   const { initialState } = useModel('@@initialState')
   const { menuDataSource, routes } = initialState
 
-  const { isInKeepElements, keepElements } = useModel('keep-alive')
+  const { isInKeepElements, keepElements, addCache } = useModel('keep-alive')
 
   const targetMenu = findTree(
     menuDataSource,
@@ -18,10 +18,9 @@ const KeepAliveOutlet = (props: any) => {
 
   const element = useOutlet()
 
-  // +++ 加入缓存列表 +++
+  // ----- 加入缓存列表 -----
   if (isCache && !isInKeepElements(pathname)) {
-    console.log('缓存日志:', '加入缓存列表')
-    keepElements?.current.set(pathname, { key: 1, element })
+    addCache(pathname, element)
   }
 
   const getElement = () => {
