@@ -44,6 +44,13 @@ export default () => {
     }
   }
 
+  function removeCachedPage(pathname: string) {
+    if (keepElements.current.has(pathname)) {
+      keepElements.current.delete(pathname)
+      setKey((val) => val + 1)
+    }
+  }
+
   function isInKeepElements(pathname: string) {
     return keepElements.current.has(pathname)
   }
@@ -51,6 +58,7 @@ export default () => {
   return {
     keepElements,
     dropByCacheKey,
+    removeCachedPage,
     isInKeepElements,
     keepAliveKey,
     addCache,

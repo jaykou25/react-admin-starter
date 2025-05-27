@@ -215,6 +215,10 @@ class SwitchTabs extends Component<
       })
 
       this.setState({ panes: newPanes })
+
+      // 对应的页面缓存也要删除, 为了渲染性能
+      const { removeCachedPage } = this.props
+      removeCachedPage(target.pathname)
     }
   }
 

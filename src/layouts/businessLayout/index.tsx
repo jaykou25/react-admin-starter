@@ -19,7 +19,7 @@ const BusinessLayout = () => {
   const { collapsed, setCollapsed } = useModel('collapsed')
   const { loading } = useModel('loading')
   const [eventLoading, setEventLoading] = useState(false)
-  const { dropByCacheKey } = useModel('keep-alive')
+  const { dropByCacheKey, removeCachedPage } = useModel('keep-alive')
 
   useModel('render')
 
@@ -100,6 +100,7 @@ const BusinessLayout = () => {
                 menus={initialState.menuDataSource}
                 iconfontUrl={initialState.iconfontUrl}
                 dropByCacheKey={dropByCacheKey}
+                removeCachedPage={removeCachedPage}
               />
             </div>
           )}

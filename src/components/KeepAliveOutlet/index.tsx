@@ -45,11 +45,13 @@ const KeepAliveOutlet = (props: any) => {
   return (
     <>
       {/* 不走缓存页面  */}
-      <ToggleBox style={props.style} show={!!getElement()}>
-        {props.before}
-        {getElement()}
-        {props.after}
-      </ToggleBox>
+      {!!getElement() && (
+        <ToggleBox style={props.style} show>
+          {props.before}
+          {getElement()}
+          {props.after}
+        </ToggleBox>
+      )}
 
       {/* 缓存的页面 */}
       {[...keepElements.current].map(([cachePathname, eleObj], index) => (

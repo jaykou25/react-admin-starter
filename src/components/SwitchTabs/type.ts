@@ -4,6 +4,7 @@ export type SwitchTabsPropsType = {
   style?: CSS.Properties
   menus: any[]
   dropByCacheKey?: any
+  removeCachedPage?: any
   iconfontUrl?: string
 }
 
