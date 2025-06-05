@@ -60,11 +60,11 @@
    }
    ```
 
-   该文案包含 **全局数据** 和 **全局初始数据** 两个方面. 具体的文档在[这里](https://umijs.org/docs/max/data-flow#%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8).
+   该方案包含 **全局数据** 和 **全局初始数据** 两个方面. 具体的文档在[这里](https://umijs.org/docs/max/data-flow#%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8).
    
    全局初始数据其实就是一种特殊的全局数据, 只是它的执行顺序比较靠前. 可以参考这个顺序 👇
    
-   > `render` 函数 -> `patchRouters` 函数 -> `getInitialState`函数 -> 全局布局组件 layout/index.tsx -> 页面布局组件 layout/businessLayout -> BusinessContent 组件
+   > `render` 函数 -> `patchRouters` 函数 -> `getInitialState`函数 -> 全局布局组件 layout/index.tsx -> 页面布局组件 layout/businessLayout -> KeepAliveOutlet 组件
    
    在本脚手架中, 我们把路由数据, 用户信息, 用户所属的菜单数据等都放在了全局初始数据中. 可以通过 `useModel('@@initialState')` 来获取值.
    
@@ -79,12 +79,12 @@
 3. 访问时已登录但没有该页面的权限
 
 当用户访问一个页面时, 代码的执行顺序如下 👇
-> `render` 函数 -> `patchRouters` 函数 -> `getInitialState`函数 -> 全局布局组件 layout/index.tsx -> 页面布局组件 layout/businessLayout -> BusinessContent 组件
+> `render` 函数 -> `patchRouters` 函数 -> `getInitialState`函数 -> 全局布局组件 layout/index.tsx -> 页面布局组件 layout/businessLayout -> KeepAliveOutlet 组件
 
 因此针对上面的情况, 权限的控制也应该放在相应的地方:
 
 1. 向后端请求数据的逻辑主要放在 `getInitialState` 函数里, 因此只有已登录的用户才会在这里请求数据, 除此之外的情况会跳转到登录页去或者不请求后台直接放行.
-2. 已登录用户但没有该页面访问权限的放在 BusinessContent 组件中去拦截, 因为 401 页面需要用到 businessLayout 组件.
+2. 已登录用户但没有该页面访问权限的放在 KeepAliveOutlet 组件中去拦截, 因为 401 页面需要用到 businessLayout 组件.
 
 ## 仓库克隆和同步
 
@@ -113,8 +113,10 @@
 
 ## 开发建议
 
-1. 文件名称建议使用连字符 `-` 连接: my-component
-2. 新写的公共方法请务必写好单元测试, 这不仅对团队也对个人帮助巨大.
+1. 文件名称建议使用连字符 `-` 连接: my-file
+2. 组件名称使用大驼峰法（UpperCamelCase）：MyComp
+3. 在函数组件中获取当前路由请使用 `const { pathname } = useLocation()`, 在非函数组件中使用 `getSafePathname` 方法。这两种方法会去掉路由前缀。
+4. 新写的公共方法请务必写好单元测试, 这不仅对团队也对个人帮助巨大.
 
     a. 测试文件可以写在当前目录下, 以 `.test.js` 或 `.test.ts` 结尾.
 

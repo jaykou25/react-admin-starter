@@ -17,4 +17,6 @@ export default defineConfig({
   conventionRoutes: {
     exclude: [/\/components\//, /\/models\//, /columns/i, /\.[jt]s$/],
   },
+  base: '/pv',
+  publicPath: '/pv/',
 })

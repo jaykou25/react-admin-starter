@@ -8,6 +8,7 @@ import {
   normalizeTree,
   setToken,
   getQuery,
+  getSafePathname,
 } from '@/utils'
 import dayjs from 'dayjs'
 import { casLogin } from './apis'
@@ -24,7 +25,7 @@ declare global {
 }
 
 export async function getInitialState(): Promise<any> {
-  const { pathname } = window.location
+  const pathname = getSafePathname()
   const { ticket } = getQuery()
 
   const initialState: any = {
