@@ -123,17 +123,46 @@ export const fullPath = () => {
   return pathname + search + hash
 }
 
+/**
+ * 提示词
+ * 写一个函数 getSafePathname, 参数为一个路径, 默认值为 window.location.pathname
+ * 1. 从 window.base 里获取路由前缀, 返回值应去掉路由前缀
+ * 2. 如果路径以 / 结尾, 去掉末尾的斜杠 / (根路径除外)
+ *
+ * 同时编写相应的单元测试用例
+ */
+export const getSafePathname = (path?: string): string => {
+  let pathname = path || window.location.pathname
+  let base = window.base || '/'
+
+  // 规范化 base 路径
+  if (base.length > 1) {
+    base = base.replace(/\/+$/, '') // 去掉末尾的斜杠
+  }
+
+  // 1. 去掉路由前缀
+  if (base !== '/' && pathname.startsWith(base)) {
+    pathname = pathname.slice(base.length)
+  }
+
+  // 2. 去掉末尾的斜杠，但根路径 / 除外
+  if (pathname.length > 1) {
+    pathname = pathname.replace(/\/+$/, '')
+  }
+
+  if (pathname.length === 0) {
+    pathname = '/'
+  }
+
+  return pathname
+}
+
 // 跳转到以当前页面为根路由的一个相对路径
 export const toRelative = (path: string, query?: any) => {
-  const { pathname } = window.location
-
-  // 去掉 pathname 末尾的斜杠 /
-  const _pathname = pathname.replace(/\/$/, '')
-
   // 去掉 path 前面的斜杠 /
   const _path = path.replace(/^\//, '')
 
-  const finalPath = [_pathname, _path].join('/')
+  const finalPath = [getSafePathname(), _path].join('/')
 
   // 去掉 query 中的空值
   const _query = query || {}

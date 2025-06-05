@@ -1,3 +1,4 @@
+import { toRelative } from '@/utils'
 import { LinkButton } from 'react-admin-kit'
 import type { TableColumnType } from 'react-admin-kit'
 
@@ -46,6 +47,9 @@ export const getColumns = (options: any = {}): TableColumnType[] => {
           visible={window._isAdmin}
         >
           编辑
+        </LinkButton>,
+        <LinkButton key={2} onClick={() => toRelative('/form')}>
+          form
         </LinkButton>,
       ],
     },

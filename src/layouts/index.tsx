@@ -1,4 +1,4 @@
-import { Helmet, useLocation, useModel } from 'umi'
+import { Helmet, useAppData, useLocation, useModel } from 'umi'
 import { ConfigProvider, theme, message, Upload, Modal } from 'antd'
 import BusinessLayout from './businessLayout'
 import { SettingProvider } from 'react-admin-kit'
@@ -17,9 +17,12 @@ import zhCN from 'antd/locale/zh_CN'
 
 export default function Layout() {
   const { pathname } = useLocation()
+  const { basename } = useAppData()
   const { initialState } = useModel('@@initialState')
   const { menuDataSource } = initialState
   const { breadName } = useQuery()
+
+  window.base = basename
 
   console.log('Layout组件日志')
 

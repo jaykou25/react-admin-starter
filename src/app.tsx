@@ -19,6 +19,7 @@ declare global {
   interface Window {
     routes: any
     _isAdmin: boolean
+    base: string | undefined // 路由前缀
   }
 }
 

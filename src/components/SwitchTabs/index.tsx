@@ -4,7 +4,7 @@ import { history } from 'umi'
 import { produce } from 'immer'
 
 import type { HistoryTabType, SwitchTabsPropsType } from './type'
-import { findTree } from '@/utils'
+import { findTree, getSafePathname } from '@/utils'
 
 import styles from './styles.less'
 import { getIcon } from '@/utils/menuUtil'
@@ -167,9 +167,7 @@ class SwitchTabs extends Component<
   }
 
   getPathname = (paramPathname?: string) => {
-    const _pathname = paramPathname || window.location.pathname
-    const pathname =
-      _pathname.length > 1 ? _pathname.replace(/\/+$/, '') : _pathname
+    const pathname = getSafePathname(paramPathname)
     return redirectPaths[pathname] || pathname
   }
 
@@ -237,7 +235,7 @@ class SwitchTabs extends Component<
         }}
       >
         <Tabs
-          type="editable-card"
+          // type="editable-card"
           animated={false}
           activeKey={activeKey}
           style={{ ...this.props.style }}
