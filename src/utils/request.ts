@@ -81,6 +81,9 @@ service.interceptors.response.use(
 
       return Promise.reject(error)
     }
+
+    notification.info({ message: error.message })
+    return Promise.reject(error)
   }
 )
 
