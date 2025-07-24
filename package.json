@@ -21,6 +21,7 @@
     "lodash-es": "^4.17.21",
     "qs": "^6.13.1",
     "react-admin-kit": "^0.5.10",
+    "react-gov-ui": "^1.4.0",
     "umi": "^4.4.5"
   },
   "devDependencies": {
