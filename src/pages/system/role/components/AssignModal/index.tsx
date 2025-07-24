@@ -1,10 +1,11 @@
-import { message, Modal, Tabs } from 'antd'
+import { message, Modal, Tabs, Tag } from 'antd'
 import { useImperativeHandle, useRef, useState } from 'react'
 import { ActionRefType, Button, ProTable } from 'react-admin-kit'
 import { assignRole, cancelRole, getRoleUsers } from '../../apis'
 import OrgTree from '../OrgTree'
 import UserChoose from '../UserChoose'
 import UserSearch from '../UserSearch'
+import './index.less'
 
 const AssignModal = (props) => {
   const { innerRef } = props
@@ -19,6 +20,8 @@ const AssignModal = (props) => {
     }
   }, [])
 
+  const [modal, contextHolder] = Modal.useModal()
+
   const actionRef = useRef<ActionRefType>()
 
   const [roleId, setRoleId] = useState()
@@ -28,13 +31,42 @@ const AssignModal = (props) => {
   const [chooseModalOpen, setChooseModalOpen] = useState(false)
   const [orgValue, setOrgValue] = useState<any>([])
   const [userValue, setUserValue] = useState<any>([])
-  const [userSearchValue, setUserSearchValue] = useState<any>([])
   const [activeKey, setActiveKey] = useState('org')
 
   const resetValues = () => {
     setOrgValue([])
     setUserValue([])
-    setUserSearchValue([])
+    setActiveKey('org')
+  }
+
+  const doBind = async () => {
+    setChooseModalLoading(true)
+
+    // 组织绑定
+
+    if (orgValue.length > 0) {
+      await assignRole({
+        roleId,
+        type: 2,
+        configList: orgValue.map((i) => i.value),
+      })
+    }
+
+    // 人员绑定
+    if (userValue.length > 0) {
+      await assignRole({
+        roleId,
+        type: 1,
+        configList: userValue.map((i) => i.value),
+      })
+    }
+
+    message.success('绑定成功')
+
+    setChooseModalLoading(false)
+    setChooseModalOpen(false)
+    resetValues()
+    actionRef.current?.reload()
   }
 
   return (
@@ -122,65 +154,82 @@ const AssignModal = (props) => {
           resetValues()
         }}
         onOk={async () => {
-          setChooseModalLoading(true)
-
-          const type = activeKey === 'org' ? 2 : 1
-          let ids
-
-          if (activeKey === 'org') {
-            ids = orgValue.checked
-          } else if (activeKey === 'user') {
-            ids = userValue.map((i) => i.value)
-          } else {
-            ids = userSearchValue.map((i) => i.value)
-          }
-          await assignRole({
-            roleId,
-            type,
-            configList: ids,
+          modal.confirm({
+            title: '确认绑定吗',
+            onOk: doBind,
           })
-          message.success('绑定成功')
-
-          setChooseModalLoading(false)
-          setChooseModalOpen(false)
-          resetValues()
-          actionRef.current?.reload()
         }}
       >
-        <Tabs
-          activeKey={activeKey}
-          onChange={setActiveKey}
-          items={[
-            {
-              key: 'org',
-              label: '按组织',
-              children: <OrgTree value={orgValue} onChange={setOrgValue} />,
-            },
-            {
-              key: 'user',
-              label: '按人员',
-              children: (
-                <UserChoose
-                  mode="multiple"
-                  value={userValue}
-                  onChange={setUserValue}
-                />
-              ),
-            },
-            {
-              key: 'search',
-              label: '人员综合搜索',
-              children: (
-                <UserSearch
-                  mode="multiple"
-                  value={userSearchValue}
-                  onChange={setUserSearchValue}
-                />
-              ),
-            },
-          ]}
-        />
+        <div className="assign-modal-container">
+          <Tabs
+            activeKey={activeKey}
+            onChange={setActiveKey}
+            items={[
+              {
+                key: 'org',
+                label: '按组织',
+                children: <OrgTree value={orgValue} onChange={setOrgValue} />,
+              },
+              {
+                key: 'user',
+                label: '按人员',
+                children: (
+                  <UserChoose
+                    mode="multiple"
+                    value={userValue}
+                    onChange={setUserValue}
+                  />
+                ),
+              },
+              {
+                key: 'search',
+                label: '人员综合搜索',
+                children: (
+                  <UserSearch
+                    mode="multiple"
+                    value={userValue}
+                    onChange={setUserValue}
+                  />
+                ),
+              },
+            ]}
+          />
+          {/* 选中的tags */}
+          <div className="rgui-tags-main">
+            {orgValue.map((item) => {
+              return (
+                <Tag
+                  color={'blue'}
+                  closable
+                  onClose={(e) => {
+                    e.preventDefault()
+                    setOrgValue(orgValue.filter((i) => i.value !== item.value))
+                  }}
+                >
+                  {item.label}
+                </Tag>
+              )
+            })}
+            {userValue.map((item) => {
+              return (
+                <Tag
+                  color={'red'}
+                  closable
+                  onClose={(e) => {
+                    e.preventDefault()
+                    setUserValue(
+                      userValue.filter((i) => i.value !== item.value)
+                    )
+                  }}
+                >
+                  {item.label}
+                </Tag>
+              )
+            })}
+          </div>
+        </div>
       </Modal>
+      {contextHolder}
     </>
   )
 }

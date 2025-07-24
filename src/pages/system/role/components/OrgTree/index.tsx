@@ -21,7 +21,7 @@ const OrgTree = (props: any) => {
       <div>
         <Tag
           style={{
-            padding: '8x',
+            padding: '8px',
             fontSize: '14px',
             marginBottom: '10px',
           }}
@@ -39,9 +39,14 @@ const OrgTree = (props: any) => {
         expandedKeys={expandedKeys}
         onExpand={setExpandedKeys}
         selectable={false}
-        checkedKeys={value}
-        onCheck={(keys) => {
-          onChange(keys)
+        checkedKeys={value.map((i) => i.value)}
+        onCheck={(keys, { checkedNodes }) => {
+          onChange(
+            checkedNodes.map((item: any) => ({
+              value: item.orgid,
+              label: item.title,
+            }))
+          )
         }}
         checkStrictly
       />
