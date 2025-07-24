@@ -155,7 +155,8 @@ const AssignModal = (props) => {
         }}
         onOk={async () => {
           modal.confirm({
-            title: '确认绑定吗',
+            title: '确认操作',
+            content: '确认绑定吗?',
             onOk: doBind,
           })
         }}
