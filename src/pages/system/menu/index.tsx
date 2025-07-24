@@ -276,7 +276,7 @@ const SystemMenu = () => {
         width={'50%'}
         open={open}
         onClose={() => setOpen(false)}
-        destroyOnClose
+        destroyOnHidden
       >
         <ProTable
           name="按钮资源"

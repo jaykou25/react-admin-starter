@@ -82,7 +82,7 @@ const SystemDict = () => {
         open={visible}
         onClose={() => setVisible(false)}
         width={'45%'}
-        destroyOnClose
+        destroyOnHidden
       >
         <ProTable
           name={`${selectedDict.name} - ${selectedDict.remark || ''}`}
