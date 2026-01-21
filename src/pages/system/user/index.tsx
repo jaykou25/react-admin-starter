@@ -9,7 +9,6 @@ import { hasPermission } from '@/utils'
 
 function User() {
   const [syncUsersLoading, setSyncUsersLoading] = useState(false)
-
   const actionRef = useRef<ActionRefType>()
   const innerRef = useRef<InnerRefType>()
 
@@ -38,6 +37,11 @@ function User() {
         delFunction={(ids) => delUser(ids[0])}
         delPermission={() => hasPermission('user:del')}
         options={false}
+        
+        
+        style={{
+          minWidth: '100%', // 确保表格占据最小宽度
+        }}
         toolbar={{
           title: [
             !1 && (

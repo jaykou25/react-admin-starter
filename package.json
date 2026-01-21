@@ -12,7 +12,7 @@
   "dependencies": {
     "@ant-design/icons": "^5.5.1",
     "@ant-design/pro-list": "^2.6.2",
-    "antd": "^5.22.2",
+    "antd": "^6.1.4",
     "axios": "^1.7.8",
     "copy-to-clipboard": "^3.3.3",
     "dayjs": "^1.11.13",
@@ -20,7 +20,7 @@
     "jsencrypt": "^3.3.2",
     "lodash-es": "^4.17.21",
     "qs": "^6.13.1",
-    "react-admin-kit": "^0.5.10",
+    "react-admin-kit": "^1.0.2",
     "react-gov-ui": "^1.4.0",
     "umi": "^4.4.5"
   },

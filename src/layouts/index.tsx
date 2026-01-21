@@ -79,8 +79,12 @@ export default function Layout() {
       <SettingProvider
         proTableSetting={{
           size: tableSize,
-          confirmModalType: 'modal',
+          delConfirmType: 'modal',
+          
           options: { density: false, reload: true, fullScreen: true },
+          scroll: {
+            x: 'max-content',
+          },
         }}
         formUploadSetting={{
           action: '/api/accessory/upload',
@@ -115,9 +119,9 @@ export default function Layout() {
           },
         }}
         modalFormSetting={{
-          modalProps: {
-            maskClosable: false,
-          },
+          centered: true,
+
+          maskClosable: false,
         }}
       >
         <Helmet>
