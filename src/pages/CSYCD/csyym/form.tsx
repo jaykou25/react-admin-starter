@@ -18,9 +18,10 @@ import {
   QuestionCircleOutlined,
   SearchOutlined,
 } from '@ant-design/icons'
-import { history } from 'umi'
-import { addInvestmentFlow } from '@/apis/CSYCD'
+import { history, useModel } from 'umi'
+import { addInvestmentFlow, submitApproval } from '@/apis/CSYCD'
 import { hasPermission } from '@/utils'
+import DictSelect from '@/components/dict-select'
 
 const { Title, Text } = Typography
 const { TextArea } = Input
@@ -30,6 +31,9 @@ const InvestmentFormPage: React.FC = () => {
   const [form] = Form.useForm()
   const [submitting, setSubmitting] = useState(false)
   const [saving, setSaving] = useState(false)
+  const { initialState } = useModel('@@initialState')
+  const { currentUser } = initialState
+  const { userInfo } = currentUser
 
   const handleBack = () => {
     history.push('/CSYCD/csyym')
@@ -41,8 +45,12 @@ const InvestmentFormPage: React.FC = () => {
       setSaving(true)
 
       const saveData = {
-        ...values,
-        status: 1,
+        title: values.title,
+        investYear: String(values.investYear),
+        meetingType: values.meetingType.join(','),
+        content: values.content,
+
+        companyName: '国联集团',
       }
 
       await addInvestmentFlow(saveData)
@@ -61,11 +69,17 @@ const InvestmentFormPage: React.FC = () => {
       setSubmitting(true)
 
       const submitData = {
-        ...values,
-        status: 2,
+        title: values.title,
+        investYear: String(values.investYear),
+        meetingType: values.meetingType.join(','),
+        content: values.content,
+        orgId: userInfo.orgId,
+        candidateList: [],
+
+        companyName: userInfo.companyName,
       }
 
-      await addInvestmentFlow(submitData)
+      await submitApproval(submitData)
       message.success('提交成功')
 
       setTimeout(() => {
@@ -86,94 +100,6 @@ const InvestmentFormPage: React.FC = () => {
         minHeight: 'calc(100vh - 48px)',
       }}
     >
-      {/* 顶部操作栏 - 匹配图片中的蓝色渐变 */}
-      <div
-        style={{
-          background: 'linear-gradient(135deg, #1890ff 0%, #096dd9 100%)',
-          marginBottom: 16,
-          borderRadius: 8,
-          padding: '16px 24px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          boxShadow: '0 2px 8px rgba(24, 144, 255, 0.2)',
-        }}
-      >
-        {/* 左侧：返回按钮和标题 */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <Button
-            type="default"
-            icon={<ArrowLeftOutlined />}
-            onClick={handleBack}
-            style={{
-              background: 'rgba(255, 255, 255, 0.9)',
-              border: '1px solid rgba(255, 255, 255, 0.3)',
-              color: 'rgba(0, 0, 0, 0.85)',
-              fontWeight: 500,
-            }}
-          >
-            返回
-          </Button>
-          <Title
-            level={4}
-            style={{
-              margin: 0,
-              color: '#fff',
-              fontWeight: 600,
-              fontSize: 18,
-            }}
-          >
-            国联集团-管理员发起的投资计划流程申请
-          </Title>
-        </div>
-
-        {/* 右侧：操作按钮 */}
-        <Space>
-          <Button
-            style={{
-              width: 88,
-              height: 40,
-              borderRadius: 4,
-              border: '1px solid #d9d9d9',
-              background: '#fff',
-              color: 'rgba(0, 0, 0, 0.85)',
-            }}
-            onClick={handleBack}
-          >
-            取消
-          </Button>
-          <Button
-            icon={<SaveOutlined />}
-            onClick={handleSave}
-            loading={saving}
-            disabled={!hasPermission('investment:save')}
-            style={{
-              background: 'rgba(255, 255, 255, 0.9)',
-              border: '1px solid rgba(255, 255, 255, 0.3)',
-              color: 'rgba(0, 0, 0, 0.85)',
-              fontWeight: 500,
-            }}
-          >
-            暂存
-          </Button>
-          <Button
-            type="primary"
-            icon={<SendOutlined />}
-            onClick={handleSubmit}
-            loading={submitting}
-            disabled={!hasPermission('investment:submit')}
-            style={{
-              background: '#fff',
-              borderColor: '#fff',
-              color: '#1890ff',
-              fontWeight: 500,
-            }}
-          >
-            提交
-          </Button>
-        </Space>
-      </div>
-
       {/* 表单内容区域 */}
       <Card
         bordered={false}
@@ -188,6 +114,53 @@ const InvestmentFormPage: React.FC = () => {
           position: 'relative',
         }}
       >
+        <div
+          style={{
+            marginBottom: 16,
+            borderRadius: 8,
+            padding: '16px 24px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            boxShadow: '0 2px 8px rgba(24, 144, 255, 0.2)',
+          }}
+        >
+          {/* 左侧：返回按钮和标题 */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <Title
+              level={4}
+              style={{
+                margin: 0,
+                color: '#000000',
+                fontWeight: 600,
+                fontSize: 18,
+              }}
+            >
+              国联集团-管理员发起的投资计划流程申请
+            </Title>
+          </div>
+
+          {/* 右侧：操作按钮 */}
+          <Space>
+            <Button onClick={handleBack}>返回</Button>
+            <Button
+              onClick={handleSave}
+              loading={saving}
+              disabled={!hasPermission('investment:save')}
+            >
+              暂存
+            </Button>
+            <Button
+              type="primary"
+              onClick={handleSubmit}
+              loading={submitting}
+              disabled={!hasPermission('investment:submit')}
+            >
+              提交
+            </Button>
+          </Space>
+        </div>
+
         {/* 基本信息标题 - 蓝色线条和文字 */}
         <div
           style={{
@@ -232,114 +205,86 @@ const InvestmentFormPage: React.FC = () => {
 
         <Form
           form={form}
-          layout="vertical"
+          layout="horizontal"
           requiredMark={false}
           initialValues={{
-            meetingType: 'office',
+            meetingType: ['1', '2'],
           }}
         >
-          {/* 流程标题 */}
-          <Form.Item
-            label={
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  fontSize: 14,
-                  fontWeight: 500,
-                  color: 'rgba(0, 0, 0, 0.85)',
-                }}
-              >
-                <span style={{ color: '#ff4d4f', marginRight: 4 }}>*</span>
-                <span>流程标题</span>
-                <Button
-                  type="link"
-                  size="small"
-                  icon={<QuestionCircleOutlined />}
-                  onClick={() =>
-                    message.info('流程标题应简明扼要地描述投资计划的主要内容')
-                  }
+          <div style={{ display: 'flex', gap: '24px' }}>
+            {/* 流程标题 */}
+            <Form.Item
+              label={
+                <div
                   style={{
-                    marginLeft: 8,
-                    color: '#1890ff',
-                    padding: '0 4px',
-                    fontSize: 12,
-                    height: 'auto',
+                    display: 'flex',
+                    alignItems: 'center',
+                    fontSize: 14,
+                    fontWeight: 500,
+                    color: 'rgba(0, 0, 0, 0.85)',
                   }}
                 >
-                  填报说明
-                </Button>
-                <Button
-                  type="link"
-                  size="small"
-                  style={{
-                    marginLeft: 4,
-                    color: '#1890ff',
-                    padding: '0 4px',
-                    fontSize: 12,
-                    height: 'auto',
-                  }}
-                >
-                  去填写
-                </Button>
-              </div>
-            }
-            name="title"
-            rules={[
-              { required: true, message: '请输入流程标题' },
-              { max: 100, message: '标题最多100个字符' },
-            ]}
-            style={{ marginBottom: 32 }}
-          >
-            <Input
-              placeholder="请输入"
-              style={{
-                width: '100%',
-                maxWidth: 600,
-                height: 40,
-                borderRadius: 4,
-                border: '1px solid #d9d9d9',
-              }}
-            />
-          </Form.Item>
-
-          {/* 投资年度 */}
-          <Form.Item
-            label={
-              <div
-                style={{
-                  fontSize: 14,
-                  fontWeight: 500,
-                  color: 'rgba(0, 0, 0, 0.85)',
-                }}
-              >
-                <span style={{ color: '#ff4d4f', marginRight: 4 }}>*</span>
-                投资年度
-              </div>
-            }
-            name="investYear"
-            rules={[{ required: true, message: '请选择投资年度' }]}
-            style={{ marginBottom: 32 }}
-          >
-            <Select
-              placeholder="请选择"
-              style={{
-                width: 200,
-                height: 40,
-              }}
-              allowClear
-              suffixIcon={null}
+                  <span style={{ color: '#ff4d4f', marginRight: 4 }}>*</span>
+                  <span>流程标题</span>
+                </div>
+              }
+              name="title"
+              rules={[
+                { required: true, message: '请输入流程标题' },
+                { max: 100, message: '标题最多100个字符' },
+              ]}
+              style={{ marginBottom: 32 }}
             >
-              {Array.from({ length: 5 }, (_, i) => {
-                const year = new Date().getFullYear() + i
-                return (
-                  <Option key={year} value={year}>
-                    {year}
-                  </Option>
-                )
-              })}
-            </Select>
-          </Form.Item>
+              <Input
+                placeholder="请输入"
+                style={{
+                  width: '100%',
+                  maxWidth: 600,
+                  height: 40,
+                  borderRadius: 4,
+                  border: '1px solid #d9d9d9',
+                }}
+              />
+            </Form.Item>
+
+            {/* 投资年度 */}
+            <Form.Item
+              label={
+                <div
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 500,
+                    color: 'rgba(0, 0, 0, 0.85)',
+                  }}
+                >
+                  <span style={{ color: '#ff4d4f', marginRight: 4 }}>*</span>
+                  投资年度
+                </div>
+              }
+              name="investYear"
+              rules={[{ required: true, message: '请选择投资年度' }]}
+              style={{ marginBottom: 32 }}
+            >
+              <Select
+                placeholder="请选择"
+                style={{
+                  width: 200,
+                  height: 40,
+                }}
+                allowClear
+                suffixIcon={null}
+              >
+                {Array.from({ length: 5 }, (_, i) => {
+                  const year = new Date().getFullYear() + i
+                  return (
+                    <Option key={year} value={year}>
+                      {year}
+                    </Option>
+                  )
+                })}
+              </Select>
+            </Form.Item>
+          </div>
 
           {/* 会议类型 */}
           <Form.Item
@@ -358,9 +303,27 @@ const InvestmentFormPage: React.FC = () => {
             name="meetingType"
             rules={[{ required: true, message: '请选择会议类型' }]}
             style={{ marginBottom: 32 }}
-            initialValue={['office', 'board']} // 默认选中两个
+            initialValue={['1', '2']} // 默认选中两个
+            renderFormItem={(_, { value, onChange }) => {
+              return (
+                <DictSelect
+                  type="regulation_meeting_type"
+                  // 关键：传递值和 onChange 以适配 Form 表单
+                  value={value}
+                  onChange={onChange}
+                  // 保留原有样式和交互属性
+                  style={{
+                    width: '100%',
+                    maxWidth: 400,
+                  }}
+                  allowClear // 清除按钮
+                  mode="multiple" // 多选模式（和原 Select 一致）
+                  placeholder="请选择会议类型"
+                />
+              )
+            }}
           >
-            <Select
+            <DictSelect
               mode="multiple" // 多选模式
               placeholder="请选择会议类型"
               style={{
@@ -368,11 +331,7 @@ const InvestmentFormPage: React.FC = () => {
                 maxWidth: 400,
               }}
               allowClear
-              options={[
-                { label: '办公会', value: 'office' },
-                { label: '董事会', value: 'board' },
-                { label: '党委会', value: 'party' },
-              ]}
+              type="regulation_meeting_type"
             />
           </Form.Item>
 
@@ -410,52 +369,7 @@ const InvestmentFormPage: React.FC = () => {
               }}
             />
           </Form.Item>
-
-          {/* 协作人 */}
-          <Form.Item
-            label={
-              <div
-                style={{
-                  fontSize: 14,
-                  fontWeight: 500,
-                  color: 'rgba(0, 0, 0, 0.85)',
-                }}
-              >
-                协作人
-              </div>
-            }
-            name="collaborators"
-            style={{ marginBottom: 24 }}
-          >
-            <Input
-              placeholder="请输入关键字搜索"
-              style={{
-                width: '100%',
-                maxWidth: 400,
-                height: 40,
-                borderRadius: 4,
-                border: '1px solid #d9d9d9',
-              }}
-              suffix={
-                <Button
-                  type="link"
-                  size="small"
-                  style={{
-                    padding: '0 8px',
-                    height: 'auto',
-                    color: '#1890ff',
-                    border: 'none',
-                    background: 'transparent',
-                  }}
-                >
-                  <SearchOutlined />
-                </Button>
-              }
-            />
-          </Form.Item>
         </Form>
-
-        
       </Card>
 
       {/* 底部版权信息 */}

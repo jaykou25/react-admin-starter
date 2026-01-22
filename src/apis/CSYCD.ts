@@ -188,7 +188,7 @@ export async function queryApprovalRecords(id: string): Promise<any> {
  * @returns 
  */
 export async function submitApproval(data: any): Promise<any> {
-  return request('/api/investmentPlan/submitApproval', {
+  return request('/api/investmentPlan/submit', {
     method: 'POST',
     data,
   })
