@@ -24,7 +24,7 @@ export async function queryInvestmentFlowList(params?: any): Promise<any> {
  * @returns 
  */
 export async function queryInvestmentFlowDetail(id: string): Promise<any> {
-  return request(`/api/investmentPlan/detail/${id}`, {
+  return request(`/api/investmentPlan/info/${id}`, {
     method: 'GET',
   })
 }
@@ -59,8 +59,9 @@ export async function editInvestmentFlow(data: any): Promise<any> {
  * @returns 
  */
 export async function deleteInvestmentFlow(id: string): Promise<any> {
-  return request(`/api/investmentPlan/delete/${id}`, {
+  return request(`/api/investmentPlan/delete/`, {
     method: 'POST',
+    data: [id]
   })
 }
 

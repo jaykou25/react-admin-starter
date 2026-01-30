@@ -1,3 +1,3 @@
 export * from './common'
 export * from './system'
-export * from './CSYCD'
+export * from './test'

@@ -1,21 +1,16 @@
 import { toRelative } from '@/utils'
-import {
-  queryInvestmentFlowList,
-  addInvestmentFlow,
-  editInvestmentFlow,
-  deleteInvestmentFlow,
-} from '@/apis/CSYCD'
+import { queryInvestmentFlowList, deleteInvestmentFlow } from '@/apis/test'
 import { message, Button, Space, Tabs } from 'antd'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { PlusOutlined } from '@ant-design/icons'
 
 import { InnerRefType, ProTable, ActionRefType } from 'react-admin-kit'
-import { hasPermission } from '@/utils'
+
 import { getColumns } from './columns'
 import type { TabsProps } from 'antd'
 
 function InvestmentFlow() {
-  const [statusFilter, setStatusFilter] = useState<string>('')
+  const [statusFilter, setStatusFilter] = useState<string>('2')
   const actionRef = useRef<ActionRefType>()
   const innerRef = useRef<InnerRefType>()
 
@@ -51,6 +46,29 @@ function InvestmentFlow() {
     setStatusFilter(status)
     if (actionRef.current) {
       actionRef.current.reload()
+    }
+  }
+
+  // 删除函数 - 修正类型
+  const handleDelete = async (
+    selectedIds: (string | number)[],
+    record: any
+  ) => {
+    try {
+      // 将 selectedIds 转换为字符串数组
+      const idArray = selectedIds.map((id) => String(id))
+
+      // 循环调用删除接口
+      for (const id of idArray) {
+        await deleteInvestmentFlow(id)
+      }
+      message.success('删除成功')
+      actionRef.current?.reload()
+      return true
+    } catch (error) {
+      message.error('删除失败')
+      console.error('删除失败:', error)
+      return false
     }
   }
 
@@ -129,12 +147,8 @@ function InvestmentFlow() {
 
             console.log('📥 API完整响应:', response)
 
-            // ✅ 关键修正：根据你的API响应结构调整
-            // 图片显示API直接返回 { data: Array(10), total: 60, ... }
-            // 不是嵌套的 response.data.data
-
-            const rawData = response?.data || [] // 直接取 response.data（这是数组）
-            const total = response?.total || 0 // 直接取 response.total
+            const rawData = response?.data || []
+            const total = response?.total || 0
 
             console.log(
               '🔍 rawData 类型:',
@@ -144,18 +158,16 @@ function InvestmentFlow() {
             )
             console.log('🔍 rawData 内容:', rawData)
 
-            // ✅ 关键：处理 meetingType 多值情况
+            // 处理 meetingType 多值情况
             const processedData = rawData.map((item: any, index: number) => ({
               ...item,
-              key: item.id || index, // ProTable需要唯一key
+              key: item.id || index,
               index:
                 (queryParams.pageIndex - 1) * queryParams.pageSize + index + 1,
-              // 处理 meetingType 显示
               meetingTypeDisplay:
                 item.meetingTypeName || item.meetingType || '--',
             }))
 
-            // ✅ 成功判断：检查是否有数据返回
             const success = Array.isArray(rawData)
 
             console.log('✅ 成功状态:', success)
@@ -178,11 +190,9 @@ function InvestmentFlow() {
             }
           }
         }}
-        columns={getColumns()} // ✅ 使用合并的列配置
-        delFunction={(ids) => deleteInvestmentFlow(ids[0])}
-        delPermission={() => hasPermission('investment:delete')}
+        columns={getColumns()}
+        delFunction={handleDelete}
         options={{
-          density: true,
           fullScreen: true,
           reload: true,
           setting: true,
@@ -206,7 +216,6 @@ function InvestmentFlow() {
             >
               <Button
                 key="add"
-                visible={() => hasPermission('investment:add')}
                 type="primary"
                 icon={<PlusOutlined />}
                 onClick={() => {
@@ -217,17 +226,17 @@ function InvestmentFlow() {
               </Button>
 
               <Tabs
-                activeKey={statusFilter} // 绑定当前选中的状态值
-                onChange={handleStatusChange} // 点击标签时触发状态变更
-                size="middle" // 对应原 Button 的 small 尺寸
+                activeKey={statusFilter}
+                onChange={handleStatusChange}
+                size="middle"
                 tabBarGutter={24}
                 styles={{}}
-                defaultActiveKey="2"
                 items={items}
               ></Tabs>
             </div>,
           ],
         }}
+        rowSelection={{}}
       />
     </div>
   )
