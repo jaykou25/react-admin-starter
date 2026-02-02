@@ -90,7 +90,7 @@ export const getSearchColumns = (): TableColumnType[] => [
     dataIndex: 'meetingType',
     type: 'search',
     renderFormItem: () => {
-      return <DictSelect type="regulation_meeting_type" />
+      return <DictSelect type="regulation_meeting_type" mode="multiple" />
     },
   },
   {
@@ -317,61 +317,29 @@ export const getTableColumns = (): TableColumnType[] => [
   },
   {
     title: '操作',
-    dataIndex: 'option',
+
     valueType: 'option',
     width: 150,
     fixed: 'right',
-    enableDelete: (record) => {
-      const status = record.status?.toString()
-      return status === '1' // 仅对暂存中状态显示删除按钮
-    },
-    render: (_, record) => {
-      const status = record.status?.toString()
+    enableDelete: true,
 
-      return (
-        <Space size="small">
-          {/* 编辑按钮 - 仅暂存中状态显示 */}
-          {status === '1' && (
-            <LinkButton
-              key="edit"
-              onClick={() => toRelative(`form?id=${record.id}`)}
-            >
-              编辑
-            </LinkButton>
-          )}
-
-          {/* 详情按钮 - 非暂存中状态显示 */}
-          {status !== '1' && (
-            <LinkButton
-              key="view"
-              onClick={() => toRelative(`detail?id=${record.id}`)}
-            >
-              详情
-            </LinkButton>
-          )}
-
-          {/* 删除按钮 - 仅暂存中状态显示 */}
-          {status === '1' && (
-            <LinkButton
-              key="delete"
-              danger
-              onClick={() => {
-                Modal.confirm({
-                  title: '确认删除',
-                  content: '确定要删除这条记录吗？',
-                  onOk: () =>
-                    deleteInvestmentFlow(record.id)
-                      .then(() => message.success('删除成功'))
-                      .catch(() => message.error('删除失败')),
-                })
-              }}
-            >
-              删除
-            </LinkButton>
-          )}
-        </Space>
-      )
-    },
+    render: (_, record) => [
+      record.status === 1 ? (
+        <LinkButton
+          key="edit"
+          onClick={() => toRelative(`form?id=${record.id}`)}
+        >
+          编辑
+        </LinkButton>
+      ) : (
+        <LinkButton
+          key="view"
+          onClick={() => toRelative(`detail?id=${record.id}`)}
+        >
+          详情
+        </LinkButton>
+      ),
+    ],
   },
 ]
 

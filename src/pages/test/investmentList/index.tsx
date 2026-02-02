@@ -57,11 +57,8 @@ function InvestmentFlow() {
     try {
       // 将 selectedIds 转换为字符串数组
       const idArray = selectedIds.map((id) => String(id))
+      deleteInvestmentFlow(idArray)
 
-      // 循环调用删除接口
-      for (const id of idArray) {
-        await deleteInvestmentFlow(id)
-      }
       message.success('删除成功')
       actionRef.current?.reload()
       return true
@@ -79,109 +76,40 @@ function InvestmentFlow() {
         name="投资项目流程管理"
         search={{
           layout: 'horizontal',
-          defaultCollapsed: true,
-          span: 8,
-          labelWidth: 'auto',
-          searchText: '查询',
-          resetText: '重置',
-          collapseRender: (collapsed, _, __, toggleCollapsed) => {
-            return (
-              <Button
-                type="link"
-                onClick={toggleCollapsed}
-                style={{ padding: 0, color: '#1890ff' }}
-              >
-                {collapsed ? '展开' : '收起'}
-              </Button>
-            )
-          },
         }}
         headerTitle={false}
         actionRef={actionRef}
         innerRef={innerRef}
-        pagination={{
-          pageSize: 10,
-          pageSizeOptions: ['10', '20', '50', '100'],
-          showSizeChanger: true,
-          showQuickJumper: true,
-          showTotal: (total) => `共 ${total} 条`,
-        }}
         request={async (params) => {
           try {
-            // 构建查询参数
-            const queryParams: any = {
+            // 添加状态筛选参数
+            const queryParams = {
+              ...params,
+              status: statusFilter,
               pageIndex: params.current || 1,
               pageSize: params.pageSize || 10,
             }
 
-            // 映射字段
-            const fieldMapping = {
-              title: 'title',
-              billCode: 'billCode',
-              currentNodeName: 'currentNodeName',
-              investYear: 'investYear',
-              meetingType: 'meetingType',
-              createUserName: 'createUserName',
-              orgName: 'orgName',
-              submitTime: 'submitTime',
-            }
-
-            // 复制搜索参数
-            Object.entries(fieldMapping).forEach(([key, apiKey]) => {
-              if (
-                params[key] !== undefined &&
-                params[key] !== null &&
-                params[key] !== ''
-              ) {
-                queryParams[apiKey] = params[key]
-              }
-            })
-
-            // 添加状态筛选参数
-            if (statusFilter) {
-              queryParams.status = statusFilter
-            }
-
-            console.log('📡 API请求参数:', queryParams)
+            // 调用接口
             const response = await queryInvestmentFlowList(queryParams)
 
-            console.log('📥 API完整响应:', response)
-
-            const rawData = response?.data || []
-            const total = response?.total || 0
-
-            console.log(
-              '🔍 rawData 类型:',
-              typeof rawData,
-              '长度:',
-              rawData?.length
-            )
-            console.log('🔍 rawData 内容:', rawData)
-
-            // 处理 meetingType 多值情况
-            const processedData = rawData.map((item: any, index: number) => ({
-              ...item,
-              key: item.id || index,
-              index:
-                (queryParams.pageIndex - 1) * queryParams.pageSize + index + 1,
-              meetingTypeDisplay:
-                item.meetingTypeName || item.meetingType || '--',
-            }))
-
-            const success = Array.isArray(rawData)
-
-            console.log('✅ 成功状态:', success)
-            console.log('✅ 数据总数:', total)
-            console.log('✅ 数据条数:', processedData.length)
-            console.log('📊 处理后第一条数据:', processedData[0])
-
+            // 处理响应数据
             return {
-              data: processedData,
-              total: total,
-              success: success,
+              data: (response?.data || []).map((item, index) => ({
+                ...item,
+                key: item.id || index,
+                index:
+                  (queryParams.pageIndex - 1) * queryParams.pageSize +
+                  index +
+                  1,
+                meetingTypeDisplay:
+                  item.meetingTypeName || item.meetingType || '--',
+              })),
+              total: response?.total || 0,
+              success: true,
             }
           } catch (error) {
-            console.error('❌ 请求失败:', error)
+            console.error('请求失败:', error)
             message.error('获取数据失败')
             return {
               data: [],
@@ -191,7 +119,7 @@ function InvestmentFlow() {
           }
         }}
         columns={getColumns()}
-        delFunction={handleDelete}
+        delFunction={deleteInvestmentFlow}
         options={{
           fullScreen: true,
           reload: true,
@@ -236,7 +164,6 @@ function InvestmentFlow() {
             </div>,
           ],
         }}
-        rowSelection={{}}
       />
     </div>
   )

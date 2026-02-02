@@ -276,14 +276,7 @@ const InvestmentFormPage: React.FC = () => {
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item
-                  label={
-                    <span>
-                      <span style={{ color: '#ff4d4f', marginRight: 4 }}>
-                        *
-                      </span>
-                      流程标题
-                    </span>
-                  }
+                  label="流程标题"
                   name="title"
                   rules={[{ required: true, message: '请输入流程标题' }]}
                   style={{ marginBottom: 24 }}
