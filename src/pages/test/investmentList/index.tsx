@@ -49,26 +49,6 @@ function InvestmentFlow() {
     }
   }
 
-  // 删除函数 - 修正类型
-  const handleDelete = async (
-    selectedIds: (string | number)[],
-    record: any
-  ) => {
-    try {
-      // 将 selectedIds 转换为字符串数组
-      const idArray = selectedIds.map((id) => String(id))
-      deleteInvestmentFlow(idArray)
-
-      message.success('删除成功')
-      actionRef.current?.reload()
-      return true
-    } catch (error) {
-      message.error('删除失败')
-      console.error('删除失败:', error)
-      return false
-    }
-  }
-
   return (
     <div style={{ padding: 16 }}>
       <ProTable

@@ -1,21 +1,9 @@
 import type { TableColumnType } from 'react-admin-kit'
-import {
-  DatePicker,
-  Input,
-  Select,
-  Tag,
-  Badge,
-  Button,
-  Space,
-  Popconfirm,
-  message,
-  Modal,
-} from 'antd'
+import { DatePicker } from 'antd'
 import { LinkButton } from 'react-admin-kit'
-import { hasPermission } from '@/utils'
+
 import DictSelect from '@/components/dict-select'
 import { toRelative } from '@/utils'
-import { deleteInvestmentFlow } from '@/apis'
 
 const { RangePicker } = DatePicker
 
@@ -26,7 +14,7 @@ export const CURRENT_NODE_OPTIONS = [
 ]
 
 // 1. 单独导出搜索列（供ProTable识别）
-export const getSearchColumns = (): TableColumnType[] => [
+export const getColumns = (): TableColumnType[] => [
   {
     title: '当前节点',
     dataIndex: 'currentNodeName',
@@ -120,10 +108,9 @@ export const getSearchColumns = (): TableColumnType[] => [
       return {}
     },
   },
-]
 
-// 2. 单独导出表格列（仅用于表格渲染）
-export const getTableColumns = (): TableColumnType[] => [
+  // 2. 单独导出表格列（仅用于表格渲染）
+
   {
     title: '序号',
     dataIndex: 'index',
@@ -317,11 +304,18 @@ export const getTableColumns = (): TableColumnType[] => [
   },
   {
     title: '操作',
+    dataIndex: 'option',
 
     valueType: 'option',
     width: 150,
     fixed: 'right',
-    enableDelete: true,
+    enableDelete: (record) => {
+      console.log('删除状态', record.status, record.status === 1)
+      return {
+        danger: record.status === 1,
+        visible: record.status === 1,
+      }
+    },
 
     render: (_, record) => [
       record.status === 1 ? (
@@ -342,12 +336,3 @@ export const getTableColumns = (): TableColumnType[] => [
     ],
   },
 ]
-
-// 3. 兼容原有调用
-export const getColumns = (): TableColumnType[] => {
-  const tableCols = getTableColumns().map((col) => {
-    const { type, valueType, fieldProps, transform, ...rest } = col
-    return rest
-  })
-  return [...getSearchColumns(), ...tableCols]
-}

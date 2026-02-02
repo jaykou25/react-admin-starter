@@ -1,15 +1,5 @@
 import { useState, useEffect } from 'react'
-import {
-  Card,
-  Descriptions,
-  Spin,
-  Alert,
-  Table,
-  Tag,
-  Space,
-  Button,
-} from 'antd'
-import { toRelative } from '@/utils'
+import { Card, Descriptions, Table, Space, Button } from 'antd'
 
 import { queryInvestmentFlowDetail } from '@/apis/test'
 import { history } from 'umi'
