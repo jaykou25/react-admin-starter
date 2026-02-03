@@ -271,7 +271,7 @@ const InvestmentFormPage: React.FC = () => {
             layout="horizontal"
             labelCol={{ span: 4 }}
             wrapperCol={{ span: 18 }}
-            requiredMark={false}
+            requiredMark={true}
           >
             <Row gutter={16}>
               <Col span={12}>
@@ -286,14 +286,7 @@ const InvestmentFormPage: React.FC = () => {
               </Col>
               <Col span={12}>
                 <Form.Item
-                  label={
-                    <span>
-                      <span style={{ color: '#ff4d4f', marginRight: 4 }}>
-                        *
-                      </span>
-                      投资年度
-                    </span>
-                  }
+                  label={<span>投资年度</span>}
                   name="investYear"
                   rules={[{ required: true, message: '请选择投资年度' }]}
                   style={{ marginBottom: 24 }}
@@ -313,12 +306,7 @@ const InvestmentFormPage: React.FC = () => {
             </Row>
 
             <Form.Item
-              label={
-                <span>
-                  <span style={{ color: '#ff4d4f', marginRight: 4 }}>*</span>
-                  会议类型
-                </span>
-              }
+              label={<span>会议类型</span>}
               name="meetingType"
               rules={[{ required: true, message: '请选择会议类型' }]}
               style={{ marginBottom: 24 }}
@@ -335,12 +323,7 @@ const InvestmentFormPage: React.FC = () => {
             </Form.Item>
 
             <Form.Item
-              label={
-                <span>
-                  <span style={{ color: '#ff4d4f', marginRight: 4 }}>*</span>
-                  汇报内容
-                </span>
-              }
+              label={<span>汇报内容</span>}
               name="content"
               rules={[{ required: true, message: '请输入汇报内容' }]}
               style={{ marginBottom: 24 }}
