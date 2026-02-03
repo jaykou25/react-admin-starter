@@ -241,19 +241,26 @@ const InvestmentFormPage: React.FC = () => {
       <Spin spinning={loading} tip="加载中...">
         <Card>
           <div>
-            <Space>
+            <Space
+              style={{
+                width: '100%',
+                justifyContent: 'space-between', // 两端对齐
+              }}
+            >
               <Title level={4}>国联集团- 管理员发起的投资计划流程申请</Title>
-              <Button onClick={handleBack}>返回</Button>
-              <Button onClick={handleSave} loading={saving}>
-                {editId ? '更新' : '暂存'}
-              </Button>
-              <Button
-                type="primary"
-                onClick={handleSubmit}
-                loading={submitting}
-              >
-                {'提交'}
-              </Button>
+              <Space>
+                <Button onClick={handleBack}>返回</Button>
+                <Button onClick={handleSave} loading={saving}>
+                  {editId ? '更新' : '暂存'}
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={handleSubmit}
+                  loading={submitting}
+                >
+                  提交
+                </Button>
+              </Space>
             </Space>
           </div>
 
