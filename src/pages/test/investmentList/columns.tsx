@@ -14,7 +14,6 @@ export const CURRENT_NODE_OPTIONS = [
   { label: '三会决策', value: '三会决策' },
 ]
 
-// 1. 单独导出搜索列（供ProTable识别）
 export const getColumns = (): TableColumnType[] => [
   {
     title: '当前节点',

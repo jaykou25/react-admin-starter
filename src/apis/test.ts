@@ -80,29 +80,9 @@ export async function submitApproval(data: any): Promise<any> {
 
 
 
-// 状态映射常量（根据图片中的映射关系）
-export const FLOW_STATUS_MAP = {
-  '2': { text: '进行中', color: 'processing', value: 'processing' },
-  '1': { text: '暂存中', color: 'default', value: 'draft' },
-  '3': { text: '项目完结', color: 'success', value: 'completed' },
-  '4': { text: '项目终止', color: 'warning', value: 'terminated' },
-  '0': { text: '已废弃', color: 'error', value: 'abandoned' },
-} as const
 
-// 状态选项（用于前端筛选按钮）
-export const FLOW_STATUS_OPTIONS = [
-  { value: '2', label: '进行中' },
-  { value: '1', label: '暂存中' },
-  { value: '3', label: '项目完结' },
-  { value: '4', label: '项目终止' },
-  { value: '0', label: '已废弃' },
-  { value: '', label: '全部' },
-]
-// 合规控制状态映射
-export const ILLEGAL_STATUS_MAP = {
-  '0': { text: '正常', color: 'green' },
-  '1': { text: '异常', color: 'red' },
-} as const
+
+
 
 export default {
   queryInvestmentFlowList,
@@ -113,6 +93,6 @@ export default {
   
   submitApproval,
   
-  FLOW_STATUS_MAP,
-  FLOW_STATUS_OPTIONS,
+  
+ 
 }
