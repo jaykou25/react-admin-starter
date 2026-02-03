@@ -50,8 +50,10 @@ export const getColumns = (): TableColumnType[] => [
     title: '投资年度',
     dataIndex: 'investYear',
     type: 'search',
+
     valueType: 'dateYear',
     fieldProps: {
+      placeholder: '请选择投资年度',
       disabledDate: (current) => {
         // 如果当前日期为空，则不禁用任何年份
         if (!current) return false
