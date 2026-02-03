@@ -1,12 +1,20 @@
 import type { TableColumnType } from 'react-admin-kit'
 import { DatePicker } from 'antd'
 import { LinkButton } from 'react-admin-kit'
+import type { DatePickerProps } from 'antd'
 
 import DictSelect from '@/components/dict-select'
 import { toRelative } from '@/utils'
+import dayjs from 'dayjs'
 
 const { RangePicker } = DatePicker
-
+const disabledDate = (current) => {
+  // 如果当前日期在今天之前（不包含今天），则禁用
+  return current && current < dayjs().startOf('year')
+}
+const onChange: DatePickerProps['onChange'] = (date, dateString) => {
+  console.log(date, dateString)
+}
 // 当前节点选项
 export const CURRENT_NODE_OPTIONS = [
   { label: '投资计划编制', value: '投资计划编制' },
@@ -42,35 +50,14 @@ export const getColumns = (): TableColumnType[] => [
     title: '投资年度',
     dataIndex: 'investYear',
     type: 'search',
+    valueType: 'dateYear',
     fieldProps: {
-      placeholder: '请选择投资年度',
-      style: { width: '100%' },
-      component: DatePicker,
-      pickerProps: {
-        picker: 'year',
-        format: 'YYYY',
-        disabledDate: (date) => {
-          const currentYear = new Date().getFullYear()
-          const minYear = currentYear - 20
-          const maxYear = currentYear
-          return date.getFullYear() < minYear || date.getFullYear() > maxYear
-        },
+      disabledDate: (current) => {
+        // 如果当前日期为空，则不禁用任何年份
+        if (!current) return false
+        // 禁用当前年份（2026年）之前的年份[3,5,8](@ref)
+        return dayjs().isAfter(current, 'year')
       },
-    },
-    renderFormItem: (_, { value, onChange }) => {
-      const initValue = value ? new Date(value, 0, 1) : null
-      return (
-        <DatePicker
-          value={initValue}
-          picker="year"
-          format="YYYY"
-          placeholder="请选择投资年度"
-          style={{ width: '100%' }}
-          onChange={(date) => {
-            onChange(date ? date.getFullYear() : null)
-          }}
-        />
-      )
     },
   },
   {
@@ -108,8 +95,6 @@ export const getColumns = (): TableColumnType[] => [
       return {}
     },
   },
-
-  // 2. 单独导出表格列（仅用于表格渲染）
 
   {
     title: '序号',
