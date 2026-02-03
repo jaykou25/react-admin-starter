@@ -1,7 +1,7 @@
 import { toRelative } from '@/utils'
 import { queryInvestmentFlowList, deleteInvestmentFlow } from '@/apis/test'
-import { message, Button, Space, Tabs } from 'antd'
-import { useRef, useState, useEffect } from 'react'
+import { message, Button, Tabs } from 'antd'
+import { useRef, useState } from 'react'
 import { PlusOutlined } from '@ant-design/icons'
 
 import { InnerRefType, ProTable, ActionRefType } from 'react-admin-kit'
@@ -62,7 +62,6 @@ function InvestmentFlow() {
         innerRef={innerRef}
         request={async (params) => {
           try {
-            // 添加状态筛选参数
             const queryParams = {
               ...params,
               status: statusFilter,
@@ -70,24 +69,7 @@ function InvestmentFlow() {
               pageSize: params.pageSize || 10,
             }
 
-            // 调用接口
-            const response = await queryInvestmentFlowList(queryParams)
-
-            // 处理响应数据
-            return {
-              data: (response?.data || []).map((item, index) => ({
-                ...item,
-                key: item.id || index,
-                index:
-                  (queryParams.pageIndex - 1) * queryParams.pageSize +
-                  index +
-                  1,
-                meetingTypeDisplay:
-                  item.meetingTypeName || item.meetingType || '--',
-              })),
-              total: response?.total || 0,
-              success: true,
-            }
+            return await queryInvestmentFlowList(queryParams)
           } catch (error) {
             console.error('请求失败:', error)
             message.error('获取数据失败')

@@ -1,20 +1,13 @@
 import type { TableColumnType } from 'react-admin-kit'
 import { DatePicker } from 'antd'
 import { LinkButton } from 'react-admin-kit'
-import type { DatePickerProps } from 'antd'
 
 import DictSelect from '@/components/dict-select'
 import { toRelative } from '@/utils'
 import dayjs from 'dayjs'
 
 const { RangePicker } = DatePicker
-const disabledDate = (current) => {
-  // 如果当前日期在今天之前（不包含今天），则禁用
-  return current && current < dayjs().startOf('year')
-}
-const onChange: DatePickerProps['onChange'] = (date, dateString) => {
-  console.log(date, dateString)
-}
+
 // 当前节点选项
 export const CURRENT_NODE_OPTIONS = [
   { label: '投资计划编制', value: '投资计划编制' },

@@ -247,7 +247,7 @@ const InvestmentFormPage: React.FC = () => {
                 onClick={handleSubmit}
                 loading={submitting}
               >
-                {editId ? '提交' : '提交'}
+                {'提交'}
               </Button>
             </Space>
           </div>
