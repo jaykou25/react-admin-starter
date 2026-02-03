@@ -10,6 +10,7 @@ import {
   Row,
   Col,
   Spin,
+  DatePicker,
 } from 'antd'
 import { history, useModel, useLocation, useParams } from 'umi'
 import {
@@ -18,8 +19,10 @@ import {
   queryInvestmentFlowDetail,
   editInvestmentFlow,
 } from '@/apis/test'
+import dayjs from 'dayjs'
 
 import DictSelect from '@/components/dict-select'
+import { DatePickerProps } from 'antd/lib'
 
 const { Title } = Typography
 const { TextArea } = Input
@@ -172,7 +175,9 @@ const InvestmentFormPage: React.FC = () => {
       const saveData = {
         ...(editId && { id: editId }),
         title: values.title || '',
-        investYear: values.investYear ? String(values.investYear) : '',
+        investYear: values.investYear
+          ? String(values.investYear.format('YYYY'))
+          : '',
         meetingType: values.meetingType ? values.meetingType.join(',') : '',
         content: values.content || '',
         companyName: '国联集团',
@@ -204,7 +209,7 @@ const InvestmentFormPage: React.FC = () => {
       const submitData = {
         ...(editId && { id: editId }),
         title: values.title,
-        investYear: String(values.investYear),
+        investYear: String(values.investYear.format('YYYY')),
         meetingType: values.meetingType.join(','),
         content: values.content,
         orgId: userInfo?.orgId,
@@ -290,17 +295,17 @@ const InvestmentFormPage: React.FC = () => {
                   name="investYear"
                   rules={[{ required: true, message: '请选择投资年度' }]}
                   style={{ marginBottom: 24 }}
+                  getValueProps={(value) => {
+                    // 当表单中 investYear 的值为数字时，将其转换为 dayjs 对象供 DatePicker 显示
+                    return { value: value ? dayjs(`${value}-01-01`) : null }
+                  }}
                 >
-                  <Select placeholder="请选择投资年度" allowClear>
-                    {Array.from({ length: 5 }, (_, i) => {
-                      const year = new Date().getFullYear() + i
-                      return (
-                        <Option key={year} value={year}>
-                          {year}
-                        </Option>
-                      )
-                    })}
-                  </Select>
+                  <DatePicker
+                    picker="year"
+                    placeholder="请选择投资年度"
+                    format="YYYY"
+                    allowClear
+                  ></DatePicker>
                 </Form.Item>
               </Col>
             </Row>
