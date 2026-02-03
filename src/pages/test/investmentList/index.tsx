@@ -87,7 +87,6 @@ function InvestmentFlow() {
           reload: true,
           setting: true,
         }}
-        scroll={{ x: 1500 }}
         style={{
           backgroundColor: '#fff',
           borderRadius: '6px',

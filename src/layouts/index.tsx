@@ -80,7 +80,7 @@ export default function Layout() {
         proTableSetting={{
           size: tableSize,
           delConfirmType: 'modal',
-          
+          pagination: { pageSize: 10 },
           options: { density: false, reload: true, fullScreen: true },
           scroll: {
             x: 'max-content',
