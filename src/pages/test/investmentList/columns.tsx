@@ -158,6 +158,7 @@ export const getColumns = (): TableColumnType[] => [
               borderRadius: '4px',
               display: 'inline-block',
               fontWeight: 500,
+              border: '1px solid #ff0d00',
             }}
           >
             异常
