@@ -62,14 +62,12 @@ const InvestmentFormPage: React.FC = () => {
       const response = await queryInvestmentFlowDetail(id)
 
       if (response) {
-        // 获取数据
         const data =
           typeof response === 'object' && response.data
             ? response.data
             : response
 
         if (data && typeof data === 'object') {
-          // 直接构建表单数据对象
           const formData = {
             title: data.title || '',
             investYear: data.investYear || undefined,
@@ -82,7 +80,6 @@ const InvestmentFormPage: React.FC = () => {
             content: data.content || '',
           }
 
-          // 使用 setFieldsValue 一次性设置
           form.setFieldsValue(formData)
         }
       }
@@ -98,22 +95,27 @@ const InvestmentFormPage: React.FC = () => {
   const handleBack = () => {
     history.push('/test/investmentList')
   }
+  const savingData = (values) => {
+    return {
+      ...(editId && { id: editId }),
+      title: values.title,
+      investYear: values.investYear?.format('YYYY'),
+      meetingType: Array.isArray(values.meetingType)
+        ? values.meetingType.join(',')
+        : values.meetingType,
+      content: values.content,
+      orgId: userInfo?.orgId,
+      candidateList: [],
+      companyName: userInfo?.companyName,
+    }
+  }
 
   const handleSave = async () => {
     try {
       const values = await form.getFieldsValue()
       setSaving(true)
 
-      const saveData = {
-        ...(editId && { id: editId }),
-        title: values.title || '',
-        investYear: values.investYear
-          ? String(values.investYear.format('YYYY'))
-          : '',
-        meetingType: values.meetingType ? values.meetingType.join(',') : '',
-        content: values.content || '',
-        companyName: '国联集团',
-      }
+      const saveData = savingData(values)
 
       console.log('保存的数据:', saveData)
 
@@ -138,16 +140,7 @@ const InvestmentFormPage: React.FC = () => {
 
       console.log('表单验证通过的数据:', values)
 
-      const submitData = {
-        ...(editId && { id: editId }),
-        title: values.title,
-        investYear: String(values.investYear.format('YYYY')),
-        meetingType: values.meetingType.join(','),
-        content: values.content,
-        orgId: userInfo?.orgId,
-        candidateList: [],
-        companyName: userInfo?.companyName,
-      }
+      const submitData = savingData(values)
 
       console.log('提交的数据:', submitData)
 
