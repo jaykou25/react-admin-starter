@@ -61,6 +61,17 @@ export const getColumns = (): TableColumnType[] => [
     renderFormItem: () => {
       return <DictSelect type="regulation_meeting_type" mode="multiple" />
     },
+    transform: (value) => {
+      if (Array.isArray(value)) {
+        return value.filter((v) => v != null && v !== '').join(',')
+      }
+
+      if (value != null && value !== '') {
+        return String(value)
+      }
+
+      return undefined
+    },
   },
   {
     title: '申请部门',

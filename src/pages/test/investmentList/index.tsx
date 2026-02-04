@@ -61,24 +61,12 @@ function InvestmentFlow() {
         actionRef={actionRef}
         innerRef={innerRef}
         request={async (params) => {
-          try {
-            const queryParams = {
-              ...params,
-              status: statusFilter,
-              pageIndex: params.current || 1,
-              pageSize: params.pageSize || 10,
-            }
-
-            return await queryInvestmentFlowList(queryParams)
-          } catch (error) {
-            console.error('请求失败:', error)
-            message.error('获取数据失败')
-            return {
-              data: [],
-              total: 0,
-              success: false,
-            }
+          const queryParams = {
+            ...params,
+            status: statusFilter,
           }
+
+          return await queryInvestmentFlowList(queryParams)
         }}
         columns={getColumns()}
         delFunction={deleteInvestmentFlow}
