@@ -72,9 +72,7 @@ const InvestmentFormPage: React.FC = () => {
           // 直接构建表单数据对象
           const formData = {
             title: data.title || '',
-            investYear: data.investYear
-              ? dayjs(`${data.investYear}-01-01`)
-              : undefined,
+            investYear: data.investYear || undefined,
             meetingType:
               data.meetingType &&
               typeof data.meetingType === 'string' &&
