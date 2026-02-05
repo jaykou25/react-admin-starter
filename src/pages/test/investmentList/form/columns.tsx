@@ -48,6 +48,7 @@ export const columns: FormColumnType[] = [
     dataIndex: 'meetingType',
     formItemProps: {
       rules: [{ required: true, message: '请选择会议类型' }],
+      labelCol: { flex: '0 0 12.5%' },
     },
     colProps: {
       span: 24,
@@ -70,10 +71,10 @@ export const columns: FormColumnType[] = [
     valueType: 'textarea',
     fieldProps: {
       placeholder: '请输入汇报内容',
-      rows: 8,
     },
     formItemProps: {
       rules: [{ required: true, message: '请输入汇报内容' }],
+      labelCol: { flex: '0 0 12.5%' },
     },
     colProps: {
       span: 24,

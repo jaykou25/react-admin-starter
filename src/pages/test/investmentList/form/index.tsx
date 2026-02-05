@@ -214,8 +214,8 @@ const InvestmentFormPage: React.FC = () => {
             formRef={formRef}
             columns={columns}
             layout="horizontal"
-            labelCol={{ span: 4 }}
-            wrapperCol={{ span: 18 }}
+            labelCol={{ flex: '0 0 25%' }}
+            wrapperCol={{ flex: '0 0 75%' }}
             requiredMark={true}
             autoFocusFirstInput={false}
             grid={true}
