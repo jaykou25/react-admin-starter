@@ -1,18 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import {
-  Card,
-  Form,
-  Input,
-  Select,
-  Button,
-  Space,
-  Typography,
-  Row,
-  Col,
-  Spin,
-  DatePicker,
-} from 'antd'
+// src/pages/test/InvestmentFormPage/index.tsx
+import React, { useState, useEffect, useRef } from 'react'
+import { Card, Button, Space, Typography, Spin } from 'antd'
 import { history, useModel, useLocation, useParams } from 'umi'
+import { SchemaForm, ProFormInstance } from 'react-admin-kit'
 import {
   addInvestmentFlow,
   submitApproval,
@@ -20,16 +10,12 @@ import {
   editInvestmentFlow,
 } from '@/apis/test'
 import dayjs from 'dayjs'
-
-import DictSelect from '@/components/dict-select'
-import { DatePickerProps } from 'antd/lib'
+import { columns } from './columns'
 
 const { Title } = Typography
-const { TextArea } = Input
-const { Option } = Select
 
 const InvestmentFormPage: React.FC = () => {
-  const [form] = Form.useForm()
+  const formRef = useRef<ProFormInstance>()
   const [submitting, setSubmitting] = useState(false)
   const [saving, setSaving] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -48,7 +34,7 @@ const InvestmentFormPage: React.FC = () => {
       fetchFormData(id)
     } else {
       // 新增时设置默认值
-      form.setFieldsValue({
+      formRef.current?.setFieldsValue({
         meetingType: ['1', '2'],
       })
     }
@@ -58,7 +44,6 @@ const InvestmentFormPage: React.FC = () => {
   const fetchFormData = async (id: string) => {
     try {
       setLoading(true)
-
       const response = await queryInvestmentFlowDetail(id)
 
       if (response) {
@@ -70,6 +55,7 @@ const InvestmentFormPage: React.FC = () => {
         if (data && typeof data === 'object') {
           const formData = {
             title: data.title || '',
+            // 注意：这里不直接转换，让 columns 中的 convertValue 处理
             investYear: data.investYear || undefined,
             meetingType:
               data.meetingType &&
@@ -80,7 +66,7 @@ const InvestmentFormPage: React.FC = () => {
             content: data.content || '',
           }
 
-          form.setFieldsValue(formData)
+          formRef.current?.setFieldsValue(formData)
         }
       }
     } catch (error) {
@@ -90,20 +76,20 @@ const InvestmentFormPage: React.FC = () => {
     }
   }
 
-  // 从响应数据设置表单
-
   const handleBack = () => {
     history.push('/test/investmentList')
   }
-  const savingData = (values) => {
+
+  const transformFormData = (values: any) => {
+    const { investYear, meetingType, ...rest } = values
+
     return {
       ...(editId && { id: editId }),
-      title: values.title,
-      investYear: values.investYear?.format('YYYY'),
-      meetingType: Array.isArray(values.meetingType)
-        ? values.meetingType.join(',')
-        : values.meetingType,
-      content: values.content,
+      investYear: investYear?.$y,
+      meetingType: Array.isArray(meetingType)
+        ? meetingType.join(',')
+        : meetingType,
+      ...rest,
       orgId: userInfo?.orgId,
       candidateList: [],
       companyName: userInfo?.companyName,
@@ -112,11 +98,11 @@ const InvestmentFormPage: React.FC = () => {
 
   const handleSave = async () => {
     try {
-      const values = await form.getFieldsValue()
+      const values = await formRef.current?.getFieldsValue()
+      if (!values) return
+
       setSaving(true)
-
-      const saveData = savingData(values)
-
+      const saveData = transformFormData(values)
       console.log('保存的数据:', saveData)
 
       if (editId) {
@@ -135,13 +121,12 @@ const InvestmentFormPage: React.FC = () => {
 
   const handleSubmit = async () => {
     try {
-      const values = await form.validateFields()
+      const values = await formRef.current?.validateFields()
+      if (!values) return
+
       setSubmitting(true)
-
       console.log('表单验证通过的数据:', values)
-
-      const submitData = savingData(values)
-
+      const submitData = transformFormData(values)
       console.log('提交的数据:', submitData)
 
       await submitApproval(submitData)
@@ -151,6 +136,26 @@ const InvestmentFormPage: React.FC = () => {
       }, 1500)
     } catch (error: any) {
       console.error('提交失败:', error)
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  // SchemaForm 的 onFinish
+  const onFinish = async (values: any) => {
+    try {
+      setSubmitting(true)
+      const submitData = transformFormData(values)
+      console.log('表单提交数据:', submitData)
+
+      await submitApproval(submitData)
+
+      setTimeout(() => {
+        history.push('/test/investmentList')
+      }, 1500)
+    } catch (error) {
+      console.error('提交失败:', error)
+      throw error // 重新抛出错误，让表单知道提交失败
     } finally {
       setSubmitting(false)
     }
@@ -169,7 +174,7 @@ const InvestmentFormPage: React.FC = () => {
             <Space
               style={{
                 width: '100%',
-                justifyContent: 'space-between', // 两端对齐
+                justifyContent: 'space-between',
               }}
             >
               <Title level={4}>国联集团- 管理员发起的投资计划流程申请</Title>
@@ -203,78 +208,29 @@ const InvestmentFormPage: React.FC = () => {
             </div>
           </div>
 
-          <Form
-            form={form}
+          <SchemaForm
+            name="investment-form"
+            onFinish={onFinish}
+            formRef={formRef}
+            columns={columns}
             layout="horizontal"
             labelCol={{ span: 4 }}
             wrapperCol={{ span: 18 }}
             requiredMark={true}
-          >
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item
-                  label="流程标题"
-                  name="title"
-                  rules={[{ required: true, message: '请输入流程标题' }]}
-                  style={{ marginBottom: 24 }}
-                >
-                  <Input placeholder="请输入流程标题" />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item
-                  label={<span>投资年度</span>}
-                  name="investYear"
-                  rules={[{ required: true, message: '请选择投资年度' }]}
-                  style={{ marginBottom: 24 }}
-                  getValueProps={(value) => {
-                    // 当表单中 investYear 的值为数字时，将其转换为 dayjs 对象供 DatePicker 显示
-                    return { value: value ? dayjs(`${value}-01-01`) : null }
-                  }}
-                >
-                  <DatePicker
-                    picker="year"
-                    placeholder="请选择投资年度"
-                    format="YYYY"
-                    allowClear
-                  ></DatePicker>
-                </Form.Item>
-              </Col>
-            </Row>
-
-            <Form.Item
-              label={<span>会议类型</span>}
-              name="meetingType"
-              rules={[{ required: true, message: '请选择会议类型' }]}
-              style={{ marginBottom: 24 }}
-              labelCol={{ span: 2 }}
-              wrapperCol={{ span: 20 }}
-            >
-              <DictSelect
-                type="regulation_meeting_type" // 会议类型字典类型
-                mode="multiple"
-                placeholder="请选择会议类型"
-                style={{ width: '100%', maxWidth: 400 }}
-                allowClear
-              />
-            </Form.Item>
-
-            <Form.Item
-              label={<span>汇报内容</span>}
-              name="content"
-              rules={[{ required: true, message: '请输入汇报内容' }]}
-              style={{ marginBottom: 24 }}
-              labelCol={{ span: 2 }}
-              wrapperCol={{ span: 20 }}
-            >
-              <TextArea
-                placeholder="请输入汇报内容"
-                rows={8}
-                showCount
-                maxLength={5000}
-              />
-            </Form.Item>
-          </Form>
+            autoFocusFirstInput={false}
+            grid={true}
+            rowProps={{
+              gutter: 16,
+            }}
+            initialValues={{
+              meetingType: ['1', '2'],
+            }}
+            // 防止表单自动重置
+            isKeyPressSubmit={false}
+            style={{
+              marginTop: 24,
+            }}
+          />
         </Card>
       </Spin>
     </div>
