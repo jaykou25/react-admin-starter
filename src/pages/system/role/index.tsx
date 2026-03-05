@@ -252,6 +252,7 @@ class Role extends Component<any, any> {
             })}
           />
           <ModalForm
+            key={formData.id || 'new'}
             columns={getRoleColumns()}
             // modal参数
             title={formType === 'new' ? '新增角色' : '编辑角色'}
