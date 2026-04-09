@@ -3,7 +3,6 @@ import { message } from 'antd'
 import { useRef, useState } from 'react'
 import { SyncOutlined } from '@ant-design/icons'
 import { getColumns } from './columns'
-
 import { InnerRefType, ProTable, Button, ActionRefType } from 'react-admin-kit'
 import { hasPermission } from '@/utils'
 
@@ -37,8 +36,6 @@ function User() {
         delFunction={(ids) => delUser(ids[0])}
         delPermission={() => hasPermission('user:del')}
         options={false}
-        
-        
         style={{
           minWidth: '100%', // 确保表格占据最小宽度
         }}
@@ -70,16 +67,13 @@ function User() {
               id: formData.id,
             })
           }
-
           if (actionRef.current) {
             actionRef.current.reload()
           }
-
           return true
         }}
       />
     </div>
   )
 }
-
 export default User
