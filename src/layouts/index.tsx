@@ -79,8 +79,12 @@ export default function Layout() {
       <SettingProvider
         proTableSetting={{
           size: tableSize,
-          confirmModalType: 'modal',
+          delConfirmType: 'modal',
+          pagination: { pageSize: 10 },
           options: { density: false, reload: true, fullScreen: true },
+          scroll: {
+            x: 'max-content',
+          },
         }}
         formUploadSetting={{
           action: '/api/accessory/upload',
@@ -92,9 +96,9 @@ export default function Layout() {
           urlKey: 'downloadUrl',
           nameKey: 'accName',
           beforeUpload: (file) => {
-            // 限制50M
-            const isFile50M = file.size / 1024 / 1024 > 20
-            if (isFile50M) {
+            // 限制20M
+            const isFile20M = file.size / 1024 / 1024 > 20
+            if (isFile20M) {
               message.warning(`${file.name}大小超出20M，请修改后重新上传`)
               return Upload.LIST_IGNORE
             }
@@ -115,9 +119,8 @@ export default function Layout() {
           },
         }}
         modalFormSetting={{
-          modalProps: {
-            maskClosable: false,
-          },
+          centered: true,
+          maskClosable: false,
         }}
       >
         <Helmet>
