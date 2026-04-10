@@ -80,4 +80,5 @@ function User() {
     </div>
   )
 }
+
 export default User
