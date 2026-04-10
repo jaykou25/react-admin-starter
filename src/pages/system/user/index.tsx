@@ -3,11 +3,13 @@ import { message } from 'antd'
 import { useRef, useState } from 'react'
 import { SyncOutlined } from '@ant-design/icons'
 import { getColumns } from './columns'
+
 import { InnerRefType, ProTable, Button, ActionRefType } from 'react-admin-kit'
 import { hasPermission } from '@/utils'
 
 function User() {
   const [syncUsersLoading, setSyncUsersLoading] = useState(false)
+
   const actionRef = useRef<ActionRefType>()
   const innerRef = useRef<InnerRefType>()
 
@@ -67,9 +69,11 @@ function User() {
               id: formData.id,
             })
           }
+
           if (actionRef.current) {
             actionRef.current.reload()
           }
+
           return true
         }}
       />
