@@ -120,7 +120,9 @@ export default function Layout() {
         }}
         modalFormSetting={{
           centered: true,
-          maskClosable: false,
+          mask: {
+            closable: false,
+          },
         }}
       >
         <Helmet>

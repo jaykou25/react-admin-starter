@@ -35,7 +35,7 @@ const Navbar = () => {
       </div>
       <Drawer
         title="页面设置"
-        width={280}
+        size={280}
         open={open}
         onClose={() => setOpen(false)}
       >
