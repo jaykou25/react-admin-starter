@@ -65,7 +65,7 @@ service.interceptors.response.use(
 
     // 登录过期
     if (status === 401) {
-      notification.info({ message: '登录过期' })
+      notification.info({ title: '登录过期' })
 
       // 防止后面连续的请求报 401
       abortRequest = true
@@ -82,7 +82,7 @@ service.interceptors.response.use(
       return Promise.reject(error)
     }
 
-    notification.info({ message: error.message })
+    notification.info({ title: error.message })
     return Promise.reject(error)
   }
 )
