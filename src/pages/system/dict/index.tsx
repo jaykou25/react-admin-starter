@@ -81,7 +81,7 @@ const SystemDict = () => {
         title="字典详情"
         open={visible}
         onClose={() => setVisible(false)}
-        width={'45%'}
+        size={'45%'}
         destroyOnHidden
       >
         <ProTable

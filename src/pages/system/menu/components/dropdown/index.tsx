@@ -67,7 +67,12 @@ const DropdownMenu: React.FC<any> = ({
         },
       }}
       open={open}
-      overlayStyle={{ left: `${pos.x}px`, top: `${pos.y}px` }}
+      styles={{
+        root: {
+          left: `${pos.x}px`,
+          top: `${pos.y}px`,
+        },
+      }}
     />
   )
 }
