@@ -273,7 +273,7 @@ const SystemMenu = () => {
 
       {/* 按钮资源 */}
       <Drawer
-        width={'50%'}
+        size={'50%'}
         open={open}
         onClose={() => setOpen(false)}
         destroyOnHidden
