@@ -1,23 +1,46 @@
-// 字典列表
 .roleList {
-  :global .ant-list {
-    padding-bottom: 24px;
+  :global .ant-card-body {
+    padding: 0;
+  }
+}
+.iconHover {
+  cursor: help;
+  color: #999;
+  transition: color 0.3s;
+
+  &:hover {
+    color: #1890ff; // 悬停时变为蓝色
+  }
+}
+.listContainer {
+  max-height: 600px;
+  overflow: auto;
+  padding-bottom: 24px;
+  margin-left: 24px;
+  margin-right: 24px;
+  margin-top: 12px;
+}
+
+.listItem {
+  padding: 12px 0;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border-bottom: 1px solid #f0f0f0;
+
+  &:hover {
+    background-color: #fafafa;
   }
 
-  :global .ant-list-item.ant-pro-list-row {
-    padding-left: 10px;
+  &:last-child {
+    border-bottom: none;
   }
+}
 
-  :global .ant-spin-container {
-    max-height: 500px;
-    overflow: auto;
-  }
+.listItem.selected {
+  position: relative;
+  background-color: #ffffff;
 
-  // 行被选中后的颜色, 比勾选时的选中色稍稍深一点
-  :global .ant-pro-list-row-type-selected.ant-pro-list-row {
-    position: relative;
-  }
-  :global .ant-pro-list-row-type-selected.ant-pro-list-row::before {
+  &::before {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -25,5 +48,34 @@
     width: 4px;
     background-color: #1890ff;
     content: '';
+  }
+}
+
+.listItemContent {
+  width: 100%;
+  padding: 0px 12px 0px 12px;
+}
+.listItemButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+.listItemHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.listItemTitle {
+  font-weight: 700;
+  font-size: 14px;
+  color: inherit;
+  transition: color 0.3s;
+
+  &:hover {
+    color: #1890ff; /* hover 时变为蓝色 */
+    cursor: pointer;
   }
 }

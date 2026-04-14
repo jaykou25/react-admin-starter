@@ -1,4 +1,5 @@
 import { Component, createRef } from 'react'
+import { InfoCircleOutlined } from '@ant-design/icons'
 import {
   Row,
   Col,
@@ -11,7 +12,6 @@ import {
   Input,
   Tooltip,
 } from 'antd'
-import ProList from '@ant-design/pro-list'
 import {
   addRole,
   delRoles,
@@ -152,105 +152,124 @@ class Role extends Component<any, any> {
     return (
       <Row gutter={24}>
         <Col span={24} lg={12} style={{ marginBottom: '24px' }}>
-          <Input.Search
-            style={{ marginBottom: '10px' }}
-            placeholder="模糊搜索"
-            onSearch={this.onRoleNameChange}
-          />
-          <ProList
-            loading={roleLoading}
+          <Card
             className={styles.roleList}
-            rowKey="id"
-            headerTitle="角色列表"
-            tooltip="给角色分配菜单"
-            toolbar={{
-              actions: [
-                <Button
-                  key="add"
-                  visible={() => hasPermission('roles:add')}
-                  type="primary"
-                  onClick={() =>
-                    this.setState({
-                      formVisible: true,
-                      formData: {},
-                      formType: 'new',
-                    })
-                  }
+            title={
+              <Space>
+                <span
+                  style={{
+                    fontWeight: 500,
+                    fontSize: '16px',
+                    color: 'rgba(0, 0, 0, 0.88)',
+                  }}
                 >
-                  新增角色
-                </Button>,
-              ],
-            }}
-            dataSource={showRoleData}
-            // showActions="hover"
-            metas={{
-              title: { dataIndex: 'name' },
-              subTitle: {
-                render: (text, record) => {
+                  角色列表
+                </span>
+                <Tooltip title="给角色分配菜单">
+                  <InfoCircleOutlined className={styles.iconHover} />
+                </Tooltip>
+                <span style={{ marginLeft: 'auto' }}>
+                  <Input
+                    placeholder="模糊搜索"
+                    onChange={(e) => this.onRoleNameChange(e.target.value)}
+                    allowClear
+                  />
+                </span>
+              </Space>
+            }
+            extra={
+              <Button
+                style={{ marginLeft: '10px' }}
+                key="add"
+                visible={() => hasPermission('roles:add')}
+                type="primary"
+                onClick={() =>
+                  this.setState({
+                    formVisible: true,
+                    formData: {},
+                    formType: 'new',
+                  })
+                }
+              >
+                新增角色
+              </Button>
+            }
+          >
+            <div>
+              <div className={styles.listContainer}>
+                {showRoleData.map((row: any) => {
+                  const isSelected = row.id === selectedRoleId
                   return (
-                    <Space size={0}>
-                      {record.status === 0 && <Tag color="blue">禁用</Tag>}
-                    </Space>
-                  )
-                },
-              },
-              type: {
-                // 选中的行会加上类.ant-pro-list-row-type-selected
-                render: (text, record) =>
-                  record.id === selectedRoleId ? 'selected' : '',
-              },
-              actions: {
-                render: (text, row) => [
-                  <Tooltip key="assign" title="将组织或人员绑定至该角色">
-                    <LinkButton
-                      visible={() => hasPermission('roles:edit')}
-                      key="assign"
+                    <div
+                      key={row.id}
+                      className={`${styles.listItem} ${isSelected ? styles.selected : ''}`}
                       onClick={() => {
-                        this.innerRef.current.openModal(row.id, row.name)
+                        const menuIds = row.permissionIds || []
+                        this.setState({
+                          selectedRoleId: row.id,
+                          checkedKeys: menuIds,
+                        })
                       }}
                     >
-                      分配
-                    </LinkButton>
-                  </Tooltip>,
-                  <LinkButton
-                    visible={() => hasPermission('roles:edit')}
-                    key="warning"
-                    onClick={() =>
-                      this.setState({
-                        formVisible: true,
-                        formData: row,
-                        formType: 'edit',
-                      })
-                    }
-                  >
-                    编辑
-                  </LinkButton>,
-                  <Popconfirm
-                    key={2}
-                    title="确认删除该角色吗?"
-                    onConfirm={() => this.handleDeleteRole(row.id)}
-                  >
-                    <LinkButton
-                      danger
-                      key="view"
-                      visible={() => hasPermission('roles:del')}
-                    >
-                      删除
-                    </LinkButton>
-                  </Popconfirm>,
-                ],
-              },
-            }}
-            onRow={(record) => ({
-              onClick: () => {
-                const menuIds = record.permissionIds || []
-                this.setState({
-                  selectedRoleId: record.id,
-                  checkedKeys: menuIds,
-                })
-              },
-            })}
-          />
+                      <div className={styles.listItemContent}>
+                        <div className={styles.listItemHeader}>
+                          <Space>
+                            <span className={styles.listItemTitle}>
+                              {row.name}
+                            </span>
+                            {row.status === 0 && <Tag color="blue">禁用</Tag>}
+                          </Space>
+                          <Space size={0}>
+                            <span className={styles.listItemButton}>
+                              <Tooltip title="将组织或人员绑定至该角色">
+                                <LinkButton
+                                  visible={() => hasPermission('roles:edit')}
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    this.innerRef.current.openModal(
+                                      row.id,
+                                      row.name
+                                    )
+                                  }}
+                                >
+                                  分配
+                                </LinkButton>
+                              </Tooltip>
+                              <LinkButton
+                                visible={() => hasPermission('roles:edit')}
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  this.setState({
+                                    formVisible: true,
+                                    formData: row,
+                                    formType: 'edit',
+                                  })
+                                }}
+                              >
+                                编辑
+                              </LinkButton>
+                              <Popconfirm
+                                title="确认删除该角色吗?"
+                                onConfirm={() => this.handleDeleteRole(row.id)}
+                              >
+                                <LinkButton
+                                  danger
+                                  visible={() => hasPermission('roles:del')}
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  删除
+                                </LinkButton>
+                              </Popconfirm>
+                            </span>
+                          </Space>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          </Card>
           <ModalForm
             columns={getRoleColumns()}
             // modal参数
