@@ -150,10 +150,9 @@ class Role extends Component<any, any> {
       showRoleData,
     } = this.state
     return (
-      <Row gutter={24}>
-        <Col span={24} lg={12} style={{ marginBottom: '24px' }}>
+      <Row gutter={24} className={styles.roleContainer}>
+        <Col span={24} lg={12}>
           <Card
-            className={styles.roleList}
             title={
               <Space>
                 <span
@@ -210,57 +209,48 @@ class Role extends Component<any, any> {
                         })
                       }}
                     >
-                      <div className={styles.listItemHeader}>
-                        <Space>
-                          <span className={styles.listItemTitle}>
-                            {row.name}
-                          </span>
-                          {row.status === 0 && <Tag color="blue">禁用</Tag>}
-                        </Space>
-                        <Space size={0}>
-                          <span className={styles.listItemButton}>
-                            <Tooltip title="将组织或人员绑定至该角色">
-                              <LinkButton
-                                visible={() => hasPermission('roles:edit')}
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                                  this.innerRef.current.openModal(
-                                    row.id,
-                                    row.name
-                                  )
-                                }}
-                              >
-                                分配
-                              </LinkButton>
-                            </Tooltip>
-                            <LinkButton
-                              visible={() => hasPermission('roles:edit')}
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                this.setState({
-                                  formVisible: true,
-                                  formData: row,
-                                  formType: 'edit',
-                                })
-                              }}
-                            >
-                              编辑
-                            </LinkButton>
-                            <Popconfirm
-                              title="确认删除该角色吗?"
-                              onConfirm={() => this.handleDeleteRole(row.id)}
-                            >
-                              <LinkButton
-                                danger
-                                visible={() => hasPermission('roles:del')}
-                                onClick={(e) => e.stopPropagation()}
-                              >
-                                删除
-                              </LinkButton>
-                            </Popconfirm>
-                          </span>
-                        </Space>
-                      </div>
+                      <Space>
+                        <span className={styles.listItemTitle}>{row.name}</span>
+                        {row.status === 0 && <Tag color="blue">禁用</Tag>}
+                      </Space>
+                      <Space size={8}>
+                        <Tooltip title="将组织或人员绑定至该角色">
+                          <LinkButton
+                            visible={() => hasPermission('roles:edit')}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              this.innerRef.current.openModal(row.id, row.name)
+                            }}
+                          >
+                            分配
+                          </LinkButton>
+                        </Tooltip>
+                        <LinkButton
+                          visible={() => hasPermission('roles:edit')}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            this.setState({
+                              formVisible: true,
+                              formData: row,
+                              formType: 'edit',
+                            })
+                          }}
+                        >
+                          编辑
+                        </LinkButton>
+                        <Popconfirm
+                          title="确认删除该角色吗?"
+                          onConfirm={() => this.handleDeleteRole(row.id)}
+                        >
+                          <LinkButton
+                            danger
+                            visible={() => hasPermission('roles:del')}
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            删除
+                          </LinkButton>
+                        </Popconfirm>
+                      </Space>
                     </div>
                   )
                 })}
@@ -300,7 +290,6 @@ class Role extends Component<any, any> {
 
         <Col span={24} lg={12}>
           <Card
-            className={styles.menuAllocation}
             title={
               <Space>
                 <span
@@ -324,20 +313,18 @@ class Role extends Component<any, any> {
               </Button>
             }
           >
-            <div>
-              <div className={styles.menuListContainerTree}>
-                <Tree
-                  treeData={treeData}
-                  checkable
-                  checkedKeys={checkedKeys}
-                  onCheck={(keys) => {
-                    this.setState({ checkedKeys: keys })
-                  }}
-                  titleRender={(node: any) => (
-                    <div title={node.title}>{node.title}</div>
-                  )}
-                />
-              </div>
+            <div className={styles.listContainer}>
+              <Tree
+                treeData={treeData}
+                checkable
+                checkedKeys={checkedKeys}
+                onCheck={(keys) => {
+                  this.setState({ checkedKeys: keys })
+                }}
+                titleRender={(node: any) => (
+                  <div title={node.title}>{node.title}</div>
+                )}
+              />
             </div>
           </Card>
         </Col>
