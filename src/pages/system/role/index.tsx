@@ -168,7 +168,7 @@ class Role extends Component<any, any> {
                 <Tooltip title="给角色分配菜单">
                   <InfoCircleOutlined className={styles.iconHover} />
                 </Tooltip>
-                <span style={{ marginLeft: 'auto' }}>
+                <span>
                   <Input
                     placeholder="模糊搜索"
                     onChange={(e) => this.onRoleNameChange(e.target.value)}
@@ -179,7 +179,6 @@ class Role extends Component<any, any> {
             }
             extra={
               <Button
-                style={{ marginLeft: '10px' }}
                 key="add"
                 visible={() => hasPermission('roles:add')}
                 type="primary"
@@ -211,58 +210,56 @@ class Role extends Component<any, any> {
                         })
                       }}
                     >
-                      <div className={styles.listItemContent}>
-                        <div className={styles.listItemHeader}>
-                          <Space>
-                            <span className={styles.listItemTitle}>
-                              {row.name}
-                            </span>
-                            {row.status === 0 && <Tag color="blue">禁用</Tag>}
-                          </Space>
-                          <Space size={0}>
-                            <span className={styles.listItemButton}>
-                              <Tooltip title="将组织或人员绑定至该角色">
-                                <LinkButton
-                                  visible={() => hasPermission('roles:edit')}
-                                  onClick={(e) => {
-                                    e.stopPropagation()
-                                    this.innerRef.current.openModal(
-                                      row.id,
-                                      row.name
-                                    )
-                                  }}
-                                >
-                                  分配
-                                </LinkButton>
-                              </Tooltip>
+                      <div className={styles.listItemHeader}>
+                        <Space>
+                          <span className={styles.listItemTitle}>
+                            {row.name}
+                          </span>
+                          {row.status === 0 && <Tag color="blue">禁用</Tag>}
+                        </Space>
+                        <Space size={0}>
+                          <span className={styles.listItemButton}>
+                            <Tooltip title="将组织或人员绑定至该角色">
                               <LinkButton
                                 visible={() => hasPermission('roles:edit')}
                                 onClick={(e) => {
                                   e.stopPropagation()
-                                  this.setState({
-                                    formVisible: true,
-                                    formData: row,
-                                    formType: 'edit',
-                                  })
+                                  this.innerRef.current.openModal(
+                                    row.id,
+                                    row.name
+                                  )
                                 }}
                               >
-                                编辑
+                                分配
                               </LinkButton>
-                              <Popconfirm
-                                title="确认删除该角色吗?"
-                                onConfirm={() => this.handleDeleteRole(row.id)}
+                            </Tooltip>
+                            <LinkButton
+                              visible={() => hasPermission('roles:edit')}
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                this.setState({
+                                  formVisible: true,
+                                  formData: row,
+                                  formType: 'edit',
+                                })
+                              }}
+                            >
+                              编辑
+                            </LinkButton>
+                            <Popconfirm
+                              title="确认删除该角色吗?"
+                              onConfirm={() => this.handleDeleteRole(row.id)}
+                            >
+                              <LinkButton
+                                danger
+                                visible={() => hasPermission('roles:del')}
+                                onClick={(e) => e.stopPropagation()}
                               >
-                                <LinkButton
-                                  danger
-                                  visible={() => hasPermission('roles:del')}
-                                  onClick={(e) => e.stopPropagation()}
-                                >
-                                  删除
-                                </LinkButton>
-                              </Popconfirm>
-                            </span>
-                          </Space>
-                        </div>
+                                删除
+                              </LinkButton>
+                            </Popconfirm>
+                          </span>
+                        </Space>
                       </div>
                     </div>
                   )
@@ -303,7 +300,20 @@ class Role extends Component<any, any> {
 
         <Col span={24} lg={12}>
           <Card
-            title="菜单分配"
+            className={styles.menuAllocation}
+            title={
+              <Space>
+                <span
+                  style={{
+                    fontWeight: 500,
+                    fontSize: '16px',
+                    color: 'rgba(0, 0, 0, 0.88)',
+                  }}
+                >
+                  菜单分配
+                </span>
+              </Space>
+            }
             extra={
               <Button
                 loading={saveRoleMenusLoading}
@@ -314,17 +324,21 @@ class Role extends Component<any, any> {
               </Button>
             }
           >
-            <Tree
-              treeData={treeData}
-              checkable
-              checkedKeys={checkedKeys}
-              onCheck={(keys) => {
-                this.setState({ checkedKeys: keys })
-              }}
-              titleRender={(node: any) => (
-                <div title={node.title}>{node.title}</div>
-              )}
-            />
+            <div>
+              <div className={styles.menuListContainerTree}>
+                <Tree
+                  treeData={treeData}
+                  checkable
+                  checkedKeys={checkedKeys}
+                  onCheck={(keys) => {
+                    this.setState({ checkedKeys: keys })
+                  }}
+                  titleRender={(node: any) => (
+                    <div title={node.title}>{node.title}</div>
+                  )}
+                />
+              </div>
+            </div>
           </Card>
         </Col>
         <AssignModal innerRef={this.innerRef} />

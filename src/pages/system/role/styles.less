@@ -3,6 +3,7 @@
     padding: 0;
   }
 }
+
 .iconHover {
   cursor: help;
   color: #999;
@@ -12,8 +13,24 @@
     color: #1890ff; // 悬停时变为蓝色
   }
 }
+
 .listContainer {
-  max-height: 600px;
+  height: 600px;
+  overflow: auto;
+  padding-bottom: 24px;
+  margin-left: 24px;
+  margin-right: 24px;
+  margin-top: 12px;
+}
+
+.menuAllocation {
+  :global .ant-card-body {
+    padding: 0;
+  }
+}
+
+.menuListContainerTree {
+  height: 600px;
   overflow: auto;
   padding-bottom: 24px;
   margin-left: 24px;
@@ -22,7 +39,7 @@
 }
 
 .listItem {
-  padding: 12px 0;
+  padding: 12px;
   cursor: pointer;
   transition: background-color 0.3s;
   border-bottom: 1px solid #f0f0f0;
@@ -51,10 +68,6 @@
   }
 }
 
-.listItemContent {
-  width: 100%;
-  padding: 0px 12px 0px 12px;
-}
 .listItemButton {
   display: flex;
   justify-content: center;
