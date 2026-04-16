@@ -1,5 +1,14 @@
+import { useEffect } from 'react'
 import { Helmet, useAppData, useLocation, useModel } from 'umi'
-import { ConfigProvider, theme, Upload, Modal, App, message } from 'antd'
+import {
+  ConfigProvider,
+  theme,
+  Upload,
+  Modal,
+  App,
+  message,
+  notification,
+} from 'antd'
 import BusinessLayout from './businessLayout'
 import { SettingProvider } from 'react-admin-kit'
 import {
@@ -11,6 +20,8 @@ import {
   useQuery,
   findTree,
   SITE,
+  setGlobalMessageApi,
+  setGlobalNotificationApi,
 } from '@/utils'
 
 import zhCN from 'antd/locale/zh_CN'
@@ -21,17 +32,25 @@ export default function Layout() {
   const { initialState } = useModel('@@initialState')
   const { menuDataSource } = initialState
   const { breadName } = useQuery()
+  const [messageApi, contextHolder] = message.useMessage()
+  const [notificationApi, notificationContextHolder] =
+    notification.useNotification()
+  const [modalApi, modalContextHolder] = Modal.useModal()
 
   window.base = basename
 
   console.log('Layout组件日志')
-  const [messageApi, contextHolder] = message.useMessage()
-  const [modalApi, modalContextHolder] = Modal.useModal()
+
+  useEffect(() => {
+    setGlobalMessageApi(messageApi)
+    setGlobalNotificationApi(notificationApi)
+  }, [])
 
   const targetMenu = findTree(
     menuDataSource,
     (item) => item.routeUrl === pathname
   )
+
   const titleArr = [SITE.name]
   if (targetMenu && pathname !== '/') {
     titleArr.push(breadName || targetMenu.name)
@@ -81,6 +100,7 @@ export default function Layout() {
       <App>
         {modalContextHolder}
         {contextHolder}
+        {notificationContextHolder}
         <SettingProvider
           proTableSetting={{
             size: tableSize,

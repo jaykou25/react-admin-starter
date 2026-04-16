@@ -7,7 +7,6 @@ import {
   Tag,
   Card,
   Tree,
-  message,
   Popconfirm,
   Input,
   Tooltip,
@@ -24,7 +23,7 @@ import {
 import styles from './styles.less'
 import { getRoleColumns } from './columns'
 import { ModalForm, LinkButton, Button } from 'react-admin-kit'
-import { hasPermission } from '@/utils'
+import { getMessage, hasPermission } from '@/utils'
 import { normalizeTree } from '@/utils/treeUtil'
 import AssignModal from './components/AssignModal'
 
@@ -87,7 +86,7 @@ class Role extends Component<any, any> {
 
   handleDeleteRole = (id) => {
     delRoles(id).then(() => {
-      message.success('删除成功!')
+      getMessage().success('删除成功')
       this.handleQueryRoles()
     })
   }
@@ -103,7 +102,7 @@ class Role extends Component<any, any> {
     this.setState({ saveRoleMenusLoading: true })
     saveRoleMenus(data)
       .then(() => {
-        message.success('保存成功!')
+        getMessage().success('保存成功')
         // this.syncRole(selectedRoleId);
         this.handleQueryRoles()
       })
@@ -281,7 +280,9 @@ class Role extends Component<any, any> {
                 })
               }
 
-              message.success(`${formType === 'new' ? '新增' : '编辑'}成功!`)
+              getMessage().success(
+                `${formType === 'new' ? '新增' : '编辑'}成功`
+              )
               this.handleQueryRoles()
               return true
             }}

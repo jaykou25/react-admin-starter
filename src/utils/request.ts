@@ -4,9 +4,9 @@
 
 import axios, { AxiosError } from 'axios'
 import { createSearchParams, history } from 'umi'
-import { notification, message as antdMessage } from 'antd'
 import { clearToken, getToken } from '@/utils/auth'
 import { fullPath } from './common'
+import { getMessage, getNotification } from '@/utils'
 
 let controller
 let abortRequest = false
@@ -45,12 +45,12 @@ service.interceptors.response.use(
     const { data, code, message } = outData
 
     if (code === 5101) {
-      antdMessage.info(message)
+      getMessage().info(message)
       return Promise.reject(data)
     } else if (code > 200) {
       // notification.error({ message: '系统错误', description: message })
       // 根据需求改为message提示错误信息
-      antdMessage.error(message)
+      getMessage().error(message)
       return Promise.reject(data)
     }
 
@@ -65,7 +65,7 @@ service.interceptors.response.use(
 
     // 登录过期
     if (status === 401) {
-      notification.info({ title: '登录过期' })
+      getNotification().info({ title: '登录过期' })
 
       // 防止后面连续的请求报 401
       abortRequest = true
@@ -82,7 +82,7 @@ service.interceptors.response.use(
       return Promise.reject(error)
     }
 
-    notification.info({ title: error.message })
+    getNotification().info({ title: error.message })
     return Promise.reject(error)
   }
 )
