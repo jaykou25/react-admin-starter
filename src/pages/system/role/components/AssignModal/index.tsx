@@ -1,4 +1,4 @@
-import { message, Modal, Tabs, Tag } from 'antd'
+import { Modal, Tabs, Tag, App } from 'antd'
 import { useImperativeHandle, useRef, useState } from 'react'
 import { ActionRefType, Button, ProTable } from 'react-admin-kit'
 import { assignRole, cancelRole, getRoleUsers } from '../../apis'
@@ -9,6 +9,7 @@ import './index.less'
 
 const AssignModal = (props) => {
   const { innerRef } = props
+  const { message } = App.useApp()
 
   useImperativeHandle(innerRef, () => {
     return {

@@ -1,5 +1,5 @@
 import { Helmet, useAppData, useLocation, useModel } from 'umi'
-import { ConfigProvider, theme, message, Upload, Modal } from 'antd'
+import { ConfigProvider, theme, Upload, Modal, App, message } from 'antd'
 import BusinessLayout from './businessLayout'
 import { SettingProvider } from 'react-admin-kit'
 import {
@@ -25,6 +25,8 @@ export default function Layout() {
   window.base = basename
 
   console.log('Layout组件日志')
+  const [messageApi, contextHolder] = message.useMessage()
+  const [modalApi, modalContextHolder] = Modal.useModal()
 
   const targetMenu = findTree(
     menuDataSource,
@@ -76,60 +78,66 @@ export default function Layout() {
         },
       }}
     >
-      <SettingProvider
-        proTableSetting={{
-          size: tableSize,
-          delConfirmType: 'modal',
-          pagination: { pageSize: 10 },
-          options: { density: false, reload: true, fullScreen: true },
-          scroll: {
-            x: 'max-content',
-          },
-        }}
-        formUploadSetting={{
-          action: '/api/accessory/upload',
-          headers: { token: getToken() || '' },
-          responseToFileList: (res) => {
-            console.log(res)
-            return res.data
-          },
-          urlKey: 'downloadUrl',
-          nameKey: 'accName',
-          beforeUpload: (file) => {
-            // 限制20M
-            const isFile20M = file.size / 1024 / 1024 > 20
-            if (isFile20M) {
-              message.warning(`${file.name}大小超出20M，请修改后重新上传`)
-              return Upload.LIST_IGNORE
-            }
-            return true
-          },
-          onRemove: () => {
-            return new Promise((resolve) => {
-              Modal.confirm({
-                title: '确定删除吗?',
-                onOk: () => {
-                  resolve(true)
-                },
-                onCancel: () => {
-                  resolve(false)
-                },
+      <App>
+        {modalContextHolder}
+        {contextHolder}
+        <SettingProvider
+          proTableSetting={{
+            size: tableSize,
+            delConfirmType: 'modal',
+            pagination: { pageSize: 10 },
+            options: { density: false, reload: true, fullScreen: true },
+            scroll: {
+              x: 'max-content',
+            },
+          }}
+          formUploadSetting={{
+            action: '/api/accessory/upload',
+            headers: { token: getToken() || '' },
+            responseToFileList: (res) => {
+              console.log(res)
+              return res.data
+            },
+            urlKey: 'downloadUrl',
+            nameKey: 'accName',
+
+            beforeUpload: (file) => {
+              // 限制20M
+              const isFile20M = file.size / 1024 / 1024 > 20
+              if (isFile20M) {
+                messageApi.warning(`${file.name}大小超出20M，请修改后重新上传`)
+                return Upload.LIST_IGNORE
+              }
+              return true
+            },
+            onRemove: () => {
+              return new Promise((resolve) => {
+                modalApi.confirm({
+                  title: '确定删除吗?',
+                  onOk: () => {
+                    resolve(true)
+                  },
+                  onCancel: () => {
+                    resolve(false)
+                  },
+                })
               })
-            })
-          },
-        }}
-        modalFormSetting={{
-          centered: true,
-          mask: {
-            closable: false,
-          },
-        }}
-      >
-        <Helmet>
-          <title>{titleArr.join('-')}</title>
-        </Helmet>
-        {getLayout()}
-      </SettingProvider>
+            },
+          }}
+          modalFormSetting={{
+            centered: true,
+            mask: {
+              closable: false,
+            },
+          }}
+        >
+          <Helmet>
+            <title>{titleArr.join('-')}</title>
+          </Helmet>
+
+          {getLayout()}
+        </SettingProvider>
+      </App>
     </ConfigProvider>
   )
 }

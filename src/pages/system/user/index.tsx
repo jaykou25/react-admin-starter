@@ -1,5 +1,5 @@
 import { addUser, delUser, editUser, syncUsers, queryUsersAll } from '@/apis'
-import { message } from 'antd'
+import { App } from 'antd'
 import { useRef, useState } from 'react'
 import { SyncOutlined } from '@ant-design/icons'
 import { getColumns } from './columns'
@@ -9,6 +9,7 @@ import { hasPermission } from '@/utils'
 
 function User() {
   const [syncUsersLoading, setSyncUsersLoading] = useState(false)
+  const { message } = App.useApp()
 
   const actionRef = useRef<ActionRefType>()
   const innerRef = useRef<InnerRefType>()
