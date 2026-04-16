@@ -17,7 +17,11 @@ export const getDictColumns = (): TableColumnType[] => {
         placeholder: '输入名称或描述搜索',
       },
     },
-    { title: '序号', valueType: 'index', width: 60 },
+    {
+      title: '序号',
+      valueType: 'index',
+      width: 60,
+    },
     {
       title: '名称',
       dataIndex: 'name',
@@ -48,7 +52,6 @@ export const getDictColumns = (): TableColumnType[] => {
       search: false,
       width: 210,
     },
-
     {
       title: '状态',
       dataIndex: 'deleted',
@@ -90,7 +93,6 @@ export const getDictColumns = (): TableColumnType[] => {
         return <Badge status="processing" text="开启" />
       },
     },
-
     {
       title: '操作',
       valueType: 'option',

@@ -8,7 +8,7 @@ import {
   queryMenuInfo,
   queryMenusNoButton,
 } from '@/apis/system'
-import { Button, message, Input, Drawer } from 'antd'
+import { Button, App, Input, Drawer } from 'antd'
 import { getColumns } from './columns'
 import { getFormColumns } from './formColumns'
 import { FORM_TYPE_MAP } from '@/utils'
@@ -19,6 +19,7 @@ import { PlusOutlined } from '@ant-design/icons'
 import DropdownMenu from './components/dropdown'
 
 const SystemMenu = () => {
+  const { message } = App.useApp()
   const [loading, setLoading] = useState(false)
   const [dataSource, setDataSource] = useState<any>([])
 
