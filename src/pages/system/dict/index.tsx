@@ -10,10 +10,9 @@ import {
 } from '@/apis/system'
 import { hasPermission } from '@/utils'
 import { FORM_TYPE_MAP } from '@/utils/constants'
-import { Drawer, message } from 'antd'
+import { Drawer, App } from 'antd'
 import { useRef, useState } from 'react'
-import { ProTable, Button } from 'react-admin-kit'
-
+import { ProTable, Button, FormUpload } from 'react-admin-kit' // 导入FormUpload
 import { getDictColumns } from './columns'
 import { getDictDetailColumns } from './dictDetailColumns'
 import { PlusOutlined } from '@ant-design/icons'
@@ -27,6 +26,7 @@ const SystemDict = () => {
 
   const detailInnerRef = useRef<any>()
   const detailActionRef = useRef<any>()
+  const { message } = App.useApp()
 
   return (
     <div>

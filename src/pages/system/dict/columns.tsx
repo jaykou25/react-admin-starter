@@ -2,7 +2,7 @@ import { Badge } from 'antd'
 import BooleanSelect from '@/components/BooleanSelect'
 import BooleanRadioGroup from '@/components/BooleanRadioGroup'
 import type { TableColumnType } from 'react-admin-kit'
-import { LinkButton } from 'react-admin-kit'
+import { LinkButton, FormUpload } from 'react-admin-kit' // 从 react-admin-kit 导入 FormUpload
 import { hasPermission } from '@/utils'
 
 export const getDictColumns = (): TableColumnType[] => {
@@ -17,7 +17,11 @@ export const getDictColumns = (): TableColumnType[] => {
         placeholder: '输入名称或描述搜索',
       },
     },
-    { title: '序号', valueType: 'index', width: 60 },
+    {
+      title: '序号',
+      valueType: 'index',
+      width: 60,
+    },
     {
       title: '名称',
       dataIndex: 'name',
@@ -48,7 +52,6 @@ export const getDictColumns = (): TableColumnType[] => {
       search: false,
       width: 210,
     },
-
     {
       title: '状态',
       dataIndex: 'deleted',
@@ -90,7 +93,22 @@ export const getDictColumns = (): TableColumnType[] => {
         return <Badge status="processing" text="开启" />
       },
     },
-
+    {
+      title: '附件',
+      dataIndex: 'attachments',
+      hideInTable: true, // 不在表格中显示
+      renderFormItem: () => (
+        <FormUpload
+          maxCount={5} // 最多上传5个文件
+          multiple // 支持多选
+        >
+          <button>上传附件</button>
+        </FormUpload>
+      ),
+      formItemProps: {
+        extra: '支持上传多个文件，单个文件大小不超过20MB',
+      },
+    },
     {
       title: '操作',
       valueType: 'option',
