@@ -21,7 +21,7 @@
     "lodash-es": "^4.17.21",
     "moment": "^2.30.1",
     "qs": "^6.13.1",
-    "react-admin-kit": "^1.0.5",
+    "react-admin-kit": "^1.0.6",
     "react-gov-ui": "^1.4.0",
     "umi": "^4.4.5"
   },
